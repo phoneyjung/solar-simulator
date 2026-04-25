@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สื่อการสอน: ระบบ Solar Cell ประเทศไทย</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Sarabun', sans-serif; }
+  body {
+    background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%);
+    min-height: 100vh;
+    color: #fff;
+    padding: 15px;
+  }
+  .container { max-width: 1500px; margin: 0 auto; }
+  h1 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 5px;
+    background: linear-gradient(90deg, #ffd700, #ff8c00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .subtitle { text-align: center; color: #a0b0c0; margin-bottom: 20px; font-size: 1em; }
+  .main-grid { display: grid; grid-template-columns: 300px 1fr; gap: 15px; }
+  .controls {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 18px;
+    height: fit-content;
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+  .controls::-webkit-scrollbar { width: 6px; }
+  .controls::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.3); border-radius: 3px; }
+  .control-group { margin-bottom: 15px; }
+  .control-group h3 {
+    color: #ffd700;
+    font-size: 0.95em;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(255,215,0,0.3);
+    padding-bottom: 4px;
+  }
+  .control-group label {
+    display: block;
+    font-size: 0.82em;
+    margin-bottom: 4px;
+    color: #c0d0e0;
+  }
+  .control-group input[type="range"] {
+    width: 100%;
+    margin-bottom: 4px;
+    accent-color: #ffd700;
+  }
+  .control-group select {
+    width: 100%;
+    padding: 5px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.3);
+    color: #fff;
+    font-size: 0.85em;
+  }
+  .value-display { color: #ffd700; font-weight: bold; font-size: 0.85em; }
+  .toggle-btn {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(90deg, #4CAF50, #45a049);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 4px;
+    font-size: 0.85em;
+    transition: all 0.3s;
+  }
+  .toggle-btn.off { background: linear-gradient(90deg, #666, #555); }
+  .toggle-btn:hover { transform: translateY(-2px); }
+  .info-panel {
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 12px;
+    border-left: 4px solid #ffd700;
+  }
+  .info-panel h3 { color: #ffd700; margin-bottom: 8px; font-size: 1em; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px; }
+  .stat-box {
+    background: rgba(0,0,0,0.3);
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .stat-box .label { font-size: 0.72em; color: #a0b0c0; }
+  .stat-box .value { font-size: 1.2em; font-weight: bold; color: #ffd700; margin-top: 3px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; justify-content: center; font-size: 0.8em; }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .month-selector { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; margin-top: 5px; }
+  .month-btn {
+    padding: 5px 2px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.7em;
+    transition: all 0.2s;
+  }
+  .month-btn.active {
+    background: linear-gradient(90deg, #ffd700, #ff8c00);
+    color: #1a2332;
+    font-weight: bold;
+    border-color: #ffd700;
+  }
+  .month-btn:hover { background: rgba(255,215,0,0.2); }
+  .efficiency-bar {
+    height: 20px;
+    background: rgba(0,0,0,0.4);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 5px;
+    position: relative;
+  }
+  .efficiency-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #ffd700);
+    transition: width 0.3s;
+  }
+  .efficiency-text {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75em;
+    font-weight: bold;
+    color: #1a2332;
+  }
+  @media (max-width: 900px) {
+    .main-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>☀️ ระบบโซลาร์เซลล์ Interactive (ประเทศไทย)</h1>
+  <p class="subtitle">สื่อการสอน: คำนวณการผลิตไฟฟ้าตามจริง · มุมเอียง · เดือน · อายุการใช้งาน 30 ปี</p>
+
+  <div class="main-grid">
+    <div class="controls">
+      <div class="control-group">
+        <h3>📅 เดือน (ค่าเฉลี่ยแสงไทย)</h3>
+        <div class="month-selector" id="monthSelector"></div>
+        <button class="toggle-btn" id="yearAvgBtn" style="margin-top:6px;">📊 ใช้ค่าเฉลี่ยทั้งปี</button>
+        <div style="margin-top:6px; font-size:0.78em; color:#ffd700;">
+          PSH: <span id="pshValue">5.0</span> kWh/m²/วัน
+        </div>
+      </div>
+
+      <div class="control-group">
+        <h3>📐 มุมเอียงแผง (Tilt Angle)</h3>
+        <input type="range" id="tiltAngle" min="0" max="60" value="15">
+        <div class="value-display"><span id="tiltValue">15</span>°</div>
+        <div style="font-size:0.75em; color:#a0b0c0; margin-top:3px;">แนะนำ: 14-18° (latitude ไทย)</div>
+        <div class="efficiency-bar">
+          <div class="efficiency-fill" id="tiltEfficiencyBar" style="width: 100%;"></div>
+          <div class="efficiency-text" id="tiltEfficiencyText">100%</div>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <h3>📆 อายุระบบ (สูงสุด 30 ปี)</h3>
+        <input type="range" id="systemAge" min="0" max="30" value="0">
+        <div class="value-display">ปีที่ <span id="ageValue">0</span> · ลด <span id="degradationValue">0</span>%</div>
+        <div style="font-size:0.7em; color:#a0b0c0; margin-top:3px;">ปีแรก -2.5%, จากนั้น -0.5%/ปี</div>
+      </div>
+
+      <div class="control-group">
+        <h3>🔲 แผงโซลาร์เซลล์</h3>
+        <label>กำลัง/แผง: <span class="value-display" id="panelWattValue">450</span> W</label>
+        <input type="range" id="panelWatt" min="100" max="700" step="50" value="450">
+        <label style="margin-top:6px;">จำนวน: <span class="value-display" id="panelCountValue">8</span> แผง</label>
+        <input type="range" id="panelCount" min="2" max="20" value="8">
+      </div>
+
+      <div class="control-group">
+        <h3>⚡ อินเวอร์เตอร์</h3>
+        <select id="inverterSize">
+          <option value="3">3 kW (บ้านเล็ก)</option>
+          <option value="5" selected>5 kW (บ้านทั่วไป)</option>
+          <option value="10">10 kW (บ้านใหญ่)</option>
+          <option value="15">15 kW (เชิงพาณิชย์)</option>
+          <option value="20">20 kW (โรงงาน)</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <h3>🔋 ระบบแบตเตอรี่</h3>
+        <button class="toggle-btn" id="batteryToggle">เปิดใช้งาน</button>
+      </div>
+
+      <div class="control-group">
+        <h3>📊 สรุปผล</h3>
+        <div style="background: rgba(0,0,0,0.3); padding: 8px; border-radius: 8px; font-size: 0.8em; line-height:1.6;">
+          <div>🔆 ผลิต: <span class="value-display" id="totalPower">0</span> W</div>
+          <div>📈 ประสิทธิภาพรวม: <span class="value-display" id="totalEfficiency">100</span>%</div>
+          <div>⚠️ <span id="warning"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <svg id="solarSvg" viewBox="0 0 1000 600" style="width: 100%; height: 580px; background: linear-gradient(180deg, #87CEEB 0%, #B0E0E6 35%, #DEB887 70%, #6B8E23 100%); border-radius: 15px;">
+        <defs>
+          <linearGradient id="shineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fff" stop-opacity="0.8"/>
+            <stop offset="50%" stop-color="#fff" stop-opacity="0.2"/>
+            <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+
+        <g id="sunGroup">
+          <circle cx="120" cy="100" r="45" fill="#FFD700">
+            <animate attributeName="r" values="45;48;45" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="120" cy="100" r="55" fill="none" stroke="#FFA500" stroke-width="2" opacity="0.6">
+            <animate attributeName="r" values="55;65;55" dur="2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <text x="120" y="106" text-anchor="middle" font-size="20" font-weight="bold" fill="#FF6347">SUN</text>
+        </g>
+
+        <g id="lightRays"></g>
+        <g id="solarPanels"></g>
+        <g id="tiltIndicator"></g>
+        <g id="dcCables"></g>
+
+        <g id="combinerBox">
+          <rect x="430" y="320" width="80" height="100" fill="#2c3e50" stroke="#ffd700" stroke-width="2" rx="5"/>
+          <rect x="440" y="335" width="60" height="15" fill="#ff6b6b" rx="2"/>
+          <rect x="440" y="355" width="60" height="15" fill="#ff6b6b" rx="2"/>
+          <rect x="440" y="375" width="60" height="15" fill="#4ecdc4" rx="2"/>
+          <circle cx="450" cy="405" r="3" fill="#ffd700"/>
+          <circle cx="470" cy="405" r="3" fill="#ffd700">
+            <animate attributeName="opacity" values="1;0.3;1" dur="1s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="490" cy="405" r="3" fill="#ffd700"/>
+          <text x="470" y="435" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Combiner</text>
+          <text x="470" y="448" text-anchor="middle" font-size="9" fill="#fff">ตู้รวมไฟ DC</text>
+        </g>
+
+        <line x1="510" y1="370" x2="600" y2="370" stroke="#ff6b6b" stroke-width="3" stroke-dasharray="5,3"/>
+        <text x="555" y="362" text-anchor="middle" font-size="10" font-weight="bold" fill="#c0392b">DC</text>
+
+        <g id="inverterGroup">
+          <rect x="600" y="330" width="100" height="80" fill="#34495e" stroke="#ffd700" stroke-width="2" rx="8"/>
+          <rect x="610" y="345" width="80" height="30" fill="#1a2332" rx="3"/>
+          <text x="650" y="360" text-anchor="middle" font-size="9" fill="#0f0">INVERTER</text>
+          <text id="inverterSizeText" x="650" y="372" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f0">5 kW</text>
+          <circle cx="620" cy="395" r="4" fill="#0f0">
+            <animate attributeName="opacity" values="1;0.3;1" dur="0.8s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="640" cy="395" r="4" fill="#ffa500"/>
+          <text x="650" y="425" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">อินเวอร์เตอร์</text>
+          <text x="650" y="438" text-anchor="middle" font-size="9" fill="#fff">DC → AC</text>
+        </g>
+
+        <line x1="700" y1="370" x2="780" y2="370" stroke="#4ecdc4" stroke-width="3"/>
+        <text x="740" y="362" text-anchor="middle" font-size="10" font-weight="bold" fill="#16a085">AC</text>
+
+        <g id="batteryGroup">
+          <rect x="780" y="330" width="80" height="80" fill="#27ae60" stroke="#ffd700" stroke-width="2" rx="5"/>
+          <rect x="790" y="345" width="60" height="10" fill="#1a2332" rx="2"/>
+          <rect x="792" y="347" width="50" height="6" fill="#0f0" rx="1"/>
+          <text x="820" y="378" text-anchor="middle" font-size="20" fill="#fff">🔋</text>
+          <text x="820" y="425" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">แบตเตอรี่</text>
+          <text x="820" y="438" text-anchor="middle" font-size="9" fill="#fff">Battery</text>
+        </g>
+
+        <line x1="860" y1="370" x2="900" y2="370" stroke="#4ecdc4" stroke-width="3"/>
+        <line x1="900" y1="370" x2="900" y2="490" stroke="#4ecdc4" stroke-width="3"/>
+        <line x1="900" y1="490" x2="780" y2="490" stroke="#4ecdc4" stroke-width="3"/>
+
+        <g id="houseGroup">
+          <polygon points="700,470 780,470 740,420" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+          <rect x="710" y="470" width="60" height="60" fill="#ecf0f1" stroke="#95a5a6" stroke-width="2"/>
+          <rect x="720" y="485" width="15" height="20" fill="#3498db"/>
+          <rect x="745" y="485" width="15" height="20" fill="#3498db"/>
+          <rect x="730" y="510" width="20" height="20" fill="#8B4513"/>
+          <text x="740" y="555" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">บ้าน</text>
+          <text x="740" y="568" text-anchor="middle" font-size="9" fill="#fff">Load</text>
+        </g>
+
+        <g id="currentParticles"></g>
+
+        <text x="280" y="40" font-size="13" font-weight="bold" fill="#1a2332">① แผงโซลาร์</text>
+        <text x="430" y="310" font-size="11" font-weight="bold" fill="#1a2332">② รวมไฟ</text>
+        <text x="600" y="320" font-size="11" font-weight="bold" fill="#1a2332">③ แปลง AC</text>
+        <text x="780" y="320" font-size="11" font-weight="bold" fill="#1a2332">④ เก็บ/ใช้</text>
+        <text x="700" y="410" font-size="11" font-weight="bold" fill="#1a2332">⑤ บ้าน</text>
+      </svg>
+
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background: #FFD700;"></div>แสงอาทิตย์</div>
+        <div class="legend-item"><div class="legend-dot" style="background: #ff6b6b;"></div>กระแส DC</div>
+        <div class="legend-item"><div class="legend-dot" style="background: #4ecdc4;"></div>กระแส AC</div>
+        <div class="legend-item"><div class="legend-dot" style="background: #27ae60;"></div>แบตเตอรี่</div>
+      </div>
+
+      <div class="info-panel">
+        <h3>📈 ประสิทธิภาพระบบ</h3>
+        <div class="stats-grid">
+          <div class="stat-box"><div class="label">กำลังติดตั้ง</div><div class="value"><span id="theoreticalPower">3,600</span> W</div></div>
+          <div class="stat-box"><div class="label">กำลังผลิตจริง</div><div class="value"><span id="actualPower">2,880</span> W</div></div>
+          <div class="stat-box"><div class="label">ผลิตต่อวัน</div><div class="value"><span id="dailyProduction">14.4</span> kWh</div></div>
+          <div class="stat-box"><div class="label">ประหยัด/เดือน</div><div class="value">฿<span id="monthlySaving">1,728</span></div></div>
+        </div>
+        <div class="stats-grid" style="margin-top:8px;">
+          <div class="stat-box"><div class="label">ผลิตต่อปี</div><div class="value"><span id="yearlyProduction">5,256</span> kWh</div></div>
+          <div class="stat-box"><div class="label">ประหยัด/ปี</div><div class="value">฿<span id="yearlySaving">21,024</span></div></div>
+          <div class="stat-box"><div class="label">มุมเอียง</div><div class="value"><span id="tiltEffPct">100</span>%</div></div>
+          <div class="stat-box"><div class="label">หลัง Degrade</div><div class="value"><span id="degradeEffPct">100</span>%</div></div>
+        </div>
+      </div>
+
+      <div class="info-panel" style="border-left-color: #4ecdc4;">
+        <h3>📊 ผลิตไฟตลอดปี (kWh/เดือน)</h3>
+        <svg id="monthChart" viewBox="0 0 800 200" style="width: 100%; height: 180px;"></svg>
+      </div>
+
+      <div class="info-panel" style="border-left-color: #ff8c00;">
+        <h3>📉 Degradation 30 ปี</h3>
+        <svg id="degradeChart" viewBox="0 0 800 180" style="width: 100%; height: 160px;"></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const monthlyPSH = {1:5.2,2:5.8,3:6.0,4:5.7,5:5.0,6:4.6,7:4.5,8:4.4,9:4.5,10:4.7,11:5.0,12:5.0};
+const monthNames = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const yearlyAvgPSH = Object.values(monthlyPSH).reduce((a,b)=>a+b,0) / 12;
+const ELECTRICITY_RATE = 4.5;
+
+let state = {
+  month: 'year',
+  tiltAngle: 15,
+  systemAge: 0,
+  panelWatt: 450,
+  panelCount: 8,
+  inverterSize: 5,
+  batteryEnabled: true
+};
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+function tiltEfficiency(angle) {
+  const diff = Math.abs(angle - 15);
+  if (diff <= 5) return 1.0;
+  if (diff <= 10) return 0.99;
+  if (diff <= 15) return 0.97;
+  if (diff <= 20) return 0.94;
+  if (diff <= 30) return 0.88;
+  if (diff <= 40) return 0.80;
+  return 0.70;
+}
+
+function degradationFactor(year) {
+  if (year === 0) return 1.0;
+  if (year === 1) return 0.975;
+  return 0.975 - (year - 1) * 0.005;
+}
+
+function drawPanels() {
+  const group = document.getElementById('solarPanels');
+  group.innerHTML = '';
+  const count = state.panelCount;
+  const cols = Math.ceil(count / 2);
+  const startX = 220;
+  const startY = 180;
+  const panelW = Math.min(70, 320 / cols);
+  const panelH = 45;
+  const gap = 5;
+  const tilt = state.tiltAngle;
+
+  state.panelPositions = [];
+
+  for (let i = 0; i < count; i++) {
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    const x = startX + col * (panelW + gap);
+    const y = startY + row * (panelH + gap);
+    const heightAdjust = panelH * (1 - Math.sin(tilt * Math.PI / 180) * 0.15);
+
+    const panel = document.createElementNS(SVG_NS, 'g');
+    panel.setAttribute('transform', `translate(${x}, ${y}) skewX(-${tilt * 0.3})`);
+
+    const rect = document.createElementNS(SVG_NS, 'rect');
+    rect.setAttribute('x', '0');
+    rect.setAttribute('y', '0');
+    rect.setAttribute('width', panelW);
+    rect.setAttribute('height', heightAdjust);
+    rect.setAttribute('fill', '#1a3a5c');
+    rect.setAttribute('stroke', '#34495e');
+    rect.setAttribute('stroke-width', '1.5');
+    rect.setAttribute('rx', '2');
+    panel.appendChild(rect);
+
+    for (let g = 1; g < 4; g++) {
+      const line = document.createElementNS(SVG_NS, 'line');
+      line.setAttribute('x1', panelW * g / 4);
+      line.setAttribute('y1', 0);
+      line.setAttribute('x2', panelW * g / 4);
+      line.setAttribute('y2', heightAdjust);
+      line.setAttribute('stroke', '#4a90c2');
+      line.setAttribute('stroke-width', '0.5');
+      panel.appendChild(line);
+    }
+    for (let g = 1; g < 3; g++) {
+      const line = document.createElementNS(SVG_NS, 'line');
+      line.setAttribute('x1', 0);
+      line.setAttribute('y1', heightAdjust * g / 3);
+      line.setAttribute('x2', panelW);
+      line.setAttribute('y2', heightAdjust * g / 3);
+      line.setAttribute('stroke', '#4a90c2');
+      line.setAttribute('stroke-width', '0.5');
+      panel.appendChild(line);
+    }
+
+    if (state.systemAge > 5) {
+      const ageOverlay = document.createElementNS(SVG_NS, 'rect');
+      ageOverlay.setAttribute('x', '0');
+      ageOverlay.setAttribute('y', '0');
+      ageOverlay.setAttribute('width', panelW);
+      ageOverlay.setAttribute('height', heightAdjust);
+      ageOverlay.setAttribute('fill', '#888');
+      ageOverlay.setAttribute('opacity', Math.min(0.4, state.systemAge * 0.012));
+      ageOverlay.setAttribute('rx', '2');
+      panel.appendChild(ageOverlay);
+    }
+
+    const psh = state.month === 'year' ? yearlyAvgPSH : monthlyPSH[state.month];
+    const sunNormalized = psh / 6.0;
+    if (sunNormalized > 0.3) {
+      const shine = document.createElementNS(SVG_NS, 'rect');
+      shine.setAttribute('x', '0');
+      shine.setAttribute('y', '0');
+      shine.setAttribute('width', panelW);
+      shine.setAttribute('height', heightAdjust);
+      shine.setAttribute('fill', 'url(#shineGradient)');
+      shine.setAttribute('opacity', sunNormalized * 0.5);
+      shine.setAttribute('rx', '2');
+      panel.appendChild(shine);
+    }
+
+    group.appendChild(panel);
+    state.panelPositions.push({ x: x + panelW / 2, y: y + heightAdjust });
+  }
+
+  drawTiltIndicator();
+}
+
+function drawTiltIndicator() {
+  const group = document.getElementById('tiltIndicator');
+  group.innerHTML = '';
+  const cx = 380, cy = 285, r = 28;
+  const angle = state.tiltAngle;
+
+  // Background box
+  const bg = document.createElementNS(SVG_NS, 'rect');
+  bg.setAttribute('x', cx - 35);
+  bg.setAttribute('y', cy - 32);
+  bg.setAttribute('width', '75');
+  bg.setAttribute('height', '55');
+  bg.setAttribute('fill', 'rgba(255,255,255,0.85)');
+  bg.setAttribute('stroke', '#ff6b6b');
+  bg.setAttribute('stroke-width', '1.5');
+  bg.setAttribute('rx', '4');
+  group.appendChild(bg);
+
+  // Ground line
+  const ground = document.createElementNS(SVG_NS, 'line');
+  ground.setAttribute('x1', cx - 25);
+  ground.setAttribute('y1', cy + 10);
+  ground.setAttribute('x2', cx + 25);
+  ground.setAttribute('y2', cy + 10);
+  ground.setAttribute('stroke', '#1a2332');
+  ground.setAttribute('stroke-width', '2');
+  group.appendChild(ground);
+
+  // Tilted line
+  const tiltLine = document.createElementNS(SVG_NS, 'line');
+  tiltLine.setAttribute('x1', cx - 25);
+  tiltLine.setAttribute('y1', cy + 10);
+  tiltLine.setAttribute('x2', cx - 25 + 35 * Math.cos(angle * Math.PI / 180));
+  tiltLine.setAttribute('y2', cy + 10 - 35 * Math.sin(angle * Math.PI / 180));
+  tiltLine.setAttribute('stroke', '#1a3a5c');
+  tiltLine.setAttribute('stroke-width', '4');
+  group.appendChild(tiltLine);
+
+  // Arc
+  const arc = document.createElementNS(SVG_NS, 'path');
+  const arcEndX = cx - 25 + 15 * Math.cos(angle * Math.PI / 180);
+  const arcEndY = cy + 10 - 15 * Math.sin(angle * Math.PI / 180);
+  arc.setAttribute('d', `M ${cx - 25 + 15} ${cy + 10} A 15 15 0 0 0 ${arcEndX} ${arcEndY}`);
+  arc.setAttribute('stroke', '#ff6b6b');
+  arc.setAttribute('stroke-width', '2');
+  arc.setAttribute('fill', 'none');
+  group.appendChild(arc);
+
+  // Angle text
+  const text = document.createElementNS(SVG_NS, 'text');
+  text.setAttribute('x', cx - 5);
+  text.setAttribute('y', cy + 5);
+  text.setAttribute('font-size', '12');
+  text.setAttribute('font-weight', 'bold');
+  text.setAttribute('fill', '#c0392b');
+  text.textContent = angle + '°';
+  group.appendChild(text);
+
+  // Label above
+  const label = document.createElementNS(SVG_NS, 'text');
+  label.setAttribute('x', cx);
+  label.setAttribute('y', cy - 20);
+  label.setAttribute('font-size', '9');
+  label.setAttribute('text-anchor', 'middle');
+  label.setAttribute('font-weight', 'bold');
+  label.setAttribute('fill', '#1a2332');
+  label.textContent = 'มุมเอียง';
+  group.appendChild(label);
+}
+
+function drawDcCables() {
+  const group = document.getElementById('dcCables');
+  group.innerHTML = '';
+  const combinerX = 470, combinerY = 320;
+
+  state.panelPositions.forEach((pos) => {
+    const path = document.createElementNS(SVG_NS, 'path');
+    const midY = (pos.y + combinerY) / 2 + 20;
+    const d = `M ${pos.x} ${pos.y} Q ${pos.x} ${midY}, ${(pos.x + combinerX) / 2} ${midY} T ${combinerX} ${combinerY}`;
+    path.setAttribute('d', d);
+    path.setAttribute('stroke', '#ff6b6b');
+    path.setAttribute('stroke-width', '1.5');
+    path.setAttribute('fill', 'none');
+    path.setAttribute('opacity', '0.6');
+    group.appendChild(path);
+  });
+}
+
+function animateLightRays() {
+  const group = document.getElementById('lightRays');
+  group.innerHTML = '';
+  const psh = state.month === 'year' ? yearlyAvgPSH : monthlyPSH[state.month];
+  const intensity = psh / 6.0;
+  if (intensity < 0.1) return;
+
+  const sunX = 120, sunY = 100;
+
+  state.panelPositions.forEach((pos, i) => {
+    if (i % 2 !== 0 && intensity < 0.6) return;
+
+    const ray = document.createElementNS(SVG_NS, 'circle');
+    ray.setAttribute('r', '3');
+    ray.setAttribute('fill', '#FFD700');
+    ray.setAttribute('opacity', '0');
+
+    const am = document.createElementNS(SVG_NS, 'animateMotion');
+    am.setAttribute('dur', `${2 + Math.random()}s`);
+    am.setAttribute('repeatCount', 'indefinite');
+    am.setAttribute('begin', `${i * 0.2}s`);
+    am.setAttribute('path', `M ${sunX} ${sunY} L ${pos.x} ${pos.y - 45}`);
+
+    const ao = document.createElementNS(SVG_NS, 'animate');
+    ao.setAttribute('attributeName', 'opacity');
+    ao.setAttribute('values', '0;1;1;0');
+    ao.setAttribute('dur', `${2 + Math.random()}s`);
+    ao.setAttribute('repeatCount', 'indefinite');
+    ao.setAttribute('begin', `${i * 0.2}s`);
+
+    ray.appendChild(am);
+    ray.appendChild(ao);
+    group.appendChild(ray);
+  });
+}
+
+function animateCurrent() {
+  const group = document.getElementById('currentParticles');
+  group.innerHTML = '';
+  const stats = computeStats();
+  const actualPower = stats.actualPowerW;
+  if (actualPower < 50) return;
+
+  const speed = Math.max(0.6, 3 - actualPower / 5000);
+  const particleCount = Math.min(8, Math.floor(actualPower / 500) + 2);
+
+  state.panelPositions.forEach((pos, i) => {
+    for (let p = 0; p < 2; p++) {
+      const particle = document.createElementNS(SVG_NS, 'circle');
+      particle.setAttribute('r', '3');
+      particle.setAttribute('fill', '#ff3333');
+      particle.setAttribute('opacity', '0.9');
+      const combinerX = 470, combinerY = 320;
+      const midY = (pos.y + combinerY) / 2 + 20;
+      const path = `M ${pos.x} ${pos.y} Q ${pos.x} ${midY}, ${(pos.x + combinerX) / 2} ${midY} T ${combinerX} ${combinerY}`;
+      const am = document.createElementNS(SVG_NS, 'animateMotion');
+      am.setAttribute('dur', `${speed}s`);
+      am.setAttribute('repeatCount', 'indefinite');
+      am.setAttribute('begin', `${(i * 0.1 + p * (speed/2))}s`);
+      am.setAttribute('path', path);
+      particle.appendChild(am);
+      group.appendChild(particle);
+    }
+  });
+
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElementNS(SVG_NS, 'circle');
+    particle.setAttribute('r', '4');
+    particle.setAttribute('fill', '#ff3333');
+    const am = document.createElementNS(SVG_NS, 'animateMotion');
+    am.setAttribute('dur', `${speed}s`);
+    am.setAttribute('repeatCount', 'indefinite');
+    am.setAttribute('begin', `${i * (speed / particleCount)}s`);
+    am.setAttribute('path', 'M 510 370 L 600 370');
+    particle.appendChild(am);
+    group.appendChild(particle);
+  }
+
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElementNS(SVG_NS, 'circle');
+    particle.setAttribute('r', '4');
+    particle.setAttribute('fill', '#16a085');
+    const am = document.createElementNS(SVG_NS, 'animateMotion');
+    am.setAttribute('dur', `${speed}s`);
+    am.setAttribute('repeatCount', 'indefinite');
+    am.setAttribute('begin', `${i * (speed / particleCount)}s`);
+    am.setAttribute('path', 'M 700 370 L 780 370');
+    particle.appendChild(am);
+    group.appendChild(particle);
+  }
+
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElementNS(SVG_NS, 'circle');
+    particle.setAttribute('r', '4');
+    particle.setAttribute('fill', '#16a085');
+    const am = document.createElementNS(SVG_NS, 'animateMotion');
+    am.setAttribute('dur', `${speed * 1.5}s`);
+    am.setAttribute('repeatCount', 'indefinite');
+    am.setAttribute('begin', `${i * (speed / particleCount)}s`);
+    am.setAttribute('path', 'M 860 370 L 900 370 L 900 490 L 780 490');
+    particle.appendChild(am);
+    group.appendChild(particle);
+  }
+}
+
+function computeStats() {
+  const psh = state.month === 'year' ? yearlyAvgPSH : monthlyPSH[state.month];
+  const tiltEff = tiltEfficiency(state.tiltAngle);
+  const degradeEff = degradationFactor(state.systemAge);
+  const systemEff = 0.85;
+  const installedW = state.panelWatt * state.panelCount;
+  const inverterMaxW = state.inverterSize * 1000;
+
+  const peakPowerW = installedW * tiltEff * degradeEff * systemEff;
+  const actualPowerW = Math.min(peakPowerW, inverterMaxW);
+
+  const dailyKWh = (installedW / 1000) * psh * tiltEff * degradeEff * systemEff;
+  const dailyKWhCapped = Math.min(dailyKWh, (inverterMaxW / 1000) * psh);
+
+  let yearlyKWhAccurate = 0;
+  for (let m = 1; m <= 12; m++) {
+    const mPsh = monthlyPSH[m];
+    const mDaily = (installedW / 1000) * mPsh * tiltEff * degradeEff * systemEff;
+    const mDailyCapped = Math.min(mDaily, (inverterMaxW / 1000) * mPsh);
+    yearlyKWhAccurate += mDailyCapped * 30;
+  }
+
+  return {
+    psh, tiltEff, degradeEff, installedW,
+    actualPowerW: Math.round(actualPowerW),
+    dailyKWh: dailyKWhCapped,
+    yearlyKWh: yearlyKWhAccurate,
+    monthlySavingTHB: Math.round(dailyKWhCapped * 30 * ELECTRICITY_RATE),
+    yearlySavingTHB: Math.round(yearlyKWhAccurate * ELECTRICITY_RATE)
+  };
+}
+
+function updateStats() {
+  const s = computeStats();
+  document.getElementById('theoreticalPower').textContent = s.installedW.toLocaleString();
+  document.getElementById('actualPower').textContent = s.actualPowerW.toLocaleString();
+  document.getElementById('totalPower').textContent = s.actualPowerW.toLocaleString();
+  document.getElementById('dailyProduction').textContent = s.dailyKWh.toFixed(1);
+  document.getElementById('monthlySaving').textContent = s.monthlySavingTHB.toLocaleString();
+  document.getElementById('yearlyProduction').textContent = Math.round(s.yearlyKWh).toLocaleString();
+  document.getElementById('yearlySaving').textContent = s.yearlySavingTHB.toLocaleString();
+  document.getElementById('inverterSizeText').textContent = state.inverterSize + ' kW';
+  document.getElementById('pshValue').textContent = s.psh.toFixed(1);
+
+  const tiltPct = Math.round(s.tiltEff * 100);
+  document.getElementById('tiltEffPct').textContent = tiltPct;
+  document.getElementById('tiltEfficiencyBar').style.width = tiltPct + '%';
+  document.getElementById('tiltEfficiencyText').textContent = tiltPct + '%';
+
+  const degPct = Math.round(s.degradeEff * 100);
+  document.getElementById('degradeEffPct').textContent = degPct;
+  document.getElementById('degradationValue').textContent = (100 - degPct).toFixed(1);
+
+  const totalEff = Math.round(s.tiltEff * s.degradeEff * 100);
+  document.getElementById('totalEfficiency').textContent = totalEff;
+
+  const warning = document.getElementById('warning');
+  const inverterMaxW = state.inverterSize * 1000;
+  if (s.installedW > inverterMaxW * 1.3) {
+    warning.textContent = 'แผงเกิน Inverter มาก!';
+    warning.style.color = '#ff6b6b';
+  } else if (s.installedW > inverterMaxW) {
+    warning.textContent = 'Oversize เล็กน้อย (OK)';
+    warning.style.color = '#ffa500';
+  } else if (s.installedW < inverterMaxW * 0.5) {
+    warning.textContent = 'Inverter ใหญ่เกินไป';
+    warning.style.color = '#ffa500';
+  } else {
+    warning.textContent = '✓ ขนาดเหมาะสม';
+    warning.style.color = '#0f0';
+  }
+
+  document.getElementById('batteryGroup').style.opacity = state.batteryEnabled ? '1' : '0.3';
+  document.getElementById('sunGroup').style.opacity = Math.max(0.3, s.psh / 6.5);
+}
+
+function drawMonthChart() {
+  const chart = document.getElementById('monthChart');
+  chart.innerHTML = '';
+  const installedW = state.panelWatt * state.panelCount;
+  const inverterMaxW = state.inverterSize * 1000;
+  const tiltEff = tiltEfficiency(state.tiltAngle);
+  const degradeEff = degradationFactor(state.systemAge);
+
+  const monthlyData = [];
+  for (let m = 1; m <= 12; m++) {
+    const psh = monthlyPSH[m];
+    const daily = (installedW / 1000) * psh * tiltEff * degradeEff * 0.85;
+    const dailyCapped = Math.min(daily, (inverterMaxW / 1000) * psh);
+    monthlyData.push({ month: m, kWh: dailyCapped * 30 });
+  }
+
+  const maxKWh = Math.max(...monthlyData.map(d => d.kWh));
+  const chartW = 800, chartH = 200;
+  const padL = 50, padR = 20, padT = 20, padB = 40;
+  const innerW = chartW - padL - padR;
+  const innerH = chartH - padT - padB;
+
+  for (let i = 0; i <= 4; i++) {
+    const y = padT + (innerH * i / 4);
+    const val = maxKWh - (maxKWh * i / 4);
+    const line = document.createElementNS(SVG_NS, 'line');
+    line.setAttribute('x1', padL);
+    line.setAttribute('y1', y);
+    line.setAttribute('x2', chartW - padR);
+    line.setAttribute('y2', y);
+    line.setAttribute('stroke', 'rgba(255,255,255,0.1)');
+    chart.appendChild(line);
+
+    const text = document.createElementNS(SVG_NS, 'text');
+    text.setAttribute('x', padL - 5);
+    text.setAttribute('y', y + 4);
+    text.setAttribute('text-anchor', 'end');
+    text.setAttribute('font-size', '10');
+    text.setAttribute('fill', '#a0b0c0');
+    text.textContent = Math.round(val);
+    chart.appendChild(text);
+  }
+
+  const barW = innerW / 12 * 0.7;
+  monthlyData.forEach((d, i) => {
+    const x = padL + (innerW * i / 12) + (innerW / 12 - barW) / 2;
+    const h = (d.kWh / maxKWh) * innerH;
+    const y = padT + innerH - h;
+    const isActive = (state.month === d.month) || (state.month === 'year');
+
+    const bar = document.createElementNS(SVG_NS, 'rect');
+    bar.setAttribute('x', x);
+    bar.setAttribute('y', y);
+    bar.setAttribute('width', barW);
+    bar.setAttribute('height', h);
+    bar.setAttribute('fill', isActive ? '#ffd700' : '#5a6a7a');
+    bar.setAttribute('rx', '3');
+    chart.appendChild(bar);
+
+    const valText = document.createElementNS(SVG_NS, 'text');
+    valText.setAttribute('x', x + barW / 2);
+    valText.setAttribute('y', y - 3);
+    valText.setAttribute('text-anchor', 'middle');
+    valText.setAttribute('font-size', '9');
+    valText.setAttribute('fill', isActive ? '#ffd700' : '#a0b0c0');
+    valText.setAttribute('font-weight', 'bold');
+    valText.textContent = Math.round(d.kWh);
+    chart.appendChild(valText);
+
+    const monthText = document.createElementNS(SVG_NS, 'text');
+    monthText.setAttribute('x', x + barW / 2);
+    monthText.setAttribute('y', chartH - padB + 15);
+    monthText.setAttribute('text-anchor', 'middle');
+    monthText.setAttribute('font-size', '10');
+    monthText.setAttribute('fill', isActive ? '#ffd700' : '#a0b0c0');
+    monthText.textContent = monthNames[i];
+    chart.appendChild(monthText);
+  });
+}
+
+function drawDegradeChart() {
+  const chart = document.getElementById('degradeChart');
+  chart.innerHTML = '';
+
+  const defs = document.createElementNS(SVG_NS, 'defs');
+  defs.innerHTML = `<linearGradient id="degradeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="#ff8c00" stop-opacity="0.8"/>
+    <stop offset="100%" stop-color="#ff8c00" stop-opacity="0"/>
+  </linearGradient>`;
+  chart.appendChild(defs);
+
+  const installedW = state.panelWatt * state.panelCount;
+  const inverterMaxW = state.inverterSize * 1000;
+  const tiltEff = tiltEfficiency(state.tiltAngle);
+
+  const data = [];
+  for (let y = 0; y <= 30; y++) {
+    const deg = degradationFactor(y);
+    let yearlyKWh = 0;
+    for (let m = 1; m <= 12; m++) {
+      const psh = monthlyPSH[m];
+      const daily = (installedW / 1000) * psh * tiltEff * deg * 0.85;
+      const dailyCapped = Math.min(daily, (inverterMaxW / 1000) * psh);
+      yearlyKWh += dailyCapped * 30;
+    }
+    data.push({ year: y, kWh: yearlyKWh, eff: deg * 100 });
+  }
+
+  const chartW = 800, chartH = 180;
+  const padL = 50, padR = 50, padT = 20, padB = 35;
+  const innerW = chartW - padL - padR;
+  const innerH = chartH - padT - padB;
+
+  for (let i = 0; i <= 4; i++) {
+    const y = padT + (innerH * i / 4);
+    const line = document.createElementNS(SVG_NS, 'line');
+    line.setAttribute('x1', padL);
+    line.setAttribute('y1', y);
+    line.setAttribute('x2', chartW - padR);
+    line.setAttribute('y2', y);
+    line.setAttribute('stroke', 'rgba(255,255,255,0.1)');
+    chart.appendChild(line);
+
+    const pct = 100 - (i * 25);
+    const text = document.createElementNS(SVG_NS, 'text');
+    text.setAttribute('x', padL - 5);
+    text.setAttribute('y', y + 4);
+    text.setAttribute('text-anchor', 'end');
+    text.setAttribute('font-size', '10');
+    text.setAttribute('fill', '#a0b0c0');
+    text.textContent = pct + '%';
+    chart.appendChild(text);
+  }
+
+  let pathD = `M ${padL} ${padT + innerH}`;
+  data.forEach((d, i) => {
+    const x = padL + (innerW * i / 30);
+    const y = padT + innerH - (d.eff / 100) * innerH;
+    pathD += ` L ${x} ${y}`;
+  });
+  pathD += ` L ${chartW - padR} ${padT + innerH} Z`;
+
+  const area = document.createElementNS(SVG_NS, 'path');
+  area.setAttribute('d', pathD);
+  area.setAttribute('fill', 'url(#degradeGradient)');
+  area.setAttribute('opacity', '0.4');
+  chart.appendChild(area);
+
+  let lineD = '';
+  data.forEach((d, i) => {
+    const x = padL + (innerW * i / 30);
+    const y = padT + innerH - (d.eff / 100) * innerH;
+    lineD += (i === 0 ? 'M' : 'L') + ` ${x} ${y}`;
+  });
+
+  const line = document.createElementNS(SVG_NS, 'path');
+  line.setAttribute('d', lineD);
+  line.setAttribute('stroke', '#ff8c00');
+  line.setAttribute('stroke-width', '2.5');
+  line.setAttribute('fill', 'none');
+  chart.appendChild(line);
+
+  const markerX = padL + (innerW * state.systemAge / 30);
+  const currentEff = data[state.systemAge].eff;
+  const markerY = padT + innerH - (currentEff / 100) * innerH;
+
+  const verticalLine = document.createElementNS(SVG_NS, 'line');
+  verticalLine.setAttribute('x1', markerX);
+  verticalLine.setAttribute('y1', padT);
+  verticalLine.setAttribute('x2', markerX);
+  verticalLine.setAttribute('y2', padT + innerH);
+  verticalLine.setAttribute('stroke', '#ffd700');
+  verticalLine.setAttribute('stroke-width', '2');
+  verticalLine.setAttribute('stroke-dasharray', '4,2');
+  chart.appendChild(verticalLine);
+
+  const dot = document.createElementNS(SVG_NS, 'circle');
+  dot.setAttribute('cx', markerX);
+  dot.setAttribute('cy', markerY);
+  dot.setAttribute('r', '6');
+  dot.setAttribute('fill', '#ffd700');
+  dot.setAttribute('stroke', '#fff');
+  dot.setAttribute('stroke-width', '2');
+  chart.appendChild(dot);
+
+  const labelBg = document.createElementNS(SVG_NS, 'rect');
+  labelBg.setAttribute('x', Math.max(padL, Math.min(markerX - 50, chartW - padR - 100)));
+  labelBg.setAttribute('y', markerY - 28);
+  labelBg.setAttribute('width', '100');
+  labelBg.setAttribute('height', '20');
+  labelBg.setAttribute('fill', '#ffd700');
+  labelBg.setAttribute('rx', '4');
+  chart.appendChild(labelBg);
+
+  const lt = document.createElementNS(SVG_NS, 'text');
+  lt.setAttribute('x', Math.max(padL + 50, Math.min(markerX, chartW - padR - 50)));
+  lt.setAttribute('y', markerY - 14);
+  lt.setAttribute('text-anchor', 'middle');
+  lt.setAttribute('font-size', '11');
+  lt.setAttribute('font-weight', 'bold');
+  lt.setAttribute('fill', '#1a2332');
+  lt.textContent = `ปีที่ ${state.systemAge}: ${currentEff.toFixed(1)}%`;
+  chart.appendChild(lt);
+
+  [0, 5, 10, 15, 20, 25, 30].forEach(yr => {
+    const x = padL + (innerW * yr / 30);
+    const t = document.createElementNS(SVG_NS, 'text');
+    t.setAttribute('x', x);
+    t.setAttribute('y', chartH - padB + 15);
+    t.setAttribute('text-anchor', 'middle');
+    t.setAttribute('font-size', '10');
+    t.setAttribute('fill', '#a0b0c0');
+    t.textContent = yr + ' ปี';
+    chart.appendChild(t);
+  });
+
+  const currentKWh = data[state.systemAge].kWh;
+  const rightLabel = document.createElementNS(SVG_NS, 'text');
+  rightLabel.setAttribute('x', chartW - 5);
+  rightLabel.setAttribute('y', padT + 12);
+  rightLabel.setAttribute('text-anchor', 'end');
+  rightLabel.setAttribute('font-size', '10');
+  rightLabel.setAttribute('fill', '#ffd700');
+  rightLabel.setAttribute('font-weight', 'bold');
+  rightLabel.textContent = `${Math.round(currentKWh).toLocaleString()} kWh/ปี`;
+  chart.appendChild(rightLabel);
+}
+
+function buildMonthSelector() {
+  const sel = document.getElementById('monthSelector');
+  sel.innerHTML = '';
+  for (let m = 1; m <= 12; m++) {
+    const btn = document.createElement('button');
+    btn.className = 'month-btn';
+    btn.textContent = monthNames[m-1];
+    btn.dataset.month = m;
+    btn.onclick = () => {
+      state.month = m;
+      document.querySelectorAll('.month-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const yb = document.getElementById('yearAvgBtn');
+      yb.style.background = 'linear-gradient(90deg, #4CAF50, #45a049)';
+      yb.style.color = 'white';
+      refresh();
+    };
+    sel.appendChild(btn);
+  }
+}
+
+function refresh() {
+  drawPanels();
+  drawDcCables();
+  animateLightRays();
+  animateCurrent();
+  updateStats();
+  drawMonthChart();
+  drawDegradeChart();
+}
+
+document.getElementById('tiltAngle').addEventListener('input', e => {
+  state.tiltAngle = +e.target.value;
+  document.getElementById('tiltValue').textContent = e.target.value;
+  refresh();
+});
+
+document.getElementById('systemAge').addEventListener('input', e => {
+  state.systemAge = +e.target.value;
+  document.getElementById('ageValue').textContent = e.target.value;
+  refresh();
+});
+
+document.getElementById('panelWatt').addEventListener('input', e => {
+  state.panelWatt = +e.target.value;
+  document.getElementById('panelWattValue').textContent = e.target.value;
+  refresh();
+});
+
+document.getElementById('panelCount').addEventListener('input', e => {
+  state.panelCount = +e.target.value;
+  document.getElementById('panelCountValue').textContent = e.target.value;
+  refresh();
+});
+
+document.getElementById('inverterSize').addEventListener('change', e => {
+  state.inverterSize = +e.target.value;
+  refresh();
+});
+
+document.getElementById('batteryToggle').addEventListener('click', e => {
+  state.batteryEnabled = !state.batteryEnabled;
+  e.target.textContent = state.batteryEnabled ? 'เปิดใช้งาน' : 'ปิดใช้งาน';
+  e.target.classList.toggle('off', !state.batteryEnabled);
+  refresh();
+});
+
+document.getElementById('yearAvgBtn').addEventListener('click', e => {
+  state.month = 'year';
+  document.querySelectorAll('.month-btn').forEach(b => b.classList.remove('active'));
+  e.target.style.background = 'linear-gradient(90deg,#ffd700,#ff8c00)';
+  e.target.style.color = '#1a2332';
+  refresh();
+});
+
+buildMonthSelector();
+state.month = 'year';
+const yb = document.getElementById('yearAvgBtn');
+yb.style.background = 'linear-gradient(90deg,#ffd700,#ff8c00)';
+yb.style.color = '#1a2332';
+refresh();
+</script>
+</body>
+</html>
