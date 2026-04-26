@@ -3,381 +3,548 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>สื่อการสอน: ระบบ Solar Cell ประเทศไทย</title>
+<title>สื่อการสอน: ระบบ Solar Cell ประเทศไทย v5</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Sarabun', sans-serif; }
-  body { background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); min-height: 100vh; color: #fff; padding: 15px; }
-  .container { max-width: 1500px; margin: 0 auto; }
-  h1 { text-align: center; font-size: 1.9em; margin-bottom: 5px; background: linear-gradient(90deg, #ffd700, #ff8c00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .subtitle { text-align: center; color: #a0b0c0; margin-bottom: 18px; font-size: 0.95em; }
-  .main-grid { display: grid; grid-template-columns: 320px 1fr; gap: 15px; }
-  .controls { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 16px; height: fit-content; max-height: 95vh; overflow-y: auto; }
-  .controls::-webkit-scrollbar { width: 6px; }
-  .controls::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.3); border-radius: 3px; }
-  .control-group { margin-bottom: 14px; }
-  .control-group h3 { color: #ffd700; font-size: 0.92em; margin-bottom: 7px; border-bottom: 1px solid rgba(255,215,0,0.3); padding-bottom: 3px; }
-  .control-group label { display: block; font-size: 0.8em; margin-bottom: 3px; color: #c0d0e0; }
-  .control-group input[type="range"] { width: 100%; margin-bottom: 3px; accent-color: #ffd700; }
-  .control-group select, .control-group input[type="number"] { width: 100%; padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #fff; font-size: 0.85em; }
-  .value-display { color: #ffd700; font-weight: bold; font-size: 0.85em; }
-  .toggle-btn { width: 100%; padding: 8px; border-radius: 8px; border: none; background: linear-gradient(90deg, #4CAF50, #45a049); color: white; font-weight: bold; cursor: pointer; margin-top: 4px; font-size: 0.85em; transition: all 0.3s; }
-  .toggle-btn.off { background: linear-gradient(90deg, #666, #555); }
-  .toggle-btn.dust-on { background: linear-gradient(90deg, #8b6f47, #6b5234); }
-  .toggle-btn:hover { transform: translateY(-2px); }
-  .info-panel { background: rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; margin-top: 12px; border-left: 4px solid #ffd700; }
-  .info-panel h3 { color: #ffd700; margin-bottom: 8px; font-size: 1em; }
-  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px; }
-  .stat-box { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; text-align: center; }
-  .stat-box .label { font-size: 0.72em; color: #a0b0c0; }
-  .stat-box .value { font-size: 1.15em; font-weight: bold; color: #ffd700; margin-top: 3px; }
-  .stat-box.highlight { background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,0,0.15)); border: 1px solid rgba(255,215,0,0.4); }
-  .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; justify-content: center; font-size: 0.8em; }
-  .legend-item { display: flex; align-items: center; gap: 5px; }
-  .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
-  .month-selector { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; margin-top: 5px; }
-  .month-btn { padding: 5px 2px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 4px; cursor: pointer; font-size: 0.7em; transition: all 0.2s; position: relative; }
-  .month-btn.active { background: linear-gradient(90deg, #ffd700, #ff8c00); color: #1a2332; font-weight: bold; border-color: #ffd700; }
-  .month-btn.rainy::after { content: '🌧️'; position: absolute; top: -2px; right: -2px; font-size: 0.65em; }
-  .month-btn:hover { background: rgba(255,215,0,0.2); }
-  .efficiency-bar { height: 18px; background: rgba(0,0,0,0.4); border-radius: 10px; overflow: hidden; margin-top: 5px; position: relative; }
-  .efficiency-fill { height: 100%; background: linear-gradient(90deg, #4CAF50, #ffd700); transition: width 0.3s; }
-  .efficiency-text { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; font-size: 0.72em; font-weight: bold; color: #1a2332; }
-  .input-group { display: flex; gap: 5px; align-items: center; }
-  .input-group input[type="number"] { flex: 1; }
-  .input-group span { font-size: 0.82em; color: #ffd700; font-weight: bold; min-width: 40px; }
-  .preset-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 5px; }
-  .preset-btn { padding: 5px 4px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 5px; cursor: pointer; font-size: 0.7em; line-height: 1.3; transition: all 0.2s; }
-  .preset-btn:hover { background: rgba(255,215,0,0.2); border-color: #ffd700; }
-  .preset-btn.active { background: linear-gradient(90deg, #ffd700, #ff8c00); color: #1a2332; font-weight: bold; }
-  .roi-banner { background: linear-gradient(135deg, #2ecc71, #27ae60); border-radius: 12px; padding: 15px; text-align: center; margin-top: 12px; box-shadow: 0 4px 15px rgba(46,204,113,0.3); }
-  .roi-banner.warning { background: linear-gradient(135deg, #e67e22, #d35400); }
-  .roi-banner.bad { background: linear-gradient(135deg, #c0392b, #922b21); }
-  .roi-banner h2 { font-size: 1.05em; margin-bottom: 5px; opacity: 0.95; }
-  .roi-banner .roi-value { font-size: 2.2em; font-weight: bold; }
-  .roi-banner .roi-sub { font-size: 0.85em; opacity: 0.9; margin-top: 5px; }
-  .profit-banner { background: linear-gradient(135deg, #f39c12, #e67e22); border-radius: 12px; padding: 18px; text-align: center; margin-top: 12px; box-shadow: 0 4px 15px rgba(243,156,18,0.3); }
-  .profit-banner h2 { font-size: 1em; opacity: 0.95; margin-bottom: 8px; }
-  .profit-banner .big-number { font-size: 2.5em; font-weight: bold; line-height: 1; }
-  .profit-banner .currency { font-size: 0.6em; opacity: 0.8; }
-  .profit-banner .breakdown { font-size: 0.85em; margin-top: 10px; opacity: 0.95; line-height: 1.6; background: rgba(0,0,0,0.15); padding: 8px; border-radius: 8px; }
-  .compass-control { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 5px; }
-  .compass-btn { padding: 8px 2px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 6px; cursor: pointer; font-size: 0.72em; line-height: 1.3; transition: all 0.2s; text-align: center; }
-  .compass-btn:hover { background: rgba(255,215,0,0.2); }
-  .compass-btn.active { background: linear-gradient(90deg, #ffd700, #ff8c00); color: #1a2332; font-weight: bold; border-color: #ffd700; }
-  .compass-btn.optimal { border-color: #2ecc71; box-shadow: 0 0 8px rgba(46,204,113,0.5); }
-  @media (max-width: 900px) {
-    .main-grid { grid-template-columns: 1fr; }
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Sarabun', sans-serif; }
+body { background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); min-height: 100vh; color: #fff; padding: 15px; }
+.container { max-width: 1500px; margin: 0 auto; }
+h1 { text-align: center; font-size: 1.9em; margin-bottom: 5px; background: linear-gradient(90deg, #ffd700, #ff8c00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.subtitle { text-align: center; color: #a0b0c0; margin-bottom: 18px; font-size: 0.95em; }
+.main-grid { display: grid; grid-template-columns: 320px 1fr; gap: 15px; }
+.controls { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 16px; height: fit-content; max-height: 95vh; overflow-y: auto; }
+.controls::-webkit-scrollbar { width: 6px; }
+.controls::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.3); border-radius: 3px; }
+.control-group { margin-bottom: 14px; }
+.control-group h3 { color: #ffd700; font-size: 0.92em; margin-bottom: 7px; border-bottom: 1px solid rgba(255,215,0,0.3); padding-bottom: 3px; }
+.control-group label { display: block; font-size: 0.8em; margin-bottom: 3px; color: #c0d0e0; }
+.control-group input[type="range"] { width: 100%; margin-bottom: 3px; accent-color: #ffd700; }
+.control-group select, .control-group input[type="number"] { width: 100%; padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #fff; font-size: 0.85em; }
+.value-display { color: #ffd700; font-weight: bold; font-size: 0.85em; }
+.toggle-btn { width: 100%; padding: 8px; border-radius: 8px; border: none; background: linear-gradient(90deg, #4CAF50, #45a049); color: white; font-weight: bold; cursor: pointer; margin-top: 4px; font-size: 0.85em; transition: all 0.3s; }
+.toggle-btn.off { background: linear-gradient(90deg, #666, #555); }
+.toggle-btn.dust-on { background: linear-gradient(90deg, #8b6f47, #6b5234); }
+.toggle-btn.shade-on { background: linear-gradient(90deg, #2c3e50, #34495e); }
+.toggle-btn.tracker-on { background: linear-gradient(90deg, #16a085, #1abc9c); }
+.toggle-btn:hover { transform: translateY(-2px); }
+.info-panel { background: rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; margin-top: 12px; border-left: 4px solid #ffd700; }
+.info-panel h3 { color: #ffd700; margin-bottom: 8px; font-size: 1em; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px; }
+.stat-box { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; text-align: center; }
+.stat-box .label { font-size: 0.72em; color: #a0b0c0; }
+.stat-box .value { font-size: 1.1em; font-weight: bold; color: #ffd700; margin-top: 3px; }
+.stat-box.highlight { background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,0,0.15)); border: 1px solid rgba(255,215,0,0.4); }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; justify-content: center; font-size: 0.8em; }
+.legend-item { display: flex; align-items: center; gap: 5px; }
+.legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+.month-selector { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; margin-top: 5px; }
+.month-btn { padding: 5px 2px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 4px; cursor: pointer; font-size: 0.7em; transition: all 0.2s; position: relative; }
+.month-btn.active { background: linear-gradient(90deg, #ffd700, #ff8c00); color: #1a2332; font-weight: bold; border-color: #ffd700; }
+.month-btn.rainy::after { content: '🌧️'; position: absolute; top: -2px; right: -2px; font-size: 0.65em; }
+.month-btn:hover { background: rgba(255,215,0,0.2); }
+.efficiency-bar { height: 18px; background: rgba(0,0,0,0.4); border-radius: 10px; overflow: hidden; margin-top: 5px; position: relative; }
+.efficiency-fill { height: 100%; background: linear-gradient(90deg, #4CAF50, #ffd700); transition: width 0.3s; }
+.efficiency-text { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; font-size: 0.72em; font-weight: bold; color: #1a2332; }
+.input-group { display: flex; gap: 5px; align-items: center; }
+.input-group input[type="number"] { flex: 1; }
+.input-group span { font-size: 0.82em; color: #ffd700; font-weight: bold; min-width: 40px; }
+.preset-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 5px; }
+.preset-btn { padding: 5px 4px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 5px; cursor: pointer; font-size: 0.7em; line-height: 1.3; transition: all 0.2s; }
+.preset-btn:hover { background: rgba(255,215,0,0.2); border-color: #ffd700; }
+.preset-btn.active { background: linear-gradient(90deg, #ffd700, #ff8c00); color: #1a2332; font-weight: bold; }
+.roi-banner { background: linear-gradient(135deg, #2ecc71, #27ae60); border-radius: 12px; padding: 15px; text-align: center; margin-top: 12px; box-shadow: 0 4px 15px rgba(46,204,113,0.3); }
+.roi-banner.warning { background: linear-gradient(135deg, #e67e22, #d35400); }
+.roi-banner.bad { background: linear-gradient(135deg, #c0392b, #922b21); }
+.roi-banner h2 { font-size: 1.05em; margin-bottom: 5px; opacity: 0.95; }
+.roi-banner .roi-value { font-size: 2.2em; font-weight: bold; }
+.roi-banner .roi-sub { font-size: 0.85em; opacity: 0.9; margin-top: 5px; }
+.profit-banner { background: linear-gradient(135deg, #f39c12, #e67e22); border-radius: 12px; padding: 18px; text-align: center; margin-top: 12px; box-shadow: 0 4px 15px rgba(243,156,18,0.3); }
+.profit-banner h2 { font-size: 1em; opacity: 0.95; margin-bottom: 8px; }
+.profit-banner .big-number { font-size: 2.5em; font-weight: bold; line-height: 1; }
+.profit-banner .currency { font-size: 0.6em; opacity: 0.8; }
+.profit-banner .breakdown { font-size: 0.85em; margin-top: 10px; opacity: 0.95; line-height: 1.6; background: rgba(0,0,0,0.15); padding: 8px; border-radius: 8px; }
+.compass-control { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 5px; }
+.compass-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 5px; }
+.compass-fine { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+.compass-center { display: flex; align-items: center; justify-content: center; font-size: 1.5em; background: rgba(255,215,0,0.1); border-radius: 6px; }
+.compass-btn.small { padding: 6px 2px; font-size: 0.65em; line-height: 1.2; }
+.compass-btn.tiny { padding: 4px 1px; font-size: 0.62em; line-height: 1.2; }
+.compass-btn { padding: 8px 2px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 6px; cursor: pointer; font-size: 0.72em; line-height: 1.3; transition: all 0.2s; text-align: center; }
+.compass-btn:hover { background: rgba(255,215,0,0.2); }
+.compass-btn.active { background: linear-gradient(90deg, #ffd700, #ff8c00); color: #1a2332; font-weight: bold; border-color: #ffd700; }
+.compass-btn.optimal { border-color: #2ecc71; box-shadow: 0 0 8px rgba(46,204,113,0.5); }
+.factor-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 8px; padding: 8px; background: rgba(0,0,0,0.3); border-radius: 8px; font-size: 0.72em; }
+.factor-item { display: flex; justify-content: space-between; padding: 3px 5px; background: rgba(255,255,255,0.05); border-radius: 4px; }
+.factor-item .factor-val { font-weight: bold; }
+.factor-good { color: #2ecc71; }
+.factor-bad { color: #e74c3c; }
+.factor-neutral { color: #ffd700; }
+.province-info { font-size: 0.72em; color: #a0b0c0; margin-top: 5px; padding: 6px 8px; background: rgba(0,0,0,0.3); border-radius: 6px; line-height: 1.5; }
+.province-info strong { color: #ffd700; }
+.tech-info { font-size: 0.7em; color: #a0b0c0; margin-top: 5px; line-height: 1.4; }
+@media (max-width: 900px) {
+  .main-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .factor-summary { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>☀️ ระบบโซลาร์เซลล์ Interactive (ประเทศไทย)</h1>
-  <p class="subtitle">มุมเอียง · ทิศหันแผง · ฝุ่น · ค่าไฟ · จุดคืนทุน · กำไร 30 ปี</p>
+<h1>☀️ ระบบโซลาร์เซลล์ Interactive (ประเทศไทย) v5</h1>
+<p class="subtitle">จังหวัด · มุม · ทิศ · อุณหภูมิ · ฝุ่น · เงา · Tracker · ประเภทแผง · กำไร 30 ปี</p>
 
-  <div class="main-grid">
-    <div class="controls">
-      <div class="control-group">
-        <h3>📅 เดือน (ค่าเฉลี่ยแสงไทย)</h3>
-        <div class="month-selector" id="monthSelector"></div>
-        <button class="toggle-btn" id="yearAvgBtn" style="margin-top:6px;">📊 ใช้ค่าเฉลี่ยทั้งปี</button>
-        <div style="margin-top:5px; font-size:0.75em; color:#ffd700;">
-          PSH: <span id="pshValue">5.0</span> kWh/m²/วัน
-        </div>
-      </div>
+<div class="main-grid">
+<div class="controls">
 
-      <div class="control-group">
-        <h3>🧭 ทิศหันแผง (Azimuth)</h3>
-        <div class="compass-control">
-          <button class="compass-btn" data-azimuth="0">⬆️<br>เหนือ<br>(N)</button>
-          <button class="compass-btn" data-azimuth="90">➡️<br>ตะวันออก<br>(E)</button>
-          <button class="compass-btn optimal active" data-azimuth="180">⬇️<br>ใต้<br>(S) ⭐</button>
-          <button class="compass-btn" data-azimuth="270">⬅️<br>ตะวันตก<br>(W)</button>
-        </div>
-        <div class="compass-control" style="margin-top:4px;">
-          <button class="compass-btn" data-azimuth="135">↘️<br>SE</button>
-          <button class="compass-btn" data-azimuth="225">↙️<br>SW</button>
-          <button class="compass-btn" data-azimuth="45">↗️<br>NE</button>
-          <button class="compass-btn" data-azimuth="315">↖️<br>NW</button>
-        </div>
-        <div style="font-size:0.72em; color:#a0b0c0; margin-top:5px;">
-          ⭐ ทิศใต้ดีที่สุดในไทย (ซีกโลกเหนือ)
-        </div>
-        <div class="efficiency-bar">
-          <div class="efficiency-fill" id="azimuthEfficiencyBar" style="width: 100%;"></div>
-          <div class="efficiency-text" id="azimuthEfficiencyText">100%</div>
-        </div>
-      </div>
+<div class="control-group">
+<h3>📍 จังหวัด (Province)</h3>
+<select id="provinceSelect"></select>
+<div class="province-info" id="provinceInfo">
+PM2.5: <strong>23 µg/m³</strong> · อุณหภูมิเฉลี่ย: <strong>28°C</strong>
+</div>
+</div>
 
-      <div class="control-group">
-        <h3>💨 ฝุ่นบนแผง (Soiling)</h3>
-        <button class="toggle-btn dust-on" id="dustToggle">🌫️ มีฝุ่น</button>
-        <div style="font-size:0.72em; color:#a0b0c0; margin-top:5px; line-height:1.4;">
-          🌧️ <strong style="color:#4ecdc4;">หน้าฝน:</strong> ฝนล้างฝุ่น -3%<br>
-          ☀️ <strong style="color:#ffd700;">หน้าแล้ง:</strong> ฝุ่นสะสม -10%
-        </div>
-      </div>
+<div class="control-group">
+<h3>📅 เดือน</h3>
+<div class="month-selector" id="monthSelector"></div>
+<button class="toggle-btn" id="yearAvgBtn" style="margin-top:6px;">📊 ค่าเฉลี่ยทั้งปี</button>
+<div style="margin-top:5px; font-size:0.75em; color:#ffd700;">PSH: <span id="pshValue">5.0</span> kWh/m²/วัน</div>
+</div>
 
-      <div class="control-group">
-        <h3>📐 มุมเอียงแผง</h3>
-        <input type="range" id="tiltAngle" min="0" max="60" value="15">
-        <div class="value-display"><span id="tiltValue">15</span>° (แนะนำ 14-18°)</div>
-        <div class="efficiency-bar">
-          <div class="efficiency-fill" id="tiltEfficiencyBar" style="width: 100%;"></div>
-          <div class="efficiency-text" id="tiltEfficiencyText">100%</div>
-        </div>
-      </div>
+<div class="control-group">
+<h3>🌟 ประเภทแผง (Technology)</h3>
+<select id="panelType">
+  <option value="poly">Poly-Si (มาตรฐาน) -0.45%/°C</option>
+  <option value="mono" selected>Mono-Si (พรีเมียม) -0.38%/°C</option>
+  <option value="topcon">TOPCon (ใหม่) -0.30%/°C</option>
+  <option value="hjt">HJT (ดีที่สุด) -0.26%/°C</option>
+  <option value="bifacial">Bifacial 2 หน้า -0.35%/°C +10%</option>
+</select>
+<div class="tech-info" id="panelTechInfo">📌 Mono-Si: ทนความร้อนดี ราคากลาง</div>
+</div>
 
-      <div class="control-group">
-        <h3>📆 อายุระบบ (สูงสุด 30 ปี)</h3>
-        <input type="range" id="systemAge" min="0" max="30" value="0">
-        <div class="value-display">ปีที่ <span id="ageValue">0</span> · ลด <span id="degradationValue">0</span>%</div>
-      </div>
+<div class="control-group">
+<h3>🔄 Solar Tracker</h3>
+<button class="toggle-btn tracker-on" id="trackerToggle">📍 แบบติดตั้งคงที่ (Fixed)</button>
+<div class="tech-info">Single-axis: +25% · Dual-axis: +35%</div>
+</div>
 
-      <div class="control-group">
-        <h3>💰 ค่าไฟฟ้า</h3>
-        <div class="input-group">
-          <input type="number" id="electricityRate" min="1" max="15" step="0.01" value="4.50">
-          <span>฿/kWh</span>
-        </div>
-        <div class="preset-btns">
-          <button class="preset-btn" data-rate="3.50">บ้านเล็ก<br>3.50฿</button>
-          <button class="preset-btn active" data-rate="4.50">ทั่วไป<br>4.50฿</button>
-          <button class="preset-btn" data-rate="5.00">ขึ้นแล้ว<br>5.00฿</button>
-        </div>
-        <div class="preset-btns" style="margin-top:4px;">
-          <button class="preset-btn" data-rate="4.18">TOU Off<br>4.18฿</button>
-          <button class="preset-btn" data-rate="5.80">TOU On<br>5.80฿</button>
-          <button class="preset-btn" data-rate="6.50">Peak<br>6.50฿</button>
-        </div>
-      </div>
+<div class="control-group">
+<h3>🧭 ทิศหันแผง (16 ทิศ + ปรับเอียงได้)</h3>
+<div class="compass-grid">
+  <button class="compass-btn small" data-azimuth="315">↖️<br>NW<br>315°</button>
+  <button class="compass-btn small" data-azimuth="0">⬆️<br>N<br>0°</button>
+  <button class="compass-btn small" data-azimuth="45">↗️<br>NE<br>45°</button>
+  <button class="compass-btn small" data-azimuth="270">⬅️<br>W<br>270°</button>
+  <div class="compass-center">🧭</div>
+  <button class="compass-btn small" data-azimuth="90">➡️<br>E<br>90°</button>
+  <button class="compass-btn small" data-azimuth="225">↙️<br>SW<br>225°</button>
+  <button class="compass-btn optimal active small" data-azimuth="180">⬇️<br>S ⭐<br>180°</button>
+  <button class="compass-btn small" data-azimuth="135">↘️<br>SE<br>135°</button>
+</div>
+<div class="compass-fine" style="margin-top:6px;">
+  <button class="compass-btn tiny" data-azimuth="157">SSE<br>157°</button>
+  <button class="compass-btn tiny" data-azimuth="202">SSW<br>202°</button>
+  <button class="compass-btn tiny" data-azimuth="112">ESE<br>112°</button>
+  <button class="compass-btn tiny" data-azimuth="247">WSW<br>247°</button>
+  <button class="compass-btn tiny" data-azimuth="67">ENE<br>67°</button>
+  <button class="compass-btn tiny" data-azimuth="292">WNW<br>292°</button>
+  <button class="compass-btn tiny" data-azimuth="22">NNE<br>22°</button>
+  <button class="compass-btn tiny" data-azimuth="337">NNW<br>337°</button>
+</div>
+<label style="margin-top:8px;">🎚️ ปรับละเอียด: <span class="value-display" id="azimuthSliderValue">180</span>°</label>
+<input type="range" id="azimuthSlider" min="0" max="359" step="1" value="180">
+<div class="efficiency-bar">
+  <div class="efficiency-fill" id="azimuthEfficiencyBar" style="width: 100%;"></div>
+  <div class="efficiency-text" id="azimuthEfficiencyText">100%</div>
+</div>
+<div style="font-size:0.7em; color:#a0b0c0; margin-top:4px;">
+  💡 ลากเพื่อปรับมุมแบบเฉียงทุกองศา (0-359°)
+</div>
+</div>
 
-      <div class="control-group">
-        <h3>💵 ราคาซื้อระบบ (Investment)</h3>
-        <div class="input-group">
-          <input type="number" id="systemCost" min="0" step="1000" value="180000">
-          <span>บาท</span>
-        </div>
-        <div class="preset-btns">
-          <button class="preset-btn" data-cost="80000">3kW<br>~80,000</button>
-          <button class="preset-btn active" data-cost="180000">5kW<br>~180,000</button>
-          <button class="preset-btn" data-cost="350000">10kW<br>~350,000</button>
-        </div>
-      </div>
+<div class="control-group">
+<h3>📐 มุมเอียงแผง</h3>
+<input type="range" id="tiltAngle" min="0" max="60" value="15">
+<div class="value-display"><span id="tiltValue">15</span>° (แนะนำ 14-18°)</div>
+<div class="efficiency-bar">
+  <div class="efficiency-fill" id="tiltEfficiencyBar" style="width: 100%;"></div>
+  <div class="efficiency-text" id="tiltEfficiencyText">100%</div>
+</div>
+</div>
 
-      <div class="control-group">
-        <h3>🔲 แผงโซลาร์</h3>
-        <label>กำลัง/แผง: <span class="value-display" id="panelWattValue">450</span> W</label>
-        <input type="range" id="panelWatt" min="100" max="700" step="50" value="450">
-        <label style="margin-top:6px;">จำนวน: <span class="value-display" id="panelCountValue">8</span> แผง</label>
-        <input type="range" id="panelCount" min="2" max="20" value="8">
-      </div>
+<div class="control-group">
+<h3>🌳 เงาบดบัง (Shading)</h3>
+<select id="shadeLevel">
+  <option value="0" selected>0% - ไม่มีเงา (โล่ง)</option>
+  <option value="5">5% - เงาเล็กน้อย</option>
+  <option value="15">15% - เงาบางส่วน</option>
+  <option value="30">30% - เงามาก (ต้นไม้/อาคาร)</option>
+  <option value="50">50% - เงาหนัก (เสี่ยงมาก)</option>
+</select>
+<div class="tech-info">⚠️ เงาแม้จุดเดียวอาจกระทบทั้งแผง</div>
+</div>
 
-      <div class="control-group">
-        <h3>⚡ อินเวอร์เตอร์</h3>
-        <select id="inverterSize">
-          <option value="3">3 kW (บ้านเล็ก)</option>
-          <option value="5" selected>5 kW (บ้านทั่วไป)</option>
-          <option value="10">10 kW (บ้านใหญ่)</option>
-          <option value="15">15 kW (เชิงพาณิชย์)</option>
-          <option value="20">20 kW (โรงงาน)</option>
-        </select>
-      </div>
+<div class="control-group">
+<h3>💨 ฝุ่นบนแผง + PM2.5</h3>
+<button class="toggle-btn dust-on" id="dustToggle">🌫️ มีฝุ่น</button>
+<div class="tech-info">PM2.5 จากจังหวัดจะถูกคำนวณอัตโนมัติ</div>
+</div>
 
-      <div class="control-group">
-        <h3>🔋 แบตเตอรี่</h3>
-        <button class="toggle-btn" id="batteryToggle">เปิดใช้งาน</button>
-      </div>
+<div class="control-group">
+<h3>📆 อายุระบบ (สูงสุด 30 ปี)</h3>
+<input type="range" id="systemAge" min="0" max="30" value="0">
+<div class="value-display">ปีที่ <span id="ageValue">0</span> · ลด <span id="degradationValue">0</span>%</div>
+</div>
 
-      <div class="control-group">
-        <h3>📊 สถานะ</h3>
-        <div style="background: rgba(0,0,0,0.3); padding: 8px; border-radius: 8px; font-size: 0.78em; line-height:1.6;">
-          <div>🔆 ผลิต: <span class="value-display" id="totalPower">0</span> W</div>
-          <div>📈 ประสิทธิภาพ: <span class="value-display" id="totalEfficiency">100</span>%</div>
-          <div>⚠️ <span id="warning"></span></div>
-        </div>
-      </div>
-    </div>
+<div class="control-group">
+<h3>💰 ค่าไฟฟ้า</h3>
+<div class="input-group">
+  <input type="number" id="electricityRate" min="1" max="15" step="0.01" value="4.50">
+  <span>฿/kWh</span>
+</div>
+<div class="preset-btns">
+  <button class="preset-btn" data-rate="3.50">บ้านเล็ก<br>3.50฿</button>
+  <button class="preset-btn active" data-rate="4.50">ทั่วไป<br>4.50฿</button>
+  <button class="preset-btn" data-rate="5.00">ขึ้นแล้ว<br>5.00฿</button>
+</div>
+<div class="preset-btns" style="margin-top:4px;">
+  <button class="preset-btn" data-rate="4.18">TOU Off<br>4.18฿</button>
+  <button class="preset-btn" data-rate="5.80">TOU On<br>5.80฿</button>
+  <button class="preset-btn" data-rate="6.50">Peak<br>6.50฿</button>
+</div>
+</div>
 
-    <div>
-      <svg id="solarSvg" viewBox="0 0 1000 600" style="width: 100%; height: 580px; background: linear-gradient(180deg, #87CEEB 0%, #B0E0E6 35%, #DEB887 70%, #6B8E23 100%); border-radius: 15px;">
-        <defs>
-          <linearGradient id="shineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#fff" stop-opacity="0.8"/>
-            <stop offset="50%" stop-color="#fff" stop-opacity="0.2"/>
-            <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
-          </linearGradient>
-        </defs>
+<div class="control-group">
+<h3>💵 ราคาซื้อระบบ</h3>
+<div class="input-group">
+  <input type="number" id="systemCost" min="0" step="1000" value="180000">
+  <span>บาท</span>
+</div>
+<div class="preset-btns">
+  <button class="preset-btn" data-cost="80000">3kW<br>~80,000</button>
+  <button class="preset-btn active" data-cost="180000">5kW<br>~180,000</button>
+  <button class="preset-btn" data-cost="350000">10kW<br>~350,000</button>
+</div>
+</div>
 
-        <g id="rainGroup"></g>
+<div class="control-group">
+<h3>🔲 แผงโซลาร์</h3>
+<label>กำลัง/แผง: <span class="value-display" id="panelWattValue">450</span> W</label>
+<input type="range" id="panelWatt" min="100" max="700" step="50" value="450">
+<label style="margin-top:6px;">จำนวน: <span class="value-display" id="panelCountValue">8</span> แผง</label>
+<input type="range" id="panelCount" min="2" max="20" value="8">
+</div>
 
-        <g id="sunGroup">
-          <circle cx="120" cy="100" r="45" fill="#FFD700">
-            <animate attributeName="r" values="45;48;45" dur="2s" repeatCount="indefinite"/>
-          </circle>
-          <circle cx="120" cy="100" r="55" fill="none" stroke="#FFA500" stroke-width="2" opacity="0.6">
-            <animate attributeName="r" values="55;65;55" dur="2s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2s" repeatCount="indefinite"/>
-          </circle>
-          <text x="120" y="106" text-anchor="middle" font-size="20" font-weight="bold" fill="#FF6347">SUN</text>
-        </g>
+<div class="control-group">
+<h3>⚡ อินเวอร์เตอร์</h3>
+<select id="inverterSize">
+  <option value="3">3 kW</option>
+  <option value="5" selected>5 kW</option>
+  <option value="10">10 kW</option>
+  <option value="15">15 kW</option>
+  <option value="20">20 kW</option>
+</select>
+</div>
 
-        <g id="cloudGroup" style="display:none;">
-          <ellipse cx="100" cy="95" rx="35" ry="18" fill="#7a7a8a" opacity="0.85"/>
-          <ellipse cx="135" cy="88" rx="38" ry="22" fill="#8a8a9a" opacity="0.9"/>
-          <ellipse cx="165" cy="98" rx="30" ry="17" fill="#7a7a8a" opacity="0.85"/>
-        </g>
+<div class="control-group">
+<h3>🔋 แบตเตอรี่</h3>
+<button class="toggle-btn" id="batteryToggle">เปิดใช้งาน</button>
+</div>
 
-        <g id="lightRays"></g>
-        <g id="solarPanels"></g>
-        <g id="tiltIndicator"></g>
-        <g id="compassIndicator"></g>
-        <g id="dcCables"></g>
+<div class="control-group">
+<h3>📊 ปัจจัยทุกตัว (Real-time)</h3>
+<div class="factor-summary" id="factorSummary"></div>
+</div>
 
-        <g id="combinerBox">
-          <rect x="430" y="320" width="80" height="100" fill="#2c3e50" stroke="#ffd700" stroke-width="2" rx="5"/>
-          <rect x="440" y="335" width="60" height="15" fill="#ff6b6b" rx="2"/>
-          <rect x="440" y="355" width="60" height="15" fill="#ff6b6b" rx="2"/>
-          <rect x="440" y="375" width="60" height="15" fill="#4ecdc4" rx="2"/>
-          <circle cx="450" cy="405" r="3" fill="#ffd700"/>
-          <circle cx="470" cy="405" r="3" fill="#ffd700">
-            <animate attributeName="opacity" values="1;0.3;1" dur="1s" repeatCount="indefinite"/>
-          </circle>
-          <circle cx="490" cy="405" r="3" fill="#ffd700"/>
-          <text x="470" y="435" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Combiner</text>
-          <text x="470" y="448" text-anchor="middle" font-size="9" fill="#fff">ตู้รวมไฟ DC</text>
-        </g>
+</div>
 
-        <line x1="510" y1="370" x2="600" y2="370" stroke="#ff6b6b" stroke-width="3" stroke-dasharray="5,3"/>
-        <text x="555" y="362" text-anchor="middle" font-size="10" font-weight="bold" fill="#c0392b">DC</text>
+<div>
+<svg id="solarSvg" viewBox="0 0 1000 600" style="width: 100%; height: 580px; background: linear-gradient(180deg, #87CEEB 0%, #B0E0E6 35%, #DEB887 70%, #6B8E23 100%); border-radius: 15px;">
+<defs>
+  <linearGradient id="shineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#fff" stop-opacity="0.8"/>
+    <stop offset="50%" stop-color="#fff" stop-opacity="0.2"/>
+    <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+  </linearGradient>
+</defs>
 
-        <g id="inverterGroup">
-          <rect x="600" y="330" width="100" height="80" fill="#34495e" stroke="#ffd700" stroke-width="2" rx="8"/>
-          <rect x="610" y="345" width="80" height="30" fill="#1a2332" rx="3"/>
-          <text x="650" y="360" text-anchor="middle" font-size="9" fill="#0f0">INVERTER</text>
-          <text id="inverterSizeText" x="650" y="372" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f0">5 kW</text>
-          <circle cx="620" cy="395" r="4" fill="#0f0">
-            <animate attributeName="opacity" values="1;0.3;1" dur="0.8s" repeatCount="indefinite"/>
-          </circle>
-          <circle cx="640" cy="395" r="4" fill="#ffa500"/>
-          <text x="650" y="425" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">อินเวอร์เตอร์</text>
-          <text x="650" y="438" text-anchor="middle" font-size="9" fill="#fff">DC → AC</text>
-        </g>
+<g id="hazeOverlay"></g>
+<g id="rainGroup"></g>
 
-        <line x1="700" y1="370" x2="780" y2="370" stroke="#4ecdc4" stroke-width="3"/>
-        <text x="740" y="362" text-anchor="middle" font-size="10" font-weight="bold" fill="#16a085">AC</text>
+<g id="sunGroup">
+  <circle cx="120" cy="100" r="45" fill="#FFD700">
+    <animate attributeName="r" values="45;48;45" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="120" cy="100" r="55" fill="none" stroke="#FFA500" stroke-width="2" opacity="0.6">
+    <animate attributeName="r" values="55;65;55" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <text x="120" y="106" text-anchor="middle" font-size="20" font-weight="bold" fill="#FF6347">SUN</text>
+</g>
 
-        <g id="batteryGroup">
-          <rect x="780" y="330" width="80" height="80" fill="#27ae60" stroke="#ffd700" stroke-width="2" rx="5"/>
-          <rect x="790" y="345" width="60" height="10" fill="#1a2332" rx="2"/>
-          <rect x="792" y="347" width="50" height="6" fill="#0f0" rx="1"/>
-          <text x="820" y="378" text-anchor="middle" font-size="20" fill="#fff">🔋</text>
-          <text x="820" y="425" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">แบตเตอรี่</text>
-          <text x="820" y="438" text-anchor="middle" font-size="9" fill="#fff">Battery</text>
-        </g>
+<g id="cloudGroup" style="display:none;">
+  <ellipse cx="100" cy="95" rx="35" ry="18" fill="#7a7a8a" opacity="0.85"/>
+  <ellipse cx="135" cy="88" rx="38" ry="22" fill="#8a8a9a" opacity="0.9"/>
+  <ellipse cx="165" cy="98" rx="30" ry="17" fill="#7a7a8a" opacity="0.85"/>
+</g>
 
-        <line x1="860" y1="370" x2="900" y2="370" stroke="#4ecdc4" stroke-width="3"/>
-        <line x1="900" y1="370" x2="900" y2="490" stroke="#4ecdc4" stroke-width="3"/>
-        <line x1="900" y1="490" x2="780" y2="490" stroke="#4ecdc4" stroke-width="3"/>
+<g id="lightRays"></g>
+<g id="shadowGroup"></g>
+<g id="solarPanels"></g>
+<g id="tiltIndicator"></g>
+<g id="compassIndicator"></g>
+<g id="thermometer"></g>
+<g id="dcCables"></g>
 
-        <g id="houseGroup">
-          <polygon points="700,470 780,470 740,420" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
-          <rect x="710" y="470" width="60" height="60" fill="#ecf0f1" stroke="#95a5a6" stroke-width="2"/>
-          <rect x="720" y="485" width="15" height="20" fill="#3498db"/>
-          <rect x="745" y="485" width="15" height="20" fill="#3498db"/>
-          <rect x="730" y="510" width="20" height="20" fill="#8B4513"/>
-          <text x="740" y="555" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">บ้าน</text>
-          <text x="740" y="568" text-anchor="middle" font-size="9" fill="#fff">Load</text>
-        </g>
+<g id="combinerBox">
+  <rect x="430" y="320" width="80" height="100" fill="#2c3e50" stroke="#ffd700" stroke-width="2" rx="5"/>
+  <rect x="440" y="335" width="60" height="15" fill="#ff6b6b" rx="2"/>
+  <rect x="440" y="355" width="60" height="15" fill="#ff6b6b" rx="2"/>
+  <rect x="440" y="375" width="60" height="15" fill="#4ecdc4" rx="2"/>
+  <circle cx="450" cy="405" r="3" fill="#ffd700"/>
+  <circle cx="470" cy="405" r="3" fill="#ffd700">
+    <animate attributeName="opacity" values="1;0.3;1" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="490" cy="405" r="3" fill="#ffd700"/>
+  <text x="470" y="435" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Combiner</text>
+  <text x="470" y="448" text-anchor="middle" font-size="9" fill="#fff">ตู้รวมไฟ DC</text>
+</g>
 
-        <g id="currentParticles"></g>
+<line x1="510" y1="370" x2="600" y2="370" stroke="#ff6b6b" stroke-width="3" stroke-dasharray="5,3"/>
+<text x="555" y="362" text-anchor="middle" font-size="10" font-weight="bold" fill="#c0392b">DC</text>
 
-        <text x="280" y="40" font-size="13" font-weight="bold" fill="#1a2332">① แผงโซลาร์</text>
-        <text x="430" y="310" font-size="11" font-weight="bold" fill="#1a2332">② รวมไฟ</text>
-        <text x="600" y="320" font-size="11" font-weight="bold" fill="#1a2332">③ แปลง AC</text>
-        <text x="780" y="320" font-size="11" font-weight="bold" fill="#1a2332">④ เก็บ/ใช้</text>
-        <text x="700" y="410" font-size="11" font-weight="bold" fill="#1a2332">⑤ บ้าน</text>
+<g id="inverterGroup">
+  <rect x="600" y="330" width="100" height="80" fill="#34495e" stroke="#ffd700" stroke-width="2" rx="8"/>
+  <rect x="610" y="345" width="80" height="30" fill="#1a2332" rx="3"/>
+  <text x="650" y="360" text-anchor="middle" font-size="9" fill="#0f0">INVERTER</text>
+  <text id="inverterSizeText" x="650" y="372" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f0">5 kW</text>
+  <circle cx="620" cy="395" r="4" fill="#0f0">
+    <animate attributeName="opacity" values="1;0.3;1" dur="0.8s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="640" cy="395" r="4" fill="#ffa500"/>
+  <text x="650" y="425" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">อินเวอร์เตอร์</text>
+  <text x="650" y="438" text-anchor="middle" font-size="9" fill="#fff">DC → AC</text>
+</g>
 
-        <g id="statusBadge">
-          <rect x="780" y="20" width="200" height="32" fill="rgba(0,0,0,0.7)" rx="6"/>
-          <text id="statusText" x="880" y="40" text-anchor="middle" font-size="11" font-weight="bold" fill="#ffd700">☀️ สภาพ: แสงดี</text>
-        </g>
-      </svg>
+<line x1="700" y1="370" x2="780" y2="370" stroke="#4ecdc4" stroke-width="3"/>
+<text x="740" y="362" text-anchor="middle" font-size="10" font-weight="bold" fill="#16a085">AC</text>
 
-      <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background: #FFD700;"></div>แสงอาทิตย์</div>
-        <div class="legend-item"><div class="legend-dot" style="background: #ff6b6b;"></div>กระแส DC</div>
-        <div class="legend-item"><div class="legend-dot" style="background: #4ecdc4;"></div>กระแส AC</div>
-        <div class="legend-item"><div class="legend-dot" style="background: #8b6f47;"></div>ฝุ่น</div>
-        <div class="legend-item"><div class="legend-dot" style="background: #6495ED;"></div>ฝน</div>
-      </div>
+<g id="batteryGroup">
+  <rect x="780" y="330" width="80" height="80" fill="#27ae60" stroke="#ffd700" stroke-width="2" rx="5"/>
+  <rect x="790" y="345" width="60" height="10" fill="#1a2332" rx="2"/>
+  <rect x="792" y="347" width="50" height="6" fill="#0f0" rx="1"/>
+  <text x="820" y="378" text-anchor="middle" font-size="20" fill="#fff">🔋</text>
+  <text x="820" y="425" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">แบตเตอรี่</text>
+  <text x="820" y="438" text-anchor="middle" font-size="9" fill="#fff">Battery</text>
+</g>
 
-      <!-- ROI Banner -->
-      <div class="roi-banner" id="roiBanner">
-        <h2>💸 ระยะเวลาคืนทุน (Payback Period)</h2>
-        <div class="roi-value"><span id="paybackYears">7.5</span> ปี</div>
-        <div class="roi-sub">คืนทุน: <strong id="paybackDate">เม.ย. 2568</strong></div>
-      </div>
+<line x1="860" y1="370" x2="900" y2="370" stroke="#4ecdc4" stroke-width="3"/>
+<line x1="900" y1="370" x2="900" y2="490" stroke="#4ecdc4" stroke-width="3"/>
+<line x1="900" y1="490" x2="780" y2="490" stroke="#4ecdc4" stroke-width="3"/>
 
-      <!-- 30-Year Profit Banner -->
-      <div class="profit-banner" id="profitBanner">
-        <h2>🎯 กำไรสุทธิเมื่อใช้ครบ 30 ปี (Net Profit)</h2>
-        <div class="big-number">
-          <span class="currency">฿</span><span id="profit30Years">450,000</span>
-        </div>
-        <div class="breakdown" id="profitBreakdown">
-          📥 รายได้สะสม: <strong>฿<span id="totalRevenue">630,000</span></strong> &nbsp;|&nbsp;
-          📤 เงินลงทุน: <strong>฿<span id="totalInvestment">180,000</span></strong><br>
-          🔥 ROI: <strong><span id="roiPercent">250</span>%</strong> &nbsp;|&nbsp;
-          📈 กำไรเฉลี่ย: <strong>฿<span id="avgProfit">15,000</span>/ปี</strong>
-        </div>
-      </div>
+<g id="houseGroup">
+  <polygon points="700,470 780,470 740,420" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+  <rect x="710" y="470" width="60" height="60" fill="#ecf0f1" stroke="#95a5a6" stroke-width="2"/>
+  <rect x="720" y="485" width="15" height="20" fill="#3498db"/>
+  <rect x="745" y="485" width="15" height="20" fill="#3498db"/>
+  <rect x="730" y="510" width="20" height="20" fill="#8B4513"/>
+  <text x="740" y="555" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">บ้าน</text>
+</g>
 
-      <div class="info-panel">
-        <h3>📈 ประสิทธิภาพระบบ</h3>
-        <div class="stats-grid">
-          <div class="stat-box"><div class="label">กำลังติดตั้ง</div><div class="value"><span id="theoreticalPower">3,600</span> W</div></div>
-          <div class="stat-box"><div class="label">ผลิตจริง</div><div class="value"><span id="actualPower">2,880</span> W</div></div>
-          <div class="stat-box"><div class="label">ผลิต/วัน</div><div class="value"><span id="dailyProduction">14.4</span> kWh</div></div>
-          <div class="stat-box"><div class="label">ผลิต/ปี</div><div class="value"><span id="yearlyProduction">5,256</span> kWh</div></div>
-        </div>
-        <div class="stats-grid" style="margin-top:8px;">
-          <div class="stat-box highlight"><div class="label">ประหยัด/เดือน</div><div class="value">฿<span id="monthlySaving">1,728</span></div></div>
-          <div class="stat-box highlight"><div class="label">ประหยัด/ปี</div><div class="value">฿<span id="yearlySaving">21,024</span></div></div>
-          <div class="stat-box"><div class="label">มุมเอียง</div><div class="value"><span id="tiltEffPct">100</span>%</div></div>
-          <div class="stat-box"><div class="label">ทิศ+ฝุ่น</div><div class="value"><span id="azDustEffPct">100</span>%</div></div>
-        </div>
-      </div>
+<g id="currentParticles"></g>
 
-      <div class="info-panel" style="border-left-color: #4ecdc4;">
-        <h3>📊 ผลิตไฟตลอดปี (kWh/เดือน)</h3>
-        <svg id="monthChart" viewBox="0 0 800 200" style="width: 100%; height: 180px;"></svg>
-      </div>
+<text x="280" y="40" font-size="13" font-weight="bold" fill="#1a2332">① แผงโซลาร์</text>
+<text x="430" y="310" font-size="11" font-weight="bold" fill="#1a2332">② รวมไฟ</text>
+<text x="600" y="320" font-size="11" font-weight="bold" fill="#1a2332">③ แปลง AC</text>
+<text x="780" y="320" font-size="11" font-weight="bold" fill="#1a2332">④ เก็บ/ใช้</text>
+<text x="700" y="410" font-size="11" font-weight="bold" fill="#1a2332">⑤ บ้าน</text>
 
-      <div class="info-panel" style="border-left-color: #2ecc71;">
-        <h3>💰 กราฟคืนทุน 30 ปี (Cumulative Cash Flow)</h3>
-        <svg id="paybackChart" viewBox="0 0 800 220" style="width: 100%; height: 200px;"></svg>
-      </div>
+<g id="statusBadge">
+  <rect x="720" y="20" width="260" height="32" fill="rgba(0,0,0,0.7)" rx="6"/>
+  <text id="statusText" x="850" y="40" text-anchor="middle" font-size="11" font-weight="bold" fill="#ffd700">☀️ สภาพ: แสงดี</text>
+</g>
+</svg>
 
-      <div class="info-panel" style="border-left-color: #ff8c00;">
-        <h3>📉 Degradation 30 ปี</h3>
-        <svg id="degradeChart" viewBox="0 0 800 180" style="width: 100%; height: 160px;"></svg>
-      </div>
-    </div>
-  </div>
+<div class="legend">
+<div class="legend-item"><div class="legend-dot" style="background: #FFD700;"></div>แสงอาทิตย์</div>
+<div class="legend-item"><div class="legend-dot" style="background: #ff6b6b;"></div>กระแส DC</div>
+<div class="legend-item"><div class="legend-dot" style="background: #4ecdc4;"></div>กระแส AC</div>
+<div class="legend-item"><div class="legend-dot" style="background: #8b6f47;"></div>ฝุ่น/PM2.5</div>
+<div class="legend-item"><div class="legend-dot" style="background: #6495ED;"></div>ฝน</div>
+<div class="legend-item"><div class="legend-dot" style="background: #2c3e50;"></div>เงา</div>
+</div>
+
+<div class="roi-banner" id="roiBanner">
+<h2>💸 ระยะเวลาคืนทุน (Payback Period)</h2>
+<div class="roi-value"><span id="paybackYears">7.5</span> ปี</div>
+<div class="roi-sub">คืนทุน: <strong id="paybackDate">เม.ย. 2568</strong></div>
+</div>
+
+<div class="profit-banner" id="profitBanner">
+<h2>🎯 กำไรสุทธิเมื่อใช้ครบ 30 ปี</h2>
+<div class="big-number"><span class="currency">฿</span><span id="profit30Years">450,000</span></div>
+<div class="breakdown" id="profitBreakdown">
+  📥 รายได้สะสม: <strong>฿<span id="totalRevenue">630,000</span></strong> &nbsp;|&nbsp;
+  📤 เงินลงทุน: <strong>฿<span id="totalInvestment">180,000</span></strong><br>
+  🔥 ROI: <strong><span id="roiPercent">250</span>%</strong> &nbsp;|&nbsp;
+  📈 กำไรเฉลี่ย: <strong>฿<span id="avgProfit">15,000</span>/ปี</strong>
+</div>
+</div>
+
+<div class="info-panel">
+<h3>📈 ประสิทธิภาพระบบ</h3>
+<div class="stats-grid">
+<div class="stat-box"><div class="label">กำลังติดตั้ง</div><div class="value"><span id="theoreticalPower">3,600</span> W</div></div>
+<div class="stat-box"><div class="label">ผลิตจริง</div><div class="value"><span id="actualPower">2,880</span> W</div></div>
+<div class="stat-box"><div class="label">ผลิต/วัน</div><div class="value"><span id="dailyProduction">14.4</span> kWh</div></div>
+<div class="stat-box"><div class="label">ผลิต/ปี</div><div class="value"><span id="yearlyProduction">5,256</span> kWh</div></div>
+</div>
+<div class="stats-grid" style="margin-top:8px;">
+<div class="stat-box highlight"><div class="label">ประหยัด/เดือน</div><div class="value">฿<span id="monthlySaving">1,728</span></div></div>
+<div class="stat-box highlight"><div class="label">ประหยัด/ปี</div><div class="value">฿<span id="yearlySaving">21,024</span></div></div>
+<div class="stat-box"><div class="label">อุณหภูมิแผง</div><div class="value"><span id="panelTempVal">45</span>°C</div></div>
+<div class="stat-box"><div class="label">รวมประสิทธิภาพ</div><div class="value"><span id="totalEfficiency">85</span>%</div></div>
+</div>
+</div>
+
+<div class="info-panel" style="border-left-color: #4ecdc4;">
+<h3>📊 ผลิตไฟตลอดปี (kWh/เดือน)</h3>
+<svg id="monthChart" viewBox="0 0 800 200" style="width: 100%; height: 180px;"></svg>
+</div>
+
+<div class="info-panel" style="border-left-color: #2ecc71;">
+<h3>💰 กราฟคืนทุน 30 ปี</h3>
+<svg id="paybackChart" viewBox="0 0 800 220" style="width: 100%; height: 200px;"></svg>
+</div>
+
+<div class="info-panel" style="border-left-color: #ff8c00;">
+<h3>📉 Degradation 30 ปี</h3>
+<svg id="degradeChart" viewBox="0 0 800 180" style="width: 100%; height: 160px;"></svg>
+</div>
+
+</div>
+</div>
 </div>
 
 <script>
+// ============ THAILAND DATA ============
 const monthlyPSH = {1:5.2,2:5.8,3:6.0,4:5.7,5:5.0,6:4.6,7:4.5,8:4.4,9:4.5,10:4.7,11:5.0,12:5.0};
 const monthNames = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 const rainyMonths = [5, 6, 7, 8, 9, 10];
 const yearlyAvgPSH = Object.values(monthlyPSH).reduce((a,b)=>a+b,0) / 12;
 
+// PM2.5 (µg/m³ annual avg) + อุณหภูมิเฉลี่ย (°C) ของแต่ละจังหวัด
+// PM2.5 ตามค่าเฉลี่ยปี (µg/m³) + อุณหภูมิเฉลี่ย (°C) ของ 77 จังหวัดไทย
+// ข้อมูลจาก Pollution Control Department + AQLI 2025 + ค่าประมาณตามภูมิภาค
+const provinces = {
+  // ============ ภาคเหนือ (PM2.5 สูงเพราะเผาป่า) ============
+  'chiang_mai':    { name: 'เชียงใหม่',     pm25: 35, temp: 27, region: 'เหนือ' },
+  'chiang_rai':    { name: 'เชียงราย',      pm25: 42, temp: 26, region: 'เหนือ' },
+  'lampang':       { name: 'ลำปาง',         pm25: 32, temp: 27, region: 'เหนือ' },
+  'lamphun':       { name: 'ลำพูน',         pm25: 33, temp: 27, region: 'เหนือ' },
+  'mae_hong_son':  { name: 'แม่ฮ่องสอน',   pm25: 40, temp: 26, region: 'เหนือ' },
+  'nan':           { name: 'น่าน',          pm25: 36, temp: 26, region: 'เหนือ' },
+  'phayao':        { name: 'พะเยา',         pm25: 38, temp: 26, region: 'เหนือ' },
+  'phrae':         { name: 'แพร่',          pm25: 34, temp: 27, region: 'เหนือ' },
+  'uttaradit':     { name: 'อุตรดิตถ์',     pm25: 30, temp: 28, region: 'เหนือ' },
+  'tak':           { name: 'ตาก',           pm25: 33, temp: 28, region: 'เหนือ' },
+  'sukhothai':     { name: 'สุโขทัย',       pm25: 28, temp: 28, region: 'เหนือ' },
+  'phitsanulok':   { name: 'พิษณุโลก',      pm25: 28, temp: 28, region: 'เหนือ' },
+  'phichit':       { name: 'พิจิตร',        pm25: 26, temp: 28, region: 'เหนือ' },
+  'phetchabun':    { name: 'เพชรบูรณ์',     pm25: 27, temp: 27, region: 'เหนือ' },
+  'kamphaeng_phet':{ name: 'กำแพงเพชร',   pm25: 27, temp: 28, region: 'เหนือ' },
+  'nakhon_sawan':  { name: 'นครสวรรค์',   pm25: 26, temp: 28, region: 'เหนือ' },
+  'uthai_thani':   { name: 'อุทัยธานี',     pm25: 25, temp: 28, region: 'เหนือ' },
+
+  // ============ ภาคอีสาน ============
+  'khon_kaen':     { name: 'ขอนแก่น',       pm25: 26, temp: 28, region: 'อีสาน' },
+  'nakhon_ratch':  { name: 'นครราชสีมา',  pm25: 26, temp: 28, region: 'อีสาน' },
+  'udon_thani':    { name: 'อุดรธานี',      pm25: 25, temp: 28, region: 'อีสาน' },
+  'ubon':          { name: 'อุบลราชธานี',   pm25: 24, temp: 28, region: 'อีสาน' },
+  'nong_khai':     { name: 'หนองคาย',       pm25: 26, temp: 28, region: 'อีสาน' },
+  'nong_bua':      { name: 'หนองบัวลำภู',  pm25: 25, temp: 28, region: 'อีสาน' },
+  'loei':          { name: 'เลย',           pm25: 28, temp: 27, region: 'อีสาน' },
+  'sakon_nakhon':  { name: 'สกลนคร',        pm25: 24, temp: 28, region: 'อีสาน' },
+  'nakhon_phanom': { name: 'นครพนม',        pm25: 25, temp: 28, region: 'อีสาน' },
+  'mukdahan':      { name: 'มุกดาหาร',      pm25: 24, temp: 28, region: 'อีสาน' },
+  'kalasin':       { name: 'กาฬสินธุ์',     pm25: 25, temp: 28, region: 'อีสาน' },
+  'maha_sarakham': { name: 'มหาสารคาม',    pm25: 26, temp: 28, region: 'อีสาน' },
+  'roi_et':        { name: 'ร้อยเอ็ด',      pm25: 26, temp: 28, region: 'อีสาน' },
+  'yasothon':      { name: 'ยโสธร',         pm25: 24, temp: 28, region: 'อีสาน' },
+  'amnat_charoen': { name: 'อำนาจเจริญ',   pm25: 24, temp: 28, region: 'อีสาน' },
+  'sisaket':       { name: 'ศรีสะเกษ',      pm25: 25, temp: 28, region: 'อีสาน' },
+  'surin':         { name: 'สุรินทร์',      pm25: 25, temp: 28, region: 'อีสาน' },
+  'buriram':       { name: 'บุรีรัมย์',     pm25: 25, temp: 28, region: 'อีสาน' },
+  'chaiyaphum':    { name: 'ชัยภูมิ',       pm25: 26, temp: 28, region: 'อีสาน' },
+  'bueng_kan':     { name: 'บึงกาฬ',        pm25: 24, temp: 28, region: 'อีสาน' },
+
+  // ============ ภาคกลาง ============
+  'bangkok':       { name: 'กรุงเทพมหานคร', pm25: 28, temp: 30, region: 'กลาง' },
+  'nonthaburi':    { name: 'นนทบุรี',       pm25: 27, temp: 30, region: 'กลาง' },
+  'pathum':        { name: 'ปทุมธานี',      pm25: 28, temp: 30, region: 'กลาง' },
+  'samut_prakan':  { name: 'สมุทรปราการ',  pm25: 30, temp: 30, region: 'กลาง' },
+  'samut_sakhon':  { name: 'สมุทรสาคร',     pm25: 30, temp: 30, region: 'กลาง' },
+  'samut_songkhram':{name: 'สมุทรสงคราม',   pm25: 25, temp: 29, region: 'กลาง' },
+  'nakhon_pathom': { name: 'นครปฐม',        pm25: 28, temp: 29, region: 'กลาง' },
+  'ayutthaya':     { name: 'พระนครศรีอยุธยา', pm25: 30, temp: 29, region: 'กลาง' },
+  'ang_thong':     { name: 'อ่างทอง',       pm25: 27, temp: 29, region: 'กลาง' },
+  'lopburi':       { name: 'ลพบุรี',        pm25: 27, temp: 29, region: 'กลาง' },
+  'singburi':      { name: 'สิงห์บุรี',     pm25: 26, temp: 29, region: 'กลาง' },
+  'chai_nat':      { name: 'ชัยนาท',        pm25: 26, temp: 29, region: 'กลาง' },
+  'saraburi':      { name: 'สระบุรี',       pm25: 32, temp: 29, region: 'กลาง' },
+  'suphanburi':    { name: 'สุพรรณบุรี',   pm25: 26, temp: 29, region: 'กลาง' },
+  'kanchanaburi':  { name: 'กาญจนบุรี',    pm25: 25, temp: 29, region: 'กลาง' },
+  'ratchaburi':    { name: 'ราชบุรี',       pm25: 26, temp: 29, region: 'กลาง' },
+  'phetchaburi':   { name: 'เพชรบุรี',      pm25: 22, temp: 29, region: 'กลาง' },
+  'prachuap':      { name: 'ประจวบคีรีขันธ์', pm25: 21, temp: 29, region: 'กลาง' },
+  'nakhon_nayok':  { name: 'นครนายก',       pm25: 25, temp: 29, region: 'กลาง' },
+  'prachinburi':   { name: 'ปราจีนบุรี',   pm25: 26, temp: 29, region: 'กลาง' },
+  'sa_kaeo':       { name: 'สระแก้ว',       pm25: 24, temp: 29, region: 'กลาง' },
+
+  // ============ ภาคตะวันออก ============
+  'chonburi':      { name: 'ชลบุรี',        pm25: 25, temp: 29, region: 'ตอ' },
+  'rayong':        { name: 'ระยอง',         pm25: 26, temp: 29, region: 'ตอ' },
+  'chanthaburi':   { name: 'จันทบุรี',      pm25: 22, temp: 28, region: 'ตอ' },
+  'trat':          { name: 'ตราด',          pm25: 21, temp: 28, region: 'ตอ' },
+  'chachoengsao':  { name: 'ฉะเชิงเทรา',   pm25: 27, temp: 29, region: 'ตอ' },
+
+  // ============ ภาคใต้ (PM2.5 ดีที่สุด) ============
+  'chumphon':      { name: 'ชุมพร',         pm25: 18, temp: 28, region: 'ใต้' },
+  'ranong':        { name: 'ระนอง',         pm25: 16, temp: 28, region: 'ใต้' },
+  'surat_thani':   { name: 'สุราษฎร์ธานี',  pm25: 17, temp: 28, region: 'ใต้' },
+  'phangnga':      { name: 'พังงา',         pm25: 16, temp: 28, region: 'ใต้' },
+  'phuket':        { name: 'ภูเก็ต',        pm25: 18, temp: 28, region: 'ใต้' },
+  'krabi':         { name: 'กระบี่',        pm25: 16, temp: 28, region: 'ใต้' },
+  'nakhon_si':     { name: 'นครศรีธรรมราช', pm25: 17, temp: 28, region: 'ใต้' },
+  'phatthalung':   { name: 'พัทลุง',        pm25: 18, temp: 28, region: 'ใต้' },
+  'trang':         { name: 'ตรัง',          pm25: 17, temp: 28, region: 'ใต้' },
+  'satun':         { name: 'สตูล',          pm25: 18, temp: 28, region: 'ใต้' },
+  'songkhla':      { name: 'สงขลา',         pm25: 19, temp: 28, region: 'ใต้' },
+  'pattani':       { name: 'ปัตตานี',       pm25: 19, temp: 28, region: 'ใต้' },
+  'yala':          { name: 'ยะลา',          pm25: 18, temp: 28, region: 'ใต้' },
+  'narathiwat':    { name: 'นราธิวาส',     pm25: 18, temp: 28, region: 'ใต้' }
+};
+
+// Panel technology specs
+const panelTechs = {
+  poly:     { name: 'Poly-Si',  tempCoef: -0.45, baseEff: 1.00, info: '📌 มาตรฐาน ราคาถูก' },
+  mono:     { name: 'Mono-Si',  tempCoef: -0.38, baseEff: 1.00, info: '📌 พรีเมียม ทนความร้อนดี' },
+  topcon:   { name: 'TOPCon',   tempCoef: -0.30, baseEff: 1.05, info: '🌟 เทคโนโลยีใหม่ ประสิทธิภาพสูง' },
+  hjt:      { name: 'HJT',      tempCoef: -0.26, baseEff: 1.07, info: '⭐ ดีที่สุด ทนร้อนเยี่ยม' },
+  bifacial: { name: 'Bifacial', tempCoef: -0.35, baseEff: 1.10, info: '🔄 รับแสง 2 หน้า เพิ่ม +10%' }
+};
+
+const ELECTRICITY_RATE_DEFAULT = 4.50;
+
 let state = {
+  province: 'bangkok',
   month: 'year',
+  panelType: 'mono',
+  trackerMode: 'fixed', // 'fixed', 'single', 'dual'
   tiltAngle: 15,
-  azimuth: 180, // 0=N, 90=E, 180=S, 270=W
+  azimuth: 180,
+  shadeLevel: 0,
   systemAge: 0,
   panelWatt: 450,
   panelCount: 8,
@@ -390,6 +557,7 @@ let state = {
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
+// ============ EFFICIENCY FUNCTIONS ============
 function tiltEfficiency(angle) {
   const diff = Math.abs(angle - 15);
   if (diff <= 5) return 1.0;
@@ -401,30 +569,56 @@ function tiltEfficiency(angle) {
   return 0.70;
 }
 
-// Azimuth efficiency: 180° (south) = best in Thailand
 function azimuthEfficiency(az) {
-  // คำนวณส่วนเบี่ยงเบนจากทิศใต้ (180°)
+  // Continuous formula - smooth interpolation for any angle
   let diff = Math.abs(az - 180);
   if (diff > 180) diff = 360 - diff;
-  // South=100%, E/W=85%, N=70%
+  // Cosine-based formula matching real-world data
+  // South (diff=0) = 100%, East/West (diff=90) = 85%, North (diff=180) = 70%
   if (diff === 0) return 1.0;
-  if (diff <= 22.5) return 0.99;   // S, SSW, SSE
-  if (diff <= 45) return 0.95;     // SE, SW
-  if (diff <= 67.5) return 0.90;   // ESE, WSW
-  if (diff <= 90) return 0.85;     // E, W
-  if (diff <= 112.5) return 0.80;
-  if (diff <= 135) return 0.75;    // NE, NW
-  if (diff <= 157.5) return 0.72;
-  return 0.70;                      // N
+  if (diff <= 90) {
+    // Smooth curve from 100% to 85% as we go from S to E/W
+    const t = diff / 90;
+    return 1.0 - 0.15 * t * t;  // quadratic falloff
+  } else {
+    // From 85% at E/W (90°) to 70% at N (180°)
+    const t = (diff - 90) / 90;
+    return 0.85 - 0.15 * t;
+  }
 }
 
 function getAzimuthName(az) {
-  const names = {
-    0: 'เหนือ', 45: 'ตะวันออกเฉียงเหนือ', 90: 'ตะวันออก',
-    135: 'ตะวันออกเฉียงใต้', 180: 'ใต้ ⭐', 225: 'ตะวันตกเฉียงใต้',
-    270: 'ตะวันตก', 315: 'ตะวันตกเฉียงเหนือ'
-  };
-  return names[az] || az + '°';
+  const dirs = [
+    {az: 0,   name: 'เหนือ (N)'},
+    {az: 22,  name: 'NNE'},
+    {az: 45,  name: 'NE'},
+    {az: 67,  name: 'ENE'},
+    {az: 90,  name: 'ตะวันออก (E)'},
+    {az: 112, name: 'ESE'},
+    {az: 135, name: 'SE'},
+    {az: 157, name: 'SSE'},
+    {az: 180, name: 'ใต้ (S) ⭐'},
+    {az: 202, name: 'SSW'},
+    {az: 225, name: 'SW'},
+    {az: 247, name: 'WSW'},
+    {az: 270, name: 'ตะวันตก (W)'},
+    {az: 292, name: 'WNW'},
+    {az: 315, name: 'NW'},
+    {az: 337, name: 'NNW'}
+  ];
+  // Find closest
+  let closest = dirs[0];
+  let minDiff = 360;
+  dirs.forEach(d => {
+    let diff = Math.abs(d.az - az);
+    if (diff > 180) diff = 360 - diff;
+    if (diff < minDiff) {
+      minDiff = diff;
+      closest = d;
+    }
+  });
+  if (minDiff <= 5) return closest.name;
+  return `${az}° (≈${closest.name})`;
 }
 
 function degradationFactor(year) {
@@ -440,22 +634,48 @@ function dustEfficiency(month, dustEnabled) {
   return 0.90;
 }
 
-function isRainyMonth(month) {
-  if (month === 'year') return false;
-  return rainyMonths.includes(month);
+// PM2.5 effect: ทุก 10 µg/m³ ลดประสิทธิภาพ ~1-2%
+function pm25Efficiency(pm25) {
+  if (pm25 <= 15) return 1.0;
+  if (pm25 <= 25) return 0.98;
+  if (pm25 <= 35) return 0.96;
+  if (pm25 <= 45) return 0.94;
+  return 0.92;
 }
 
-function getVisualDustLevel() {
-  if (!state.dustEnabled) return 0;
-  if (state.month === 'year') return 0.5;
-  if (isRainyMonth(state.month)) return 0.25;
-  return 0.85;
+// คำนวณอุณหภูมิแผง: ปกติแผงร้อนกว่าอากาศ ~25-30°C
+function calculatePanelTemp(ambient, irradiance) {
+  // NOCT formula: Tcell = Tamb + (NOCT-20)/800 * irradiance
+  // For Thailand: irradiance ~700 W/m² avg
+  const heatRise = (45 - 20) / 800 * 700; // ~22°C heat rise
+  return ambient + heatRise;
 }
 
+function temperatureEfficiency(panelTemp, panelType) {
+  const coef = panelTechs[panelType].tempCoef;
+  const tempDiff = panelTemp - 25;
+  if (tempDiff <= 0) return 1.0;
+  return 1 + (coef / 100) * tempDiff;
+}
+
+function shadeEfficiency(shadePct) {
+  // Real shading impact is bigger than just %, due to hot-spot effect
+  // 5% shade can cause 10% loss, 30% shade can cause 50% loss
+  const impactMultiplier = 1.5;
+  const loss = Math.min(0.7, (shadePct / 100) * impactMultiplier);
+  return 1 - loss;
+}
+
+function trackerGain(mode) {
+  if (mode === 'single') return 1.25;
+  if (mode === 'dual') return 1.35;
+  return 1.0;
+}
+
+// ============ DRAW PANELS ============
 function drawPanels() {
   const group = document.getElementById('solarPanels');
   group.innerHTML = '';
-
   const count = state.panelCount;
   const cols = Math.ceil(count / 2);
   const startX = 220;
@@ -464,7 +684,14 @@ function drawPanels() {
   const panelH = 45;
   const gap = 5;
   const tilt = state.tiltAngle;
-  const dustLevel = getVisualDustLevel();
+  const dustLevel = state.dustEnabled
+    ? (state.month === 'year' ? 0.5 : (rainyMonths.includes(state.month) ? 0.25 : 0.85))
+    : 0;
+
+  // PM2.5 dust visual addition
+  const prov = provinces[state.province];
+  const pm25Visual = Math.min(0.4, (prov.pm25 - 15) / 100);
+  const totalDust = Math.min(0.95, dustLevel + (state.dustEnabled ? pm25Visual : 0));
 
   state.panelPositions = [];
 
@@ -483,7 +710,12 @@ function drawPanels() {
     rect.setAttribute('y', '0');
     rect.setAttribute('width', panelW);
     rect.setAttribute('height', heightAdjust);
-    rect.setAttribute('fill', '#1a3a5c');
+    // Color based on panel tech
+    const techColor = {
+      poly: '#1a3a5c', mono: '#0d1f3d', topcon: '#0a1a30',
+      hjt: '#0d2440', bifacial: '#1a2c4a'
+    }[state.panelType];
+    rect.setAttribute('fill', techColor);
     rect.setAttribute('stroke', '#34495e');
     rect.setAttribute('stroke-width', '1.5');
     rect.setAttribute('rx', '2');
@@ -522,17 +754,17 @@ function drawPanels() {
       panel.appendChild(ageOverlay);
     }
 
-    if (dustLevel > 0) {
+    if (totalDust > 0) {
       const dustOverlay = document.createElementNS(SVG_NS, 'rect');
       dustOverlay.setAttribute('x', '0');
       dustOverlay.setAttribute('y', '0');
       dustOverlay.setAttribute('width', panelW);
       dustOverlay.setAttribute('height', heightAdjust);
       dustOverlay.setAttribute('fill', '#a0815c');
-      dustOverlay.setAttribute('opacity', dustLevel * 0.5);
+      dustOverlay.setAttribute('opacity', totalDust * 0.5);
       dustOverlay.setAttribute('rx', '2');
       panel.appendChild(dustOverlay);
-      const numSpots = Math.floor(dustLevel * 10);
+      const numSpots = Math.floor(totalDust * 12);
       for (let s = 0; s < numSpots; s++) {
         const spot = document.createElementNS(SVG_NS, 'circle');
         spot.setAttribute('cx', Math.random() * panelW);
@@ -544,8 +776,21 @@ function drawPanels() {
       }
     }
 
+    // Shadow overlay if shading
+    if (state.shadeLevel > 0 && i < Math.ceil(count * state.shadeLevel / 100)) {
+      const shadow = document.createElementNS(SVG_NS, 'rect');
+      shadow.setAttribute('x', '0');
+      shadow.setAttribute('y', '0');
+      shadow.setAttribute('width', panelW);
+      shadow.setAttribute('height', heightAdjust);
+      shadow.setAttribute('fill', '#1a1a2e');
+      shadow.setAttribute('opacity', '0.6');
+      shadow.setAttribute('rx', '2');
+      panel.appendChild(shadow);
+    }
+
     const psh = state.month === 'year' ? yearlyAvgPSH : monthlyPSH[state.month];
-    const sunNormalized = (psh / 6.0) * (1 - dustLevel * 0.5);
+    const sunNormalized = (psh / 6.0) * (1 - totalDust * 0.5);
     if (sunNormalized > 0.3) {
       const shine = document.createElementNS(SVG_NS, 'rect');
       shine.setAttribute('x', '0');
@@ -564,16 +809,206 @@ function drawPanels() {
 
   drawTiltIndicator();
   drawCompass();
+  drawThermometer();
+  drawShadows();
+  drawHaze();
   drawRain();
 }
 
-// COMPASS visualization with arrow showing panel facing direction
+// ============ THERMOMETER ============
+function drawThermometer() {
+  const group = document.getElementById('thermometer');
+  group.innerHTML = '';
+  const cx = 670, cy = 180;
+  const stats = computeStats();
+  const temp = stats.panelTemp;
+
+  // Background
+  const bg = document.createElementNS(SVG_NS, 'rect');
+  bg.setAttribute('x', cx - 25);
+  bg.setAttribute('y', cy - 70);
+  bg.setAttribute('width', '60');
+  bg.setAttribute('height', '110');
+  bg.setAttribute('fill', 'rgba(255,255,255,0.85)');
+  bg.setAttribute('stroke', '#e74c3c');
+  bg.setAttribute('stroke-width', '1.5');
+  bg.setAttribute('rx', '4');
+  group.appendChild(bg);
+
+  // Thermometer tube
+  const tube = document.createElementNS(SVG_NS, 'rect');
+  tube.setAttribute('x', cx - 4);
+  tube.setAttribute('y', cy - 60);
+  tube.setAttribute('width', '8');
+  tube.setAttribute('height', '70');
+  tube.setAttribute('fill', '#fff');
+  tube.setAttribute('stroke', '#1a2332');
+  tube.setAttribute('stroke-width', '1');
+  tube.setAttribute('rx', '4');
+  group.appendChild(tube);
+
+  // Mercury level (height based on temp 25-80°C)
+  const tempPct = Math.max(0, Math.min(1, (temp - 25) / 55));
+  const mercHeight = tempPct * 60;
+  const merc = document.createElementNS(SVG_NS, 'rect');
+  merc.setAttribute('x', cx - 3);
+  merc.setAttribute('y', cy - mercHeight);
+  merc.setAttribute('width', '6');
+  merc.setAttribute('height', mercHeight + 5);
+  let tempColor = '#3498db';
+  if (temp > 35) tempColor = '#f1c40f';
+  if (temp > 50) tempColor = '#e67e22';
+  if (temp > 60) tempColor = '#e74c3c';
+  merc.setAttribute('fill', tempColor);
+  group.appendChild(merc);
+
+  // Bulb
+  const bulb = document.createElementNS(SVG_NS, 'circle');
+  bulb.setAttribute('cx', cx);
+  bulb.setAttribute('cy', cy + 12);
+  bulb.setAttribute('r', '7');
+  bulb.setAttribute('fill', tempColor);
+  bulb.setAttribute('stroke', '#1a2332');
+  bulb.setAttribute('stroke-width', '1');
+  group.appendChild(bulb);
+
+  // Temp value
+  const tempText = document.createElementNS(SVG_NS, 'text');
+  tempText.setAttribute('x', cx + 18);
+  tempText.setAttribute('y', cy - 30);
+  tempText.setAttribute('font-size', '14');
+  tempText.setAttribute('font-weight', 'bold');
+  tempText.setAttribute('fill', '#c0392b');
+  tempText.textContent = Math.round(temp) + '°C';
+  group.appendChild(tempText);
+
+  // Label
+  const label = document.createElementNS(SVG_NS, 'text');
+  label.setAttribute('x', cx + 5);
+  label.setAttribute('y', cy - 55);
+  label.setAttribute('text-anchor', 'middle');
+  label.setAttribute('font-size', '9');
+  label.setAttribute('font-weight', 'bold');
+  label.setAttribute('fill', '#1a2332');
+  label.textContent = '🌡️ แผง';
+  group.appendChild(label);
+}
+
+// ============ SHADOWS ============
+function drawShadows() {
+  const group = document.getElementById('shadowGroup');
+  group.innerHTML = '';
+  if (state.shadeLevel === 0) return;
+
+  // Draw a tree casting shadow
+  const treeX = 180;
+  const treeY = 270;
+
+  // Tree trunk
+  const trunk = document.createElementNS(SVG_NS, 'rect');
+  trunk.setAttribute('x', treeX - 4);
+  trunk.setAttribute('y', treeY);
+  trunk.setAttribute('width', '8');
+  trunk.setAttribute('height', '30');
+  trunk.setAttribute('fill', '#5D4037');
+  group.appendChild(trunk);
+
+  // Tree leaves (size based on shade level)
+  const treeSize = 15 + state.shadeLevel * 0.5;
+  const leaves = document.createElementNS(SVG_NS, 'circle');
+  leaves.setAttribute('cx', treeX);
+  leaves.setAttribute('cy', treeY - 5);
+  leaves.setAttribute('r', treeSize);
+  leaves.setAttribute('fill', '#2d5016');
+  leaves.setAttribute('opacity', '0.95');
+  group.appendChild(leaves);
+
+  const leaves2 = document.createElementNS(SVG_NS, 'circle');
+  leaves2.setAttribute('cx', treeX - 8);
+  leaves2.setAttribute('cy', treeY);
+  leaves2.setAttribute('r', treeSize - 3);
+  leaves2.setAttribute('fill', '#3a6b1c');
+  leaves2.setAttribute('opacity', '0.9');
+  group.appendChild(leaves2);
+
+  const leaves3 = document.createElementNS(SVG_NS, 'circle');
+  leaves3.setAttribute('cx', treeX + 8);
+  leaves3.setAttribute('cy', treeY - 2);
+  leaves3.setAttribute('r', treeSize - 3);
+  leaves3.setAttribute('fill', '#3a6b1c');
+  leaves3.setAttribute('opacity', '0.9');
+  group.appendChild(leaves3);
+
+  // Shadow on ground (elongated ellipse)
+  const shadowLen = state.shadeLevel * 4;
+  const shadowEll = document.createElementNS(SVG_NS, 'ellipse');
+  shadowEll.setAttribute('cx', treeX + shadowLen);
+  shadowEll.setAttribute('cy', treeY + 35);
+  shadowEll.setAttribute('rx', shadowLen * 1.5);
+  shadowEll.setAttribute('ry', '10');
+  shadowEll.setAttribute('fill', '#1a1a2e');
+  shadowEll.setAttribute('opacity', '0.5');
+  group.appendChild(shadowEll);
+
+  // Label
+  const label = document.createElementNS(SVG_NS, 'text');
+  label.setAttribute('x', treeX);
+  label.setAttribute('y', treeY + 50);
+  label.setAttribute('text-anchor', 'middle');
+  label.setAttribute('font-size', '9');
+  label.setAttribute('font-weight', 'bold');
+  label.setAttribute('fill', '#1a2332');
+  label.textContent = `🌳 เงา ${state.shadeLevel}%`;
+  group.appendChild(label);
+}
+
+// ============ HAZE / PM2.5 ============
+function drawHaze() {
+  const group = document.getElementById('hazeOverlay');
+  group.innerHTML = '';
+  const prov = provinces[state.province];
+  const hazeLevel = Math.min(0.4, (prov.pm25 - 15) / 80);
+  if (hazeLevel <= 0.05) return;
+
+  // Haze layer
+  const haze = document.createElementNS(SVG_NS, 'rect');
+  haze.setAttribute('x', 0);
+  haze.setAttribute('y', 0);
+  haze.setAttribute('width', 1000);
+  haze.setAttribute('height', 200);
+  haze.setAttribute('fill', '#a09080');
+  haze.setAttribute('opacity', hazeLevel);
+  group.appendChild(haze);
+
+  // PM2.5 particles floating
+  for (let i = 0; i < hazeLevel * 30; i++) {
+    const particle = document.createElementNS(SVG_NS, 'circle');
+    const px = Math.random() * 1000;
+    const py = Math.random() * 180;
+    particle.setAttribute('cx', px);
+    particle.setAttribute('cy', py);
+    particle.setAttribute('r', 0.8 + Math.random() * 1.2);
+    particle.setAttribute('fill', '#6b5d3f');
+    particle.setAttribute('opacity', 0.6);
+
+    const am = document.createElementNS(SVG_NS, 'animate');
+    am.setAttribute('attributeName', 'cx');
+    am.setAttribute('from', px);
+    am.setAttribute('to', px - 100);
+    am.setAttribute('dur', `${5 + Math.random() * 5}s`);
+    am.setAttribute('repeatCount', 'indefinite');
+    particle.appendChild(am);
+
+    group.appendChild(particle);
+  }
+}
+
+// ============ COMPASS ============
 function drawCompass() {
   const group = document.getElementById('compassIndicator');
   group.innerHTML = '';
-  const cx = 100, cy = 480, r = 40;
+  const cx = 100, cy = 480, r = 35;
 
-  // Outer circle
   const bg = document.createElementNS(SVG_NS, 'circle');
   bg.setAttribute('cx', cx);
   bg.setAttribute('cy', cy);
@@ -583,7 +1018,6 @@ function drawCompass() {
   bg.setAttribute('stroke-width', '2');
   group.appendChild(bg);
 
-  // Cardinal directions
   const dirs = [
     {label: 'N', x: cx, y: cy - r + 4, color: '#e74c3c'},
     {label: 'E', x: cx + r - 5, y: cy + 4, color: '#1a2332'},
@@ -602,49 +1036,48 @@ function drawCompass() {
     group.appendChild(t);
   });
 
-  // Tick marks
-  for (let i = 0; i < 8; i++) {
-    const angle = i * 45;
-    const rad = (angle - 90) * Math.PI / 180;
-    const t = document.createElementNS(SVG_NS, 'line');
-    t.setAttribute('x1', cx + (r - 3) * Math.cos(rad));
-    t.setAttribute('y1', cy + (r - 3) * Math.sin(rad));
-    t.setAttribute('x2', cx + r * Math.cos(rad));
-    t.setAttribute('y2', cy + r * Math.sin(rad));
-    t.setAttribute('stroke', '#888');
-    t.setAttribute('stroke-width', '1');
-    group.appendChild(t);
+  // For tracker mode, show current sun-following position
+  let displayAz = state.azimuth;
+  if (state.trackerMode === 'single' || state.trackerMode === 'dual') {
+    // Animated tracker - show 'tracking' indicator
+    displayAz = 180; // facing south at noon
   }
 
-  // Arrow pointing to azimuth (panel facing direction)
-  // Convert azimuth: 0=N, 90=E, 180=S, 270=W
-  const azRad = (state.azimuth - 90) * Math.PI / 180;
+  const azRad = (displayAz - 90) * Math.PI / 180;
   const arrowLen = r - 8;
   const tipX = cx + arrowLen * Math.cos(azRad);
   const tipY = cy + arrowLen * Math.sin(azRad);
 
-  // Arrow shaft
   const shaft = document.createElementNS(SVG_NS, 'line');
   shaft.setAttribute('x1', cx);
   shaft.setAttribute('y1', cy);
   shaft.setAttribute('x2', tipX);
   shaft.setAttribute('y2', tipY);
-  shaft.setAttribute('stroke', '#ff8c00');
+  shaft.setAttribute('stroke', state.trackerMode !== 'fixed' ? '#16a085' : '#ff8c00');
   shaft.setAttribute('stroke-width', '4');
   shaft.setAttribute('stroke-linecap', 'round');
+  if (state.trackerMode !== 'fixed') {
+    const rotAnim = document.createElementNS(SVG_NS, 'animateTransform');
+    rotAnim.setAttribute('attributeName', 'transform');
+    rotAnim.setAttribute('type', 'rotate');
+    rotAnim.setAttribute('from', `-30 ${cx} ${cy}`);
+    rotAnim.setAttribute('to', `30 ${cx} ${cy}`);
+    rotAnim.setAttribute('dur', '6s');
+    rotAnim.setAttribute('repeatCount', 'indefinite');
+    rotAnim.setAttribute('values', `-30 ${cx} ${cy}; 30 ${cx} ${cy}; -30 ${cx} ${cy}`);
+    shaft.appendChild(rotAnim);
+  }
   group.appendChild(shaft);
 
-  // Arrow head
   const headSize = 8;
   const headAngle1 = azRad + 2.5;
   const headAngle2 = azRad - 2.5;
   const head = document.createElementNS(SVG_NS, 'polygon');
   const points = `${tipX},${tipY} ${tipX - headSize * Math.cos(headAngle1)},${tipY - headSize * Math.sin(headAngle1)} ${tipX - headSize * Math.cos(headAngle2)},${tipY - headSize * Math.sin(headAngle2)}`;
   head.setAttribute('points', points);
-  head.setAttribute('fill', '#ff8c00');
+  head.setAttribute('fill', state.trackerMode !== 'fixed' ? '#16a085' : '#ff8c00');
   group.appendChild(head);
 
-  // Center dot
   const center = document.createElementNS(SVG_NS, 'circle');
   center.setAttribute('cx', cx);
   center.setAttribute('cy', cy);
@@ -652,69 +1085,17 @@ function drawCompass() {
   center.setAttribute('fill', '#1a2332');
   group.appendChild(center);
 
-  // Label below
+  let labelText = state.trackerMode !== 'fixed' ? '🔄 ติดตามดวงอาทิตย์' : '🧭 ' + getAzimuthName(state.azimuth);
+
   const label = document.createElementNS(SVG_NS, 'text');
   label.setAttribute('x', cx);
-  label.setAttribute('y', cy + r + 18);
+  label.setAttribute('y', cy + r + 15);
   label.setAttribute('text-anchor', 'middle');
-  label.setAttribute('font-size', '10');
+  label.setAttribute('font-size', '9');
   label.setAttribute('font-weight', 'bold');
   label.setAttribute('fill', '#1a2332');
-  label.textContent = 'หันหน้าไป: ' + getAzimuthName(state.azimuth);
+  label.textContent = labelText;
   group.appendChild(label);
-
-  // Title
-  const title = document.createElementNS(SVG_NS, 'text');
-  title.setAttribute('x', cx);
-  title.setAttribute('y', cy - r - 8);
-  title.setAttribute('text-anchor', 'middle');
-  title.setAttribute('font-size', '10');
-  title.setAttribute('font-weight', 'bold');
-  title.setAttribute('fill', '#1a2332');
-  title.textContent = '🧭 ทิศหันแผง';
-  group.appendChild(title);
-}
-
-function drawRain() {
-  const group = document.getElementById('rainGroup');
-  group.innerHTML = '';
-  const cloud = document.getElementById('cloudGroup');
-  if (!isRainyMonth(state.month)) {
-    cloud.style.display = 'none';
-    return;
-  }
-  cloud.style.display = '';
-
-  const startX = 200, endX = 540;
-  for (let i = 0; i < 30; i++) {
-    const x = startX + Math.random() * (endX - startX);
-    const dropDelay = Math.random() * 1.5;
-    const drop = document.createElementNS(SVG_NS, 'line');
-    drop.setAttribute('x1', x);
-    drop.setAttribute('y1', '60');
-    drop.setAttribute('x2', x - 3);
-    drop.setAttribute('y2', '75');
-    drop.setAttribute('stroke', '#6495ED');
-    drop.setAttribute('stroke-width', '1.5');
-    drop.setAttribute('opacity', '0.7');
-    const am = document.createElementNS(SVG_NS, 'animateTransform');
-    am.setAttribute('attributeName', 'transform');
-    am.setAttribute('type', 'translate');
-    am.setAttribute('from', '0 0');
-    am.setAttribute('to', '-30 200');
-    am.setAttribute('dur', `${0.8 + Math.random() * 0.4}s`);
-    am.setAttribute('repeatCount', 'indefinite');
-    am.setAttribute('begin', `${dropDelay}s`);
-    drop.appendChild(am);
-    const ao = document.createElementNS(SVG_NS, 'animate');
-    ao.setAttribute('attributeName', 'opacity');
-    ao.setAttribute('values', '0;0.7;0.7;0');
-    ao.setAttribute('dur', `${0.8 + Math.random() * 0.4}s`);
-    ao.setAttribute('repeatCount', 'indefinite');
-    ao.setAttribute('begin', `${dropDelay}s`);
-    drop.appendChild(ao);
-    group.appendChild(drop);
-  }
 }
 
 function drawTiltIndicator() {
@@ -751,15 +1132,6 @@ function drawTiltIndicator() {
   tiltLine.setAttribute('stroke', '#1a3a5c');
   tiltLine.setAttribute('stroke-width', '4');
   group.appendChild(tiltLine);
-
-  const arc = document.createElementNS(SVG_NS, 'path');
-  const arcEndX = cx - 25 + 15 * Math.cos(angle * Math.PI / 180);
-  const arcEndY = cy + 10 - 15 * Math.sin(angle * Math.PI / 180);
-  arc.setAttribute('d', `M ${cx - 25 + 15} ${cy + 10} A 15 15 0 0 0 ${arcEndX} ${arcEndY}`);
-  arc.setAttribute('stroke', '#ff6b6b');
-  arc.setAttribute('stroke-width', '2');
-  arc.setAttribute('fill', 'none');
-  group.appendChild(arc);
 
   const text = document.createElementNS(SVG_NS, 'text');
   text.setAttribute('x', cx - 5);
@@ -798,14 +1170,54 @@ function drawDcCables() {
   });
 }
 
+function drawRain() {
+  const group = document.getElementById('rainGroup');
+  group.innerHTML = '';
+  const cloud = document.getElementById('cloudGroup');
+  if (!rainyMonths.includes(state.month)) {
+    cloud.style.display = 'none';
+    return;
+  }
+  cloud.style.display = '';
+
+  for (let i = 0; i < 30; i++) {
+    const x = 200 + Math.random() * 340;
+    const dropDelay = Math.random() * 1.5;
+    const drop = document.createElementNS(SVG_NS, 'line');
+    drop.setAttribute('x1', x);
+    drop.setAttribute('y1', '60');
+    drop.setAttribute('x2', x - 3);
+    drop.setAttribute('y2', '75');
+    drop.setAttribute('stroke', '#6495ED');
+    drop.setAttribute('stroke-width', '1.5');
+    drop.setAttribute('opacity', '0.7');
+    const am = document.createElementNS(SVG_NS, 'animateTransform');
+    am.setAttribute('attributeName', 'transform');
+    am.setAttribute('type', 'translate');
+    am.setAttribute('from', '0 0');
+    am.setAttribute('to', '-30 200');
+    am.setAttribute('dur', `${0.8 + Math.random() * 0.4}s`);
+    am.setAttribute('repeatCount', 'indefinite');
+    am.setAttribute('begin', `${dropDelay}s`);
+    drop.appendChild(am);
+    const ao = document.createElementNS(SVG_NS, 'animate');
+    ao.setAttribute('attributeName', 'opacity');
+    ao.setAttribute('values', '0;0.7;0.7;0');
+    ao.setAttribute('dur', `${0.8 + Math.random() * 0.4}s`);
+    ao.setAttribute('repeatCount', 'indefinite');
+    ao.setAttribute('begin', `${dropDelay}s`);
+    drop.appendChild(ao);
+    group.appendChild(drop);
+  }
+}
+
 function animateLightRays() {
   const group = document.getElementById('lightRays');
   group.innerHTML = '';
   const psh = state.month === 'year' ? yearlyAvgPSH : monthlyPSH[state.month];
   const intensity = psh / 6.0;
   if (intensity < 0.1) return;
-
-  const reduceFactor = isRainyMonth(state.month) ? 0.4 : 1;
+  const reduceFactor = rainyMonths.includes(state.month) ? 0.4 : 1;
   const sunX = 120, sunY = 100;
 
   state.panelPositions.forEach((pos, i) => {
@@ -838,7 +1250,6 @@ function animateCurrent() {
   const stats = computeStats();
   const actualPower = stats.actualPowerW;
   if (actualPower < 50) return;
-
   const speed = Math.max(0.6, 3 - actualPower / 5000);
   const particleCount = Math.min(8, Math.floor(actualPower / 500) + 2);
 
@@ -861,73 +1272,74 @@ function animateCurrent() {
     }
   });
 
-  for (let i = 0; i < particleCount; i++) {
-    const particle = document.createElementNS(SVG_NS, 'circle');
-    particle.setAttribute('r', '4');
-    particle.setAttribute('fill', '#ff3333');
-    const am = document.createElementNS(SVG_NS, 'animateMotion');
-    am.setAttribute('dur', `${speed}s`);
-    am.setAttribute('repeatCount', 'indefinite');
-    am.setAttribute('begin', `${i * (speed / particleCount)}s`);
-    am.setAttribute('path', 'M 510 370 L 600 370');
-    particle.appendChild(am);
-    group.appendChild(particle);
-  }
+  const segments = [
+    { path: 'M 510 370 L 600 370', color: '#ff3333' },
+    { path: 'M 700 370 L 780 370', color: '#16a085' },
+    { path: 'M 860 370 L 900 370 L 900 490 L 780 490', color: '#16a085', durMul: 1.5 }
+  ];
 
-  for (let i = 0; i < particleCount; i++) {
-    const particle = document.createElementNS(SVG_NS, 'circle');
-    particle.setAttribute('r', '4');
-    particle.setAttribute('fill', '#16a085');
-    const am = document.createElementNS(SVG_NS, 'animateMotion');
-    am.setAttribute('dur', `${speed}s`);
-    am.setAttribute('repeatCount', 'indefinite');
-    am.setAttribute('begin', `${i * (speed / particleCount)}s`);
-    am.setAttribute('path', 'M 700 370 L 780 370');
-    particle.appendChild(am);
-    group.appendChild(particle);
-  }
-
-  for (let i = 0; i < particleCount; i++) {
-    const particle = document.createElementNS(SVG_NS, 'circle');
-    particle.setAttribute('r', '4');
-    particle.setAttribute('fill', '#16a085');
-    const am = document.createElementNS(SVG_NS, 'animateMotion');
-    am.setAttribute('dur', `${speed * 1.5}s`);
-    am.setAttribute('repeatCount', 'indefinite');
-    am.setAttribute('begin', `${i * (speed / particleCount)}s`);
-    am.setAttribute('path', 'M 860 370 L 900 370 L 900 490 L 780 490');
-    particle.appendChild(am);
-    group.appendChild(particle);
-  }
+  segments.forEach(seg => {
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElementNS(SVG_NS, 'circle');
+      particle.setAttribute('r', '4');
+      particle.setAttribute('fill', seg.color);
+      const am = document.createElementNS(SVG_NS, 'animateMotion');
+      am.setAttribute('dur', `${speed * (seg.durMul || 1)}s`);
+      am.setAttribute('repeatCount', 'indefinite');
+      am.setAttribute('begin', `${i * (speed / particleCount)}s`);
+      am.setAttribute('path', seg.path);
+      particle.appendChild(am);
+      group.appendChild(particle);
+    }
+  });
 }
 
+// ============ COMPUTE STATS ============
 function computeStats() {
   const psh = state.month === 'year' ? yearlyAvgPSH : monthlyPSH[state.month];
-  const tiltEff = tiltEfficiency(state.tiltAngle);
-  const azEff = azimuthEfficiency(state.azimuth);
+  const tiltEff = state.trackerMode !== 'fixed' ? 1.0 : tiltEfficiency(state.tiltAngle);
+  const azEff = state.trackerMode !== 'fixed' ? 1.0 : azimuthEfficiency(state.azimuth);
   const degradeEff = degradationFactor(state.systemAge);
   const dustEff = dustEfficiency(state.month, state.dustEnabled);
-  const systemEff = 0.85;
-  const installedW = state.panelWatt * state.panelCount;
+  const prov = provinces[state.province];
+  const pm25Eff = state.dustEnabled ? pm25Efficiency(prov.pm25) : 1.0;
+  const shadeEff = shadeEfficiency(state.shadeLevel);
+  const trackGain = trackerGain(state.trackerMode);
+  const tech = panelTechs[state.panelType];
+
+  // Calculate panel temp (ambient + heat from sun)
+  const ambientTemp = prov.temp + (rainyMonths.includes(state.month) ? -2 : 2);
+  const panelTemp = calculatePanelTemp(ambientTemp, 700);
+  const tempEff = temperatureEfficiency(panelTemp, state.panelType);
+
+  const systemEff = 0.85; // wiring + inverter losses
+  const installedW = state.panelWatt * state.panelCount * tech.baseEff;
   const inverterMaxW = state.inverterSize * 1000;
 
-  const peakPowerW = installedW * tiltEff * azEff * degradeEff * dustEff * systemEff;
+  const allLosses = tiltEff * azEff * degradeEff * dustEff * pm25Eff * shadeEff * tempEff * systemEff * trackGain;
+  const peakPowerW = installedW * allLosses;
   const actualPowerW = Math.min(peakPowerW, inverterMaxW);
 
-  const dailyKWh = (installedW / 1000) * psh * tiltEff * azEff * degradeEff * dustEff * systemEff;
+  const dailyKWh = (installedW / 1000) * psh * allLosses;
   const dailyKWhCapped = Math.min(dailyKWh, (inverterMaxW / 1000) * psh);
 
+  // Yearly: sum 12 months
   let yearlyKWhAccurate = 0;
   for (let m = 1; m <= 12; m++) {
     const mPsh = monthlyPSH[m];
     const mDust = dustEfficiency(m, state.dustEnabled);
-    const mDaily = (installedW / 1000) * mPsh * tiltEff * azEff * degradeEff * mDust * systemEff;
+    const mAmbTemp = prov.temp + (rainyMonths.includes(m) ? -2 : 2);
+    const mPanelTemp = calculatePanelTemp(mAmbTemp, 700);
+    const mTempEff = temperatureEfficiency(mPanelTemp, state.panelType);
+    const mAllLosses = tiltEff * azEff * degradeEff * mDust * pm25Eff * shadeEff * mTempEff * systemEff * trackGain;
+    const mDaily = (installedW / 1000) * mPsh * mAllLosses;
     const mDailyCapped = Math.min(mDaily, (inverterMaxW / 1000) * mPsh);
     yearlyKWhAccurate += mDailyCapped * 30;
   }
 
   return {
-    psh, tiltEff, azEff, degradeEff, dustEff, installedW,
+    psh, tiltEff, azEff, degradeEff, dustEff, pm25Eff, shadeEff, tempEff, trackGain,
+    panelTemp, ambientTemp, installedW,
     actualPowerW: Math.round(actualPowerW),
     dailyKWh: dailyKWhCapped,
     yearlyKWh: yearlyKWhAccurate,
@@ -937,10 +1349,14 @@ function computeStats() {
 }
 
 function computePayback() {
-  const installedW = state.panelWatt * state.panelCount;
+  const installedW = state.panelWatt * state.panelCount * panelTechs[state.panelType].baseEff;
   const inverterMaxW = state.inverterSize * 1000;
-  const tiltEff = tiltEfficiency(state.tiltAngle);
-  const azEff = azimuthEfficiency(state.azimuth);
+  const tiltEff = state.trackerMode !== 'fixed' ? 1.0 : tiltEfficiency(state.tiltAngle);
+  const azEff = state.trackerMode !== 'fixed' ? 1.0 : azimuthEfficiency(state.azimuth);
+  const prov = provinces[state.province];
+  const pm25Eff = state.dustEnabled ? pm25Efficiency(prov.pm25) : 1.0;
+  const shadeEff = shadeEfficiency(state.shadeLevel);
+  const trackGain = trackerGain(state.trackerMode);
 
   const yearlyData = [];
   let cumulative = -state.systemCost;
@@ -954,13 +1370,16 @@ function computePayback() {
     for (let m = 1; m <= 12; m++) {
       const psh = monthlyPSH[m];
       const dustE = dustEfficiency(m, state.dustEnabled);
-      const daily = (installedW / 1000) * psh * tiltEff * azEff * deg * dustE * 0.85;
+      const ambTemp = prov.temp + (rainyMonths.includes(m) ? -2 : 2);
+      const panelTemp = calculatePanelTemp(ambTemp, 700);
+      const tempEff = temperatureEfficiency(panelTemp, state.panelType);
+      const losses = tiltEff * azEff * deg * dustE * pm25Eff * shadeEff * tempEff * 0.85 * trackGain;
+      const daily = (installedW / 1000) * psh * losses;
       const dailyCapped = Math.min(daily, (inverterMaxW / 1000) * psh);
       yearlyKWh += dailyCapped * 30;
     }
     const yearSaving = yearlyKWh * state.electricityRate;
     const prevCumulative = cumulative;
-
     if (yr === 0) {
       yearlyData.push({ year: yr, saving: 0, cumulative });
     } else {
@@ -973,74 +1392,62 @@ function computePayback() {
       yearlyData.push({ year: yr, saving: yearSaving, cumulative });
     }
   }
-
   const paybackTotal = paybackYear !== null ? paybackYear + paybackFraction : null;
-  const profit30 = cumulative;
-
-  return { yearlyData, paybackYears: paybackTotal, profit30, totalRevenue };
+  return { yearlyData, paybackYears: paybackTotal, profit30: cumulative, totalRevenue };
 }
 
+// ============ UPDATE ============
 function updateStats() {
   const s = computeStats();
-  document.getElementById('theoreticalPower').textContent = s.installedW.toLocaleString();
+  document.getElementById('theoreticalPower').textContent = Math.round(s.installedW).toLocaleString();
   document.getElementById('actualPower').textContent = s.actualPowerW.toLocaleString();
-  document.getElementById('totalPower').textContent = s.actualPowerW.toLocaleString();
   document.getElementById('dailyProduction').textContent = s.dailyKWh.toFixed(1);
   document.getElementById('monthlySaving').textContent = s.monthlySavingTHB.toLocaleString();
   document.getElementById('yearlyProduction').textContent = Math.round(s.yearlyKWh).toLocaleString();
   document.getElementById('yearlySaving').textContent = s.yearlySavingTHB.toLocaleString();
   document.getElementById('inverterSizeText').textContent = state.inverterSize + ' kW';
   document.getElementById('pshValue').textContent = s.psh.toFixed(1);
+  document.getElementById('panelTempVal').textContent = Math.round(s.panelTemp);
 
-  const tiltPct = Math.round(s.tiltEff * 100);
-  document.getElementById('tiltEffPct').textContent = tiltPct;
-  document.getElementById('tiltEfficiencyBar').style.width = tiltPct + '%';
-  document.getElementById('tiltEfficiencyText').textContent = tiltPct + '%';
+  document.getElementById('tiltEfficiencyBar').style.width = Math.round(s.tiltEff * 100) + '%';
+  document.getElementById('tiltEfficiencyText').textContent = Math.round(s.tiltEff * 100) + '%';
+  document.getElementById('azimuthEfficiencyBar').style.width = Math.round(s.azEff * 100) + '%';
+  document.getElementById('azimuthEfficiencyText').textContent = Math.round(s.azEff * 100) + '%';
 
-  const azPct = Math.round(s.azEff * 100);
-  document.getElementById('azimuthEfficiencyBar').style.width = azPct + '%';
-  document.getElementById('azimuthEfficiencyText').textContent = azPct + '%';
-
-  const azDustPct = Math.round(s.azEff * s.dustEff * 100);
-  document.getElementById('azDustEffPct').textContent = azDustPct;
   document.getElementById('degradationValue').textContent = (100 - Math.round(s.degradeEff * 100)).toFixed(1);
 
-  const totalEff = Math.round(s.tiltEff * s.azEff * s.degradeEff * s.dustEff * 100);
+  const totalEff = Math.round(s.tiltEff * s.azEff * s.degradeEff * s.dustEff * s.pm25Eff * s.shadeEff * s.tempEff * s.trackGain * 100);
   document.getElementById('totalEfficiency').textContent = totalEff;
 
-  const warning = document.getElementById('warning');
-  const inverterMaxW = state.inverterSize * 1000;
-  if (s.installedW > inverterMaxW * 1.3) {
-    warning.textContent = 'แผงเกิน Inverter มาก!';
-    warning.style.color = '#ff6b6b';
-  } else if (s.installedW > inverterMaxW) {
-    warning.textContent = 'Oversize เล็กน้อย (OK)';
-    warning.style.color = '#ffa500';
-  } else if (s.installedW < inverterMaxW * 0.5) {
-    warning.textContent = 'Inverter ใหญ่เกินไป';
-    warning.style.color = '#ffa500';
-  } else {
-    warning.textContent = '✓ ขนาดเหมาะสม';
-    warning.style.color = '#0f0';
-  }
+  // Factor summary
+  updateFactorSummary(s);
 
-  document.getElementById('batteryGroup').style.opacity = state.batteryEnabled ? '1' : '0.3';
+  // Province info
+  const prov = provinces[state.province];
+  const pmStatus = prov.pm25 <= 20 ? 'ดี' : prov.pm25 <= 30 ? 'ปานกลาง' : 'แย่';
+  const pmColor = prov.pm25 <= 20 ? '#2ecc71' : prov.pm25 <= 30 ? '#f39c12' : '#e74c3c';
+  document.getElementById('provinceInfo').innerHTML =
+    `PM2.5: <strong style="color:${pmColor};">${prov.pm25} µg/m³ (${pmStatus})</strong> · 
+    อุณหภูมิเฉลี่ย: <strong>${prov.temp}°C</strong> · 
+    ภาค${prov.region}`;
 
+  // Panel tech info
+  const tech = panelTechs[state.panelType];
+  document.getElementById('panelTechInfo').textContent = tech.info;
+
+  // Status
   const statusText = document.getElementById('statusText');
-  let statusEmoji = '☀️', statusMsg = 'แสงดี';
-  if (isRainyMonth(state.month)) {
-    statusEmoji = '🌧️';
-    statusMsg = 'ฝนตก';
+  let emoji = '☀️', msg = 'แสงดี';
+  if (rainyMonths.includes(state.month)) {
+    emoji = '🌧️'; msg = 'ฝนตก';
     document.getElementById('sunGroup').style.opacity = 0.4;
   } else {
     document.getElementById('sunGroup').style.opacity = Math.max(0.3, s.psh / 6.5);
   }
-  let dustMsg = state.dustEnabled
-    ? (isRainyMonth(state.month) ? ' · ฝนล้างฝุ่น' : ' · มีฝุ่น')
-    : ' · สะอาด';
-  statusText.textContent = `${statusEmoji} ${statusMsg}${dustMsg}`;
+  statusText.textContent = `${emoji} ${prov.name} · ${msg} · แผง ${Math.round(s.panelTemp)}°C`;
+  document.getElementById('batteryGroup').style.opacity = state.batteryEnabled ? '1' : '0.3';
 
-  // ROI
+  // ROI Banner
   const roi = computePayback();
   const roiBanner = document.getElementById('roiBanner');
   const paybackEl = document.getElementById('paybackYears');
@@ -1055,10 +1462,9 @@ function updateStats() {
     paybackEl.textContent = roi.paybackYears.toFixed(1);
     const today = new Date();
     const totalMonths = today.getMonth() + Math.round(roi.paybackYears * 12);
-    const paybackYear = today.getFullYear() + Math.floor(totalMonths / 12);
-    const paybackMonth = totalMonths % 12;
-    const thaiMonths = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
-    paybackDateEl.textContent = `${thaiMonths[paybackMonth]} ${paybackYear + 543}`;
+    const py = today.getFullYear() + Math.floor(totalMonths / 12);
+    const pm = totalMonths % 12;
+    paybackDateEl.textContent = `${monthNames[pm]} ${py + 543}`;
     roiBanner.classList.remove('bad', 'warning');
     if (roi.paybackYears > 12) roiBanner.classList.add('warning');
     if (roi.paybackYears > 20) {
@@ -1067,18 +1473,15 @@ function updateStats() {
     }
   }
 
-  // 30-Year Profit Banner
+  // Profit Banner
   const profitBanner = document.getElementById('profitBanner');
   document.getElementById('profit30Years').textContent = Math.round(roi.profit30).toLocaleString();
   document.getElementById('totalRevenue').textContent = Math.round(roi.totalRevenue).toLocaleString();
   document.getElementById('totalInvestment').textContent = state.systemCost.toLocaleString();
-
   const roiPct = state.systemCost > 0 ? Math.round((roi.profit30 / state.systemCost) * 100) : 0;
   document.getElementById('roiPercent').textContent = roiPct;
   document.getElementById('avgProfit').textContent = Math.round(roi.profit30 / 30).toLocaleString();
 
-  // Color coding for profit
-  profitBanner.classList.remove('warning', 'bad');
   if (roi.profit30 < 0) {
     profitBanner.style.background = 'linear-gradient(135deg, #c0392b, #922b21)';
   } else if (roi.profit30 < state.systemCost) {
@@ -1088,20 +1491,55 @@ function updateStats() {
   }
 }
 
+function updateFactorSummary(s) {
+  const summary = document.getElementById('factorSummary');
+  const factors = [
+    { name: 'มุมเอียง', val: s.tiltEff, label: Math.round(s.tiltEff*100)+'%' },
+    { name: 'ทิศ', val: s.azEff, label: Math.round(s.azEff*100)+'%' },
+    { name: 'อุณหภูมิ', val: s.tempEff, label: Math.round(s.tempEff*100)+'%' },
+    { name: 'ฝุ่น', val: s.dustEff, label: Math.round(s.dustEff*100)+'%' },
+    { name: 'PM2.5', val: s.pm25Eff, label: Math.round(s.pm25Eff*100)+'%' },
+    { name: 'เงา', val: s.shadeEff, label: Math.round(s.shadeEff*100)+'%' },
+    { name: 'อายุ', val: s.degradeEff, label: Math.round(s.degradeEff*100)+'%' },
+    { name: 'Tracker', val: s.trackGain, label: '×'+s.trackGain.toFixed(2) }
+  ];
+
+  summary.innerHTML = factors.map(f => {
+    let cls = 'factor-neutral';
+    if (f.name === 'Tracker') {
+      cls = f.val > 1 ? 'factor-good' : 'factor-neutral';
+    } else {
+      if (f.val >= 0.95) cls = 'factor-good';
+      else if (f.val >= 0.85) cls = 'factor-neutral';
+      else cls = 'factor-bad';
+    }
+    return `<div class="factor-item"><span>${f.name}</span><span class="factor-val ${cls}">${f.label}</span></div>`;
+  }).join('');
+}
+
+// ============ CHARTS ============
 function drawMonthChart() {
   const chart = document.getElementById('monthChart');
   chart.innerHTML = '';
-  const installedW = state.panelWatt * state.panelCount;
+  const installedW = state.panelWatt * state.panelCount * panelTechs[state.panelType].baseEff;
   const inverterMaxW = state.inverterSize * 1000;
-  const tiltEff = tiltEfficiency(state.tiltAngle);
-  const azEff = azimuthEfficiency(state.azimuth);
+  const tiltEff = state.trackerMode !== 'fixed' ? 1.0 : tiltEfficiency(state.tiltAngle);
+  const azEff = state.trackerMode !== 'fixed' ? 1.0 : azimuthEfficiency(state.azimuth);
   const degradeEff = degradationFactor(state.systemAge);
+  const prov = provinces[state.province];
+  const pm25Eff = state.dustEnabled ? pm25Efficiency(prov.pm25) : 1.0;
+  const shadeEff = shadeEfficiency(state.shadeLevel);
+  const trackGain = trackerGain(state.trackerMode);
 
   const monthlyData = [];
   for (let m = 1; m <= 12; m++) {
     const psh = monthlyPSH[m];
     const dustE = dustEfficiency(m, state.dustEnabled);
-    const daily = (installedW / 1000) * psh * tiltEff * azEff * degradeEff * dustE * 0.85;
+    const ambTemp = prov.temp + (rainyMonths.includes(m) ? -2 : 2);
+    const panelTemp = calculatePanelTemp(ambTemp, 700);
+    const tempEff = temperatureEfficiency(panelTemp, state.panelType);
+    const losses = tiltEff * azEff * degradeEff * dustE * pm25Eff * shadeEff * tempEff * 0.85 * trackGain;
+    const daily = (installedW / 1000) * psh * losses;
     const dailyCapped = Math.min(daily, (inverterMaxW / 1000) * psh);
     monthlyData.push({ month: m, kWh: dailyCapped * 30, isRainy: rainyMonths.includes(m) });
   }
@@ -1116,17 +1554,13 @@ function drawMonthChart() {
     const y = padT + (innerH * i / 4);
     const val = maxKWh - (maxKWh * i / 4);
     const line = document.createElementNS(SVG_NS, 'line');
-    line.setAttribute('x1', padL);
-    line.setAttribute('y1', y);
-    line.setAttribute('x2', chartW - padR);
-    line.setAttribute('y2', y);
+    line.setAttribute('x1', padL); line.setAttribute('y1', y);
+    line.setAttribute('x2', chartW - padR); line.setAttribute('y2', y);
     line.setAttribute('stroke', 'rgba(255,255,255,0.1)');
     chart.appendChild(line);
     const text = document.createElementNS(SVG_NS, 'text');
-    text.setAttribute('x', padL - 5);
-    text.setAttribute('y', y + 4);
-    text.setAttribute('text-anchor', 'end');
-    text.setAttribute('font-size', '10');
+    text.setAttribute('x', padL - 5); text.setAttribute('y', y + 4);
+    text.setAttribute('text-anchor', 'end'); text.setAttribute('font-size', '10');
     text.setAttribute('fill', '#a0b0c0');
     text.textContent = Math.round(val);
     chart.appendChild(text);
@@ -1138,32 +1572,25 @@ function drawMonthChart() {
     const h = (d.kWh / maxKWh) * innerH;
     const y = padT + innerH - h;
     const isActive = (state.month === d.month) || (state.month === 'year');
-    const isRainy = d.isRainy;
     const bar = document.createElementNS(SVG_NS, 'rect');
-    bar.setAttribute('x', x);
-    bar.setAttribute('y', y);
-    bar.setAttribute('width', barW);
-    bar.setAttribute('height', h);
+    bar.setAttribute('x', x); bar.setAttribute('y', y);
+    bar.setAttribute('width', barW); bar.setAttribute('height', h);
     let fillColor = '#5a6a7a';
-    if (isActive) fillColor = isRainy ? '#4ecdc4' : '#ffd700';
-    else if (isRainy) fillColor = '#3a7a8a';
+    if (isActive) fillColor = d.isRainy ? '#4ecdc4' : '#ffd700';
+    else if (d.isRainy) fillColor = '#3a7a8a';
     bar.setAttribute('fill', fillColor);
     bar.setAttribute('rx', '3');
     chart.appendChild(bar);
     const valText = document.createElementNS(SVG_NS, 'text');
-    valText.setAttribute('x', x + barW / 2);
-    valText.setAttribute('y', y - 3);
-    valText.setAttribute('text-anchor', 'middle');
-    valText.setAttribute('font-size', '9');
+    valText.setAttribute('x', x + barW / 2); valText.setAttribute('y', y - 3);
+    valText.setAttribute('text-anchor', 'middle'); valText.setAttribute('font-size', '9');
     valText.setAttribute('fill', isActive ? '#ffd700' : '#a0b0c0');
     valText.setAttribute('font-weight', 'bold');
     valText.textContent = Math.round(d.kWh);
     chart.appendChild(valText);
     const monthText = document.createElementNS(SVG_NS, 'text');
-    monthText.setAttribute('x', x + barW / 2);
-    monthText.setAttribute('y', chartH - padB + 15);
-    monthText.setAttribute('text-anchor', 'middle');
-    monthText.setAttribute('font-size', '10');
+    monthText.setAttribute('x', x + barW / 2); monthText.setAttribute('y', chartH - padB + 15);
+    monthText.setAttribute('text-anchor', 'middle'); monthText.setAttribute('font-size', '10');
     monthText.setAttribute('fill', isActive ? '#ffd700' : '#a0b0c0');
     monthText.textContent = monthNames[i];
     chart.appendChild(monthText);
@@ -1173,18 +1600,11 @@ function drawMonthChart() {
 function drawPaybackChart() {
   const chart = document.getElementById('paybackChart');
   chart.innerHTML = '';
-
   const defs = document.createElementNS(SVG_NS, 'defs');
-  defs.innerHTML = `
-    <linearGradient id="profitGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#2ecc71" stop-opacity="0.6"/>
-      <stop offset="100%" stop-color="#2ecc71" stop-opacity="0"/>
-    </linearGradient>
-    <linearGradient id="lossGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#e74c3c" stop-opacity="0"/>
-      <stop offset="100%" stop-color="#e74c3c" stop-opacity="0.6"/>
-    </linearGradient>
-  `;
+  defs.innerHTML = `<linearGradient id="profitGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="#2ecc71" stop-opacity="0.6"/>
+    <stop offset="100%" stop-color="#2ecc71" stop-opacity="0"/>
+  </linearGradient>`;
   chart.appendChild(defs);
 
   const roi = computePayback();
@@ -1202,42 +1622,24 @@ function drawPaybackChart() {
     const y = padT + (innerH * i / 4);
     const val = maxVal - (range * i / 4);
     const line = document.createElementNS(SVG_NS, 'line');
-    line.setAttribute('x1', padL);
-    line.setAttribute('y1', y);
-    line.setAttribute('x2', chartW - padR);
-    line.setAttribute('y2', y);
+    line.setAttribute('x1', padL); line.setAttribute('y1', y);
+    line.setAttribute('x2', chartW - padR); line.setAttribute('y2', y);
     line.setAttribute('stroke', 'rgba(255,255,255,0.08)');
     chart.appendChild(line);
     const text = document.createElementNS(SVG_NS, 'text');
-    text.setAttribute('x', padL - 5);
-    text.setAttribute('y', y + 4);
-    text.setAttribute('text-anchor', 'end');
-    text.setAttribute('font-size', '9');
+    text.setAttribute('x', padL - 5); text.setAttribute('y', y + 4);
+    text.setAttribute('text-anchor', 'end'); text.setAttribute('font-size', '9');
     text.setAttribute('fill', '#a0b0c0');
-    const formatVal = Math.abs(val) >= 1000 ? (val/1000).toFixed(0) + 'k' : val.toFixed(0);
-    text.textContent = '฿' + formatVal;
+    text.textContent = '฿' + (Math.abs(val) >= 1000 ? (val/1000).toFixed(0) + 'k' : val.toFixed(0));
     chart.appendChild(text);
   }
 
   const zeroLine = document.createElementNS(SVG_NS, 'line');
-  zeroLine.setAttribute('x1', padL);
-  zeroLine.setAttribute('y1', zeroY);
-  zeroLine.setAttribute('x2', chartW - padR);
-  zeroLine.setAttribute('y2', zeroY);
-  zeroLine.setAttribute('stroke', '#ffd700');
-  zeroLine.setAttribute('stroke-width', '1.5');
+  zeroLine.setAttribute('x1', padL); zeroLine.setAttribute('y1', zeroY);
+  zeroLine.setAttribute('x2', chartW - padR); zeroLine.setAttribute('y2', zeroY);
+  zeroLine.setAttribute('stroke', '#ffd700'); zeroLine.setAttribute('stroke-width', '1.5');
   zeroLine.setAttribute('stroke-dasharray', '5,3');
   chart.appendChild(zeroLine);
-
-  const zeroLabel = document.createElementNS(SVG_NS, 'text');
-  zeroLabel.setAttribute('x', chartW - padR);
-  zeroLabel.setAttribute('y', zeroY - 4);
-  zeroLabel.setAttribute('text-anchor', 'end');
-  zeroLabel.setAttribute('font-size', '9');
-  zeroLabel.setAttribute('fill', '#ffd700');
-  zeroLabel.setAttribute('font-weight', 'bold');
-  zeroLabel.textContent = 'Break-even (คืนทุน)';
-  chart.appendChild(zeroLabel);
 
   let pathD = '';
   data.forEach((d, i) => {
@@ -1250,7 +1652,7 @@ function drawPaybackChart() {
   const areaD = pathD + ` L ${lastX} ${zeroY} L ${padL} ${zeroY} Z`;
   const area = document.createElementNS(SVG_NS, 'path');
   area.setAttribute('d', areaD);
-  area.setAttribute('fill', roi.paybackYears !== null ? 'url(#profitGradient)' : 'url(#lossGradient)');
+  area.setAttribute('fill', 'url(#profitGrad)');
   area.setAttribute('opacity', '0.5');
   chart.appendChild(area);
 
@@ -1263,71 +1665,41 @@ function drawPaybackChart() {
 
   if (roi.paybackYears !== null) {
     const markerX = padL + (innerW * roi.paybackYears / 30);
-    const vLine = document.createElementNS(SVG_NS, 'line');
-    vLine.setAttribute('x1', markerX);
-    vLine.setAttribute('y1', padT);
-    vLine.setAttribute('x2', markerX);
-    vLine.setAttribute('y2', padT + innerH);
-    vLine.setAttribute('stroke', '#ffd700');
-    vLine.setAttribute('stroke-width', '2');
-    vLine.setAttribute('stroke-dasharray', '4,2');
-    chart.appendChild(vLine);
     const dot = document.createElementNS(SVG_NS, 'circle');
-    dot.setAttribute('cx', markerX);
-    dot.setAttribute('cy', zeroY);
-    dot.setAttribute('r', '7');
-    dot.setAttribute('fill', '#ffd700');
-    dot.setAttribute('stroke', '#fff');
-    dot.setAttribute('stroke-width', '2');
+    dot.setAttribute('cx', markerX); dot.setAttribute('cy', zeroY); dot.setAttribute('r', '7');
+    dot.setAttribute('fill', '#ffd700'); dot.setAttribute('stroke', '#fff'); dot.setAttribute('stroke-width', '2');
     chart.appendChild(dot);
     const lblX = Math.max(padL, Math.min(markerX - 50, chartW - padR - 100));
     const labelBg = document.createElementNS(SVG_NS, 'rect');
-    labelBg.setAttribute('x', lblX);
-    labelBg.setAttribute('y', zeroY - 38);
-    labelBg.setAttribute('width', '100');
-    labelBg.setAttribute('height', '22');
-    labelBg.setAttribute('fill', '#ffd700');
-    labelBg.setAttribute('rx', '4');
+    labelBg.setAttribute('x', lblX); labelBg.setAttribute('y', zeroY - 38);
+    labelBg.setAttribute('width', '100'); labelBg.setAttribute('height', '22');
+    labelBg.setAttribute('fill', '#ffd700'); labelBg.setAttribute('rx', '4');
     chart.appendChild(labelBg);
     const lt = document.createElementNS(SVG_NS, 'text');
-    lt.setAttribute('x', lblX + 50);
-    lt.setAttribute('y', zeroY - 22);
-    lt.setAttribute('text-anchor', 'middle');
-    lt.setAttribute('font-size', '11');
-    lt.setAttribute('font-weight', 'bold');
-    lt.setAttribute('fill', '#1a2332');
+    lt.setAttribute('x', lblX + 50); lt.setAttribute('y', zeroY - 22);
+    lt.setAttribute('text-anchor', 'middle'); lt.setAttribute('font-size', '11');
+    lt.setAttribute('font-weight', 'bold'); lt.setAttribute('fill', '#1a2332');
     lt.textContent = `💸 คืนทุน ${roi.paybackYears.toFixed(1)} ปี`;
     chart.appendChild(lt);
   }
 
-  // Year 30 marker - profit point
   const lastData = data[30];
-  const year30X = padL + innerW;
   const year30Y = padT + innerH - ((lastData.cumulative - minVal) / range) * innerH;
-  const profit30Dot = document.createElementNS(SVG_NS, 'circle');
-  profit30Dot.setAttribute('cx', year30X);
-  profit30Dot.setAttribute('cy', year30Y);
-  profit30Dot.setAttribute('r', '8');
-  profit30Dot.setAttribute('fill', '#f39c12');
-  profit30Dot.setAttribute('stroke', '#fff');
-  profit30Dot.setAttribute('stroke-width', '2');
-  chart.appendChild(profit30Dot);
+  const dot30 = document.createElementNS(SVG_NS, 'circle');
+  dot30.setAttribute('cx', lastX); dot30.setAttribute('cy', year30Y); dot30.setAttribute('r', '8');
+  dot30.setAttribute('fill', '#f39c12'); dot30.setAttribute('stroke', '#fff'); dot30.setAttribute('stroke-width', '2');
+  chart.appendChild(dot30);
 
   const profitLabel = document.createElementNS(SVG_NS, 'text');
-  profitLabel.setAttribute('x', chartW - padR - 5);
-  profitLabel.setAttribute('y', padT + 12);
-  profitLabel.setAttribute('text-anchor', 'end');
-  profitLabel.setAttribute('font-size', '11');
-  profitLabel.setAttribute('fill', '#f39c12');
-  profitLabel.setAttribute('font-weight', 'bold');
+  profitLabel.setAttribute('x', chartW - padR - 5); profitLabel.setAttribute('y', padT + 12);
+  profitLabel.setAttribute('text-anchor', 'end'); profitLabel.setAttribute('font-size', '11');
+  profitLabel.setAttribute('fill', '#f39c12'); profitLabel.setAttribute('font-weight', 'bold');
   profitLabel.textContent = `🎯 กำไร 30 ปี: ฿${Math.round(roi.profit30).toLocaleString()}`;
   chart.appendChild(profitLabel);
 
   const invLabel = document.createElementNS(SVG_NS, 'text');
-  invLabel.setAttribute('x', padL + 5);
-  invLabel.setAttribute('y', padT + innerH - 5);
-  invLabel.setAttribute('font-size', '10');
-  invLabel.setAttribute('fill', '#e74c3c');
+  invLabel.setAttribute('x', padL + 5); invLabel.setAttribute('y', padT + innerH - 5);
+  invLabel.setAttribute('font-size', '10'); invLabel.setAttribute('fill', '#e74c3c');
   invLabel.setAttribute('font-weight', 'bold');
   invLabel.textContent = `ลงทุน: ฿${state.systemCost.toLocaleString()}`;
   chart.appendChild(invLabel);
@@ -1335,10 +1707,8 @@ function drawPaybackChart() {
   [0, 5, 10, 15, 20, 25, 30].forEach(yr => {
     const x = padL + (innerW * yr / 30);
     const t = document.createElementNS(SVG_NS, 'text');
-    t.setAttribute('x', x);
-    t.setAttribute('y', chartH - padB + 15);
-    t.setAttribute('text-anchor', 'middle');
-    t.setAttribute('font-size', '10');
+    t.setAttribute('x', x); t.setAttribute('y', chartH - padB + 15);
+    t.setAttribute('text-anchor', 'middle'); t.setAttribute('font-size', '10');
     t.setAttribute('fill', '#a0b0c0');
     t.textContent = yr + ' ปี';
     chart.appendChild(t);
@@ -1349,31 +1719,16 @@ function drawDegradeChart() {
   const chart = document.getElementById('degradeChart');
   chart.innerHTML = '';
   const defs = document.createElementNS(SVG_NS, 'defs');
-  defs.innerHTML = `<linearGradient id="degradeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+  defs.innerHTML = `<linearGradient id="degGrad" x1="0%" y1="0%" x2="0%" y2="100%">
     <stop offset="0%" stop-color="#ff8c00" stop-opacity="0.8"/>
     <stop offset="100%" stop-color="#ff8c00" stop-opacity="0"/>
   </linearGradient>`;
   chart.appendChild(defs);
 
-  const installedW = state.panelWatt * state.panelCount;
-  const inverterMaxW = state.inverterSize * 1000;
-  const tiltEff = tiltEfficiency(state.tiltAngle);
-  const azEff = azimuthEfficiency(state.azimuth);
-
   const data = [];
   for (let y = 0; y <= 30; y++) {
-    const deg = degradationFactor(y);
-    let yearlyKWh = 0;
-    for (let m = 1; m <= 12; m++) {
-      const psh = monthlyPSH[m];
-      const dustE = dustEfficiency(m, state.dustEnabled);
-      const daily = (installedW / 1000) * psh * tiltEff * azEff * deg * dustE * 0.85;
-      const dailyCapped = Math.min(daily, (inverterMaxW / 1000) * psh);
-      yearlyKWh += dailyCapped * 30;
-    }
-    data.push({ year: y, kWh: yearlyKWh, eff: deg * 100 });
+    data.push({ year: y, eff: degradationFactor(y) * 100 });
   }
-
   const chartW = 800, chartH = 180;
   const padL = 50, padR = 50, padT = 20, padB = 35;
   const innerW = chartW - padL - padR;
@@ -1382,18 +1737,14 @@ function drawDegradeChart() {
   for (let i = 0; i <= 4; i++) {
     const y = padT + (innerH * i / 4);
     const line = document.createElementNS(SVG_NS, 'line');
-    line.setAttribute('x1', padL);
-    line.setAttribute('y1', y);
-    line.setAttribute('x2', chartW - padR);
-    line.setAttribute('y2', y);
+    line.setAttribute('x1', padL); line.setAttribute('y1', y);
+    line.setAttribute('x2', chartW - padR); line.setAttribute('y2', y);
     line.setAttribute('stroke', 'rgba(255,255,255,0.1)');
     chart.appendChild(line);
     const pct = 100 - (i * 25);
     const text = document.createElementNS(SVG_NS, 'text');
-    text.setAttribute('x', padL - 5);
-    text.setAttribute('y', y + 4);
-    text.setAttribute('text-anchor', 'end');
-    text.setAttribute('font-size', '10');
+    text.setAttribute('x', padL - 5); text.setAttribute('y', y + 4);
+    text.setAttribute('text-anchor', 'end'); text.setAttribute('font-size', '10');
     text.setAttribute('fill', '#a0b0c0');
     text.textContent = pct + '%';
     chart.appendChild(text);
@@ -1407,9 +1758,7 @@ function drawDegradeChart() {
   });
   pathD += ` L ${chartW - padR} ${padT + innerH} Z`;
   const area = document.createElementNS(SVG_NS, 'path');
-  area.setAttribute('d', pathD);
-  area.setAttribute('fill', 'url(#degradeGradient)');
-  area.setAttribute('opacity', '0.4');
+  area.setAttribute('d', pathD); area.setAttribute('fill', 'url(#degGrad)'); area.setAttribute('opacity', '0.4');
   chart.appendChild(area);
 
   let lineD = '';
@@ -1419,61 +1768,62 @@ function drawDegradeChart() {
     lineD += (i === 0 ? 'M' : 'L') + ` ${x} ${y}`;
   });
   const line = document.createElementNS(SVG_NS, 'path');
-  line.setAttribute('d', lineD);
-  line.setAttribute('stroke', '#ff8c00');
-  line.setAttribute('stroke-width', '2.5');
-  line.setAttribute('fill', 'none');
+  line.setAttribute('d', lineD); line.setAttribute('stroke', '#ff8c00');
+  line.setAttribute('stroke-width', '2.5'); line.setAttribute('fill', 'none');
   chart.appendChild(line);
 
   const markerX = padL + (innerW * state.systemAge / 30);
   const currentEff = data[state.systemAge].eff;
   const markerY = padT + innerH - (currentEff / 100) * innerH;
-  const verticalLine = document.createElementNS(SVG_NS, 'line');
-  verticalLine.setAttribute('x1', markerX);
-  verticalLine.setAttribute('y1', padT);
-  verticalLine.setAttribute('x2', markerX);
-  verticalLine.setAttribute('y2', padT + innerH);
-  verticalLine.setAttribute('stroke', '#ffd700');
-  verticalLine.setAttribute('stroke-width', '2');
-  verticalLine.setAttribute('stroke-dasharray', '4,2');
-  chart.appendChild(verticalLine);
   const dot = document.createElementNS(SVG_NS, 'circle');
-  dot.setAttribute('cx', markerX);
-  dot.setAttribute('cy', markerY);
-  dot.setAttribute('r', '6');
-  dot.setAttribute('fill', '#ffd700');
-  dot.setAttribute('stroke', '#fff');
-  dot.setAttribute('stroke-width', '2');
+  dot.setAttribute('cx', markerX); dot.setAttribute('cy', markerY); dot.setAttribute('r', '6');
+  dot.setAttribute('fill', '#ffd700'); dot.setAttribute('stroke', '#fff'); dot.setAttribute('stroke-width', '2');
   chart.appendChild(dot);
+
   const lblX = Math.max(padL, Math.min(markerX - 50, chartW - padR - 100));
   const labelBg = document.createElementNS(SVG_NS, 'rect');
-  labelBg.setAttribute('x', lblX);
-  labelBg.setAttribute('y', markerY - 28);
-  labelBg.setAttribute('width', '100');
-  labelBg.setAttribute('height', '20');
-  labelBg.setAttribute('fill', '#ffd700');
-  labelBg.setAttribute('rx', '4');
+  labelBg.setAttribute('x', lblX); labelBg.setAttribute('y', markerY - 28);
+  labelBg.setAttribute('width', '100'); labelBg.setAttribute('height', '20');
+  labelBg.setAttribute('fill', '#ffd700'); labelBg.setAttribute('rx', '4');
   chart.appendChild(labelBg);
   const lt = document.createElementNS(SVG_NS, 'text');
-  lt.setAttribute('x', lblX + 50);
-  lt.setAttribute('y', markerY - 14);
-  lt.setAttribute('text-anchor', 'middle');
-  lt.setAttribute('font-size', '11');
-  lt.setAttribute('font-weight', 'bold');
-  lt.setAttribute('fill', '#1a2332');
+  lt.setAttribute('x', lblX + 50); lt.setAttribute('y', markerY - 14);
+  lt.setAttribute('text-anchor', 'middle'); lt.setAttribute('font-size', '11');
+  lt.setAttribute('font-weight', 'bold'); lt.setAttribute('fill', '#1a2332');
   lt.textContent = `ปีที่ ${state.systemAge}: ${currentEff.toFixed(1)}%`;
   chart.appendChild(lt);
 
   [0, 5, 10, 15, 20, 25, 30].forEach(yr => {
     const x = padL + (innerW * yr / 30);
     const t = document.createElementNS(SVG_NS, 'text');
-    t.setAttribute('x', x);
-    t.setAttribute('y', chartH - padB + 15);
-    t.setAttribute('text-anchor', 'middle');
-    t.setAttribute('font-size', '10');
+    t.setAttribute('x', x); t.setAttribute('y', chartH - padB + 15);
+    t.setAttribute('text-anchor', 'middle'); t.setAttribute('font-size', '10');
     t.setAttribute('fill', '#a0b0c0');
     t.textContent = yr + ' ปี';
     chart.appendChild(t);
+  });
+}
+
+// ============ BUILD UI ============
+function buildProvinceSelector() {
+  const sel = document.getElementById('provinceSelect');
+  sel.innerHTML = '';
+  // Group by region
+  const regions = ['กลาง', 'เหนือ', 'อีสาน', 'ตอ', 'ใต้'];
+  const regionNames = { 'กลาง': 'ภาคกลาง', 'เหนือ': 'ภาคเหนือ', 'อีสาน': 'ภาคอีสาน', 'ตอ': 'ภาคตะวันออก', 'ใต้': 'ภาคใต้' };
+  regions.forEach(reg => {
+    const opt = document.createElement('optgroup');
+    opt.label = regionNames[reg];
+    Object.entries(provinces).forEach(([key, p]) => {
+      if (p.region === reg) {
+        const o = document.createElement('option');
+        o.value = key;
+        o.textContent = `${p.name} (PM2.5: ${p.pm25}, ${p.temp}°C)`;
+        if (key === state.province) o.selected = true;
+        opt.appendChild(o);
+      }
+    });
+    sel.appendChild(opt);
   });
 }
 
@@ -1509,7 +1859,36 @@ function refresh() {
   drawDegradeChart();
 }
 
-// Event listeners
+// ============ EVENTS ============
+document.getElementById('provinceSelect').addEventListener('change', e => {
+  state.province = e.target.value;
+  refresh();
+});
+
+document.getElementById('panelType').addEventListener('change', e => {
+  state.panelType = e.target.value;
+  refresh();
+});
+
+document.getElementById('trackerToggle').addEventListener('click', e => {
+  if (state.trackerMode === 'fixed') {
+    state.trackerMode = 'single';
+    e.target.textContent = '🔄 Single-axis (+25%)';
+  } else if (state.trackerMode === 'single') {
+    state.trackerMode = 'dual';
+    e.target.textContent = '🔄🔄 Dual-axis (+35%)';
+  } else {
+    state.trackerMode = 'fixed';
+    e.target.textContent = '📍 แบบติดตั้งคงที่ (Fixed)';
+  }
+  refresh();
+});
+
+document.getElementById('shadeLevel').addEventListener('change', e => {
+  state.shadeLevel = +e.target.value;
+  refresh();
+});
+
 document.getElementById('tiltAngle').addEventListener('input', e => {
   state.tiltAngle = +e.target.value;
   document.getElementById('tiltValue').textContent = e.target.value;
@@ -1551,7 +1930,6 @@ document.getElementById('dustToggle').addEventListener('click', e => {
   if (state.dustEnabled) {
     e.target.textContent = '🌫️ มีฝุ่น';
     e.target.classList.add('dust-on');
-    e.target.classList.remove('off');
   } else {
     e.target.textContent = '✨ แผงสะอาด';
     e.target.classList.remove('dust-on');
@@ -1595,14 +1973,29 @@ document.querySelectorAll('.preset-btn[data-cost]').forEach(btn => {
   });
 });
 
-// AZIMUTH compass buttons
 document.querySelectorAll('.compass-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     state.azimuth = parseInt(btn.dataset.azimuth);
     document.querySelectorAll('.compass-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    document.getElementById('azimuthSlider').value = state.azimuth;
+    document.getElementById('azimuthSliderValue').textContent = state.azimuth;
     refresh();
   });
+});
+
+// Azimuth slider
+document.getElementById('azimuthSlider').addEventListener('input', e => {
+  state.azimuth = +e.target.value;
+  document.getElementById('azimuthSliderValue').textContent = e.target.value;
+  // Highlight closest button
+  document.querySelectorAll('.compass-btn').forEach(b => {
+    const btnAz = parseInt(b.dataset.azimuth);
+    let diff = Math.abs(btnAz - state.azimuth);
+    if (diff > 180) diff = 360 - diff;
+    b.classList.toggle('active', diff <= 11);
+  });
+  refresh();
 });
 
 document.getElementById('yearAvgBtn').addEventListener('click', e => {
@@ -1613,12 +2006,15 @@ document.getElementById('yearAvgBtn').addEventListener('click', e => {
   refresh();
 });
 
+// ============ INIT ============
+buildProvinceSelector();
 buildMonthSelector();
 state.month = 'year';
 const yb = document.getElementById('yearAvgBtn');
 yb.style.background = 'linear-gradient(90deg,#ffd700,#ff8c00)';
 yb.style.color = '#1a2332';
 refresh();
+
 </script>
 </body>
 </html>
