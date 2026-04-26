@@ -6,184 +6,65 @@
 <title>สื่อการสอน: ระบบ Solar Cell ประเทศไทย</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Sarabun', sans-serif; }
-  body {
-    background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%);
-    min-height: 100vh;
-    color: #fff;
-    padding: 15px;
-  }
+  body { background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); min-height: 100vh; color: #fff; padding: 15px; }
   .container { max-width: 1500px; margin: 0 auto; }
-  h1 {
-    text-align: center;
-    font-size: 1.9em;
-    margin-bottom: 5px;
-    background: linear-gradient(90deg, #ffd700, #ff8c00);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+  h1 { text-align: center; font-size: 1.9em; margin-bottom: 5px; background: linear-gradient(90deg, #ffd700, #ff8c00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .subtitle { text-align: center; color: #a0b0c0; margin-bottom: 18px; font-size: 0.95em; }
   .main-grid { display: grid; grid-template-columns: 320px 1fr; gap: 15px; }
-  .controls {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 15px;
-    padding: 16px;
-    height: fit-content;
-    max-height: 95vh;
-    overflow-y: auto;
-  }
+  .controls { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 16px; height: fit-content; max-height: 95vh; overflow-y: auto; }
   .controls::-webkit-scrollbar { width: 6px; }
   .controls::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.3); border-radius: 3px; }
   .control-group { margin-bottom: 14px; }
-  .control-group h3 {
-    color: #ffd700;
-    font-size: 0.92em;
-    margin-bottom: 7px;
-    border-bottom: 1px solid rgba(255,215,0,0.3);
-    padding-bottom: 3px;
-  }
-  .control-group label {
-    display: block;
-    font-size: 0.8em;
-    margin-bottom: 3px;
-    color: #c0d0e0;
-  }
-  .control-group input[type="range"] {
-    width: 100%;
-    margin-bottom: 3px;
-    accent-color: #ffd700;
-  }
-  .control-group select, .control-group input[type="number"] {
-    width: 100%;
-    padding: 6px;
-    border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.2);
-    background: rgba(0,0,0,0.3);
-    color: #fff;
-    font-size: 0.85em;
-  }
+  .control-group h3 { color: #ffd700; font-size: 0.92em; margin-bottom: 7px; border-bottom: 1px solid rgba(255,215,0,0.3); padding-bottom: 3px; }
+  .control-group label { display: block; font-size: 0.8em; margin-bottom: 3px; color: #c0d0e0; }
+  .control-group input[type="range"] { width: 100%; margin-bottom: 3px; accent-color: #ffd700; }
+  .control-group select, .control-group input[type="number"] { width: 100%; padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #fff; font-size: 0.85em; }
   .value-display { color: #ffd700; font-weight: bold; font-size: 0.85em; }
-  .toggle-btn {
-    width: 100%;
-    padding: 8px;
-    border-radius: 8px;
-    border: none;
-    background: linear-gradient(90deg, #4CAF50, #45a049);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 4px;
-    font-size: 0.85em;
-    transition: all 0.3s;
-  }
+  .toggle-btn { width: 100%; padding: 8px; border-radius: 8px; border: none; background: linear-gradient(90deg, #4CAF50, #45a049); color: white; font-weight: bold; cursor: pointer; margin-top: 4px; font-size: 0.85em; transition: all 0.3s; }
   .toggle-btn.off { background: linear-gradient(90deg, #666, #555); }
   .toggle-btn.dust-on { background: linear-gradient(90deg, #8b6f47, #6b5234); }
   .toggle-btn:hover { transform: translateY(-2px); }
-  .info-panel {
-    background: rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 12px;
-    margin-top: 12px;
-    border-left: 4px solid #ffd700;
-  }
+  .info-panel { background: rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; margin-top: 12px; border-left: 4px solid #ffd700; }
   .info-panel h3 { color: #ffd700; margin-bottom: 8px; font-size: 1em; }
   .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px; }
-  .stat-box {
-    background: rgba(0,0,0,0.3);
-    padding: 10px;
-    border-radius: 8px;
-    text-align: center;
-  }
+  .stat-box { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; text-align: center; }
   .stat-box .label { font-size: 0.72em; color: #a0b0c0; }
   .stat-box .value { font-size: 1.15em; font-weight: bold; color: #ffd700; margin-top: 3px; }
-  .stat-box.highlight {
-    background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,0,0.15));
-    border: 1px solid rgba(255,215,0,0.4);
-  }
-  .stat-box.highlight .value { color: #ffd700; font-size: 1.3em; }
+  .stat-box.highlight { background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,0,0.15)); border: 1px solid rgba(255,215,0,0.4); }
   .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; justify-content: center; font-size: 0.8em; }
   .legend-item { display: flex; align-items: center; gap: 5px; }
   .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
   .month-selector { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; margin-top: 5px; }
-  .month-btn {
-    padding: 5px 2px;
-    background: rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.7em;
-    transition: all 0.2s;
-    position: relative;
-  }
-  .month-btn.active {
-    background: linear-gradient(90deg, #ffd700, #ff8c00);
-    color: #1a2332;
-    font-weight: bold;
-    border-color: #ffd700;
-  }
-  .month-btn.rainy::after {
-    content: '🌧️';
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    font-size: 0.65em;
-  }
+  .month-btn { padding: 5px 2px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 4px; cursor: pointer; font-size: 0.7em; transition: all 0.2s; position: relative; }
+  .month-btn.active { background: linear-gradient(90deg, #ffd700, #ff8c00); color: #1a2332; font-weight: bold; border-color: #ffd700; }
+  .month-btn.rainy::after { content: '🌧️'; position: absolute; top: -2px; right: -2px; font-size: 0.65em; }
   .month-btn:hover { background: rgba(255,215,0,0.2); }
-  .efficiency-bar {
-    height: 18px;
-    background: rgba(0,0,0,0.4);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 5px;
-    position: relative;
-  }
-  .efficiency-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #4CAF50, #ffd700);
-    transition: width 0.3s;
-  }
-  .efficiency-text {
-    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.72em; font-weight: bold; color: #1a2332;
-  }
+  .efficiency-bar { height: 18px; background: rgba(0,0,0,0.4); border-radius: 10px; overflow: hidden; margin-top: 5px; position: relative; }
+  .efficiency-fill { height: 100%; background: linear-gradient(90deg, #4CAF50, #ffd700); transition: width 0.3s; }
+  .efficiency-text { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; font-size: 0.72em; font-weight: bold; color: #1a2332; }
   .input-group { display: flex; gap: 5px; align-items: center; }
   .input-group input[type="number"] { flex: 1; }
   .input-group span { font-size: 0.82em; color: #ffd700; font-weight: bold; min-width: 40px; }
-  .preset-btns {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
-    margin-top: 5px;
-  }
-  .preset-btn {
-    padding: 5px 4px;
-    background: rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.15);
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.7em;
-    line-height: 1.3;
-    transition: all 0.2s;
-  }
+  .preset-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 5px; }
+  .preset-btn { padding: 5px 4px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 5px; cursor: pointer; font-size: 0.7em; line-height: 1.3; transition: all 0.2s; }
   .preset-btn:hover { background: rgba(255,215,0,0.2); border-color: #ffd700; }
   .preset-btn.active { background: linear-gradient(90deg, #ffd700, #ff8c00); color: #1a2332; font-weight: bold; }
-  .roi-banner {
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
-    border-radius: 12px;
-    padding: 15px;
-    text-align: center;
-    margin-top: 12px;
-    box-shadow: 0 4px 15px rgba(46,204,113,0.3);
-  }
+  .roi-banner { background: linear-gradient(135deg, #2ecc71, #27ae60); border-radius: 12px; padding: 15px; text-align: center; margin-top: 12px; box-shadow: 0 4px 15px rgba(46,204,113,0.3); }
   .roi-banner.warning { background: linear-gradient(135deg, #e67e22, #d35400); }
   .roi-banner.bad { background: linear-gradient(135deg, #c0392b, #922b21); }
-  .roi-banner h2 { font-size: 1.1em; margin-bottom: 5px; opacity: 0.95; }
+  .roi-banner h2 { font-size: 1.05em; margin-bottom: 5px; opacity: 0.95; }
   .roi-banner .roi-value { font-size: 2.2em; font-weight: bold; }
   .roi-banner .roi-sub { font-size: 0.85em; opacity: 0.9; margin-top: 5px; }
+  .profit-banner { background: linear-gradient(135deg, #f39c12, #e67e22); border-radius: 12px; padding: 18px; text-align: center; margin-top: 12px; box-shadow: 0 4px 15px rgba(243,156,18,0.3); }
+  .profit-banner h2 { font-size: 1em; opacity: 0.95; margin-bottom: 8px; }
+  .profit-banner .big-number { font-size: 2.5em; font-weight: bold; line-height: 1; }
+  .profit-banner .currency { font-size: 0.6em; opacity: 0.8; }
+  .profit-banner .breakdown { font-size: 0.85em; margin-top: 10px; opacity: 0.95; line-height: 1.6; background: rgba(0,0,0,0.15); padding: 8px; border-radius: 8px; }
+  .compass-control { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 5px; }
+  .compass-btn { padding: 8px 2px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 6px; cursor: pointer; font-size: 0.72em; line-height: 1.3; transition: all 0.2s; text-align: center; }
+  .compass-btn:hover { background: rgba(255,215,0,0.2); }
+  .compass-btn.active { background: linear-gradient(90deg, #ffd700, #ff8c00); color: #1a2332; font-weight: bold; border-color: #ffd700; }
+  .compass-btn.optimal { border-color: #2ecc71; box-shadow: 0 0 8px rgba(46,204,113,0.5); }
   @media (max-width: 900px) {
     .main-grid { grid-template-columns: 1fr; }
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -193,7 +74,7 @@
 <body>
 <div class="container">
   <h1>☀️ ระบบโซลาร์เซลล์ Interactive (ประเทศไทย)</h1>
-  <p class="subtitle">มุมเอียง · ฝุ่น · ค่าไฟ · ราคาซื้อ · จุดคืนทุน · อายุ 30 ปี</p>
+  <p class="subtitle">มุมเอียง · ทิศหันแผง · ฝุ่น · ค่าไฟ · จุดคืนทุน · กำไร 30 ปี</p>
 
   <div class="main-grid">
     <div class="controls">
@@ -204,8 +85,28 @@
         <div style="margin-top:5px; font-size:0.75em; color:#ffd700;">
           PSH: <span id="pshValue">5.0</span> kWh/m²/วัน
         </div>
-        <div style="font-size:0.7em; color:#a0b0c0; margin-top:2px;">
-          🌧️ = หน้าฝน (พ.ค.-ต.ค.)
+      </div>
+
+      <div class="control-group">
+        <h3>🧭 ทิศหันแผง (Azimuth)</h3>
+        <div class="compass-control">
+          <button class="compass-btn" data-azimuth="0">⬆️<br>เหนือ<br>(N)</button>
+          <button class="compass-btn" data-azimuth="90">➡️<br>ตะวันออก<br>(E)</button>
+          <button class="compass-btn optimal active" data-azimuth="180">⬇️<br>ใต้<br>(S) ⭐</button>
+          <button class="compass-btn" data-azimuth="270">⬅️<br>ตะวันตก<br>(W)</button>
+        </div>
+        <div class="compass-control" style="margin-top:4px;">
+          <button class="compass-btn" data-azimuth="135">↘️<br>SE</button>
+          <button class="compass-btn" data-azimuth="225">↙️<br>SW</button>
+          <button class="compass-btn" data-azimuth="45">↗️<br>NE</button>
+          <button class="compass-btn" data-azimuth="315">↖️<br>NW</button>
+        </div>
+        <div style="font-size:0.72em; color:#a0b0c0; margin-top:5px;">
+          ⭐ ทิศใต้ดีที่สุดในไทย (ซีกโลกเหนือ)
+        </div>
+        <div class="efficiency-bar">
+          <div class="efficiency-fill" id="azimuthEfficiencyBar" style="width: 100%;"></div>
+          <div class="efficiency-text" id="azimuthEfficiencyText">100%</div>
         </div>
       </div>
 
@@ -263,9 +164,6 @@
           <button class="preset-btn active" data-cost="180000">5kW<br>~180,000</button>
           <button class="preset-btn" data-cost="350000">10kW<br>~350,000</button>
         </div>
-        <div style="font-size:0.7em; color:#a0b0c0; margin-top:5px;">
-          *รวมแผง+อินเวอร์เตอร์+ติดตั้ง (ราคาตลาดไทย)
-        </div>
       </div>
 
       <div class="control-group">
@@ -293,10 +191,10 @@
       </div>
 
       <div class="control-group">
-        <h3>📊 สรุปผล</h3>
+        <h3>📊 สถานะ</h3>
         <div style="background: rgba(0,0,0,0.3); padding: 8px; border-radius: 8px; font-size: 0.78em; line-height:1.6;">
           <div>🔆 ผลิต: <span class="value-display" id="totalPower">0</span> W</div>
-          <div>📈 รวมประสิทธิภาพ: <span class="value-display" id="totalEfficiency">100</span>%</div>
+          <div>📈 ประสิทธิภาพ: <span class="value-display" id="totalEfficiency">100</span>%</div>
           <div>⚠️ <span id="warning"></span></div>
         </div>
       </div>
@@ -334,6 +232,7 @@
         <g id="lightRays"></g>
         <g id="solarPanels"></g>
         <g id="tiltIndicator"></g>
+        <g id="compassIndicator"></g>
         <g id="dcCables"></g>
 
         <g id="combinerBox">
@@ -402,7 +301,7 @@
 
         <g id="statusBadge">
           <rect x="780" y="20" width="200" height="32" fill="rgba(0,0,0,0.7)" rx="6"/>
-          <text id="statusText" x="880" y="40" text-anchor="middle" font-size="11" font-weight="bold" fill="#ffd700">☀️ สภาพ: แสงดี ไม่มีฝุ่น</text>
+          <text id="statusText" x="880" y="40" text-anchor="middle" font-size="11" font-weight="bold" fill="#ffd700">☀️ สภาพ: แสงดี</text>
         </g>
       </svg>
 
@@ -418,9 +317,20 @@
       <div class="roi-banner" id="roiBanner">
         <h2>💸 ระยะเวลาคืนทุน (Payback Period)</h2>
         <div class="roi-value"><span id="paybackYears">7.5</span> ปี</div>
-        <div class="roi-sub">
-          คืนทุน: <strong id="paybackDate">เม.ย. 2033</strong> · 
-          กำไร 30 ปี: <strong>฿<span id="profit30Years">450,000</span></strong>
+        <div class="roi-sub">คืนทุน: <strong id="paybackDate">เม.ย. 2568</strong></div>
+      </div>
+
+      <!-- 30-Year Profit Banner -->
+      <div class="profit-banner" id="profitBanner">
+        <h2>🎯 กำไรสุทธิเมื่อใช้ครบ 30 ปี (Net Profit)</h2>
+        <div class="big-number">
+          <span class="currency">฿</span><span id="profit30Years">450,000</span>
+        </div>
+        <div class="breakdown" id="profitBreakdown">
+          📥 รายได้สะสม: <strong>฿<span id="totalRevenue">630,000</span></strong> &nbsp;|&nbsp;
+          📤 เงินลงทุน: <strong>฿<span id="totalInvestment">180,000</span></strong><br>
+          🔥 ROI: <strong><span id="roiPercent">250</span>%</strong> &nbsp;|&nbsp;
+          📈 กำไรเฉลี่ย: <strong>฿<span id="avgProfit">15,000</span>/ปี</strong>
         </div>
       </div>
 
@@ -436,7 +346,7 @@
           <div class="stat-box highlight"><div class="label">ประหยัด/เดือน</div><div class="value">฿<span id="monthlySaving">1,728</span></div></div>
           <div class="stat-box highlight"><div class="label">ประหยัด/ปี</div><div class="value">฿<span id="yearlySaving">21,024</span></div></div>
           <div class="stat-box"><div class="label">มุมเอียง</div><div class="value"><span id="tiltEffPct">100</span>%</div></div>
-          <div class="stat-box"><div class="label">ฝุ่น</div><div class="value"><span id="dustEffPct">100</span>%</div></div>
+          <div class="stat-box"><div class="label">ทิศ+ฝุ่น</div><div class="value"><span id="azDustEffPct">100</span>%</div></div>
         </div>
       </div>
 
@@ -467,6 +377,7 @@ const yearlyAvgPSH = Object.values(monthlyPSH).reduce((a,b)=>a+b,0) / 12;
 let state = {
   month: 'year',
   tiltAngle: 15,
+  azimuth: 180, // 0=N, 90=E, 180=S, 270=W
   systemAge: 0,
   panelWatt: 450,
   panelCount: 8,
@@ -490,13 +401,38 @@ function tiltEfficiency(angle) {
   return 0.70;
 }
 
+// Azimuth efficiency: 180° (south) = best in Thailand
+function azimuthEfficiency(az) {
+  // คำนวณส่วนเบี่ยงเบนจากทิศใต้ (180°)
+  let diff = Math.abs(az - 180);
+  if (diff > 180) diff = 360 - diff;
+  // South=100%, E/W=85%, N=70%
+  if (diff === 0) return 1.0;
+  if (diff <= 22.5) return 0.99;   // S, SSW, SSE
+  if (diff <= 45) return 0.95;     // SE, SW
+  if (diff <= 67.5) return 0.90;   // ESE, WSW
+  if (diff <= 90) return 0.85;     // E, W
+  if (diff <= 112.5) return 0.80;
+  if (diff <= 135) return 0.75;    // NE, NW
+  if (diff <= 157.5) return 0.72;
+  return 0.70;                      // N
+}
+
+function getAzimuthName(az) {
+  const names = {
+    0: 'เหนือ', 45: 'ตะวันออกเฉียงเหนือ', 90: 'ตะวันออก',
+    135: 'ตะวันออกเฉียงใต้', 180: 'ใต้ ⭐', 225: 'ตะวันตกเฉียงใต้',
+    270: 'ตะวันตก', 315: 'ตะวันตกเฉียงเหนือ'
+  };
+  return names[az] || az + '°';
+}
+
 function degradationFactor(year) {
   if (year === 0) return 1.0;
   if (year === 1) return 0.975;
   return 0.975 - (year - 1) * 0.005;
 }
 
-// Dust effect by month
 function dustEfficiency(month, dustEnabled) {
   if (!dustEnabled) return 1.0;
   if (month === 'year') return 0.94;
@@ -509,7 +445,6 @@ function isRainyMonth(month) {
   return rainyMonths.includes(month);
 }
 
-// Visual dust level (0-1)
 function getVisualDustLevel() {
   if (!state.dustEnabled) return 0;
   if (state.month === 'year') return 0.5;
@@ -517,7 +452,6 @@ function getVisualDustLevel() {
   return 0.85;
 }
 
-// ============ DRAW PANELS ============
 function drawPanels() {
   const group = document.getElementById('solarPanels');
   group.innerHTML = '';
@@ -588,7 +522,6 @@ function drawPanels() {
       panel.appendChild(ageOverlay);
     }
 
-    // Dust overlay
     if (dustLevel > 0) {
       const dustOverlay = document.createElementNS(SVG_NS, 'rect');
       dustOverlay.setAttribute('x', '0');
@@ -599,8 +532,6 @@ function drawPanels() {
       dustOverlay.setAttribute('opacity', dustLevel * 0.5);
       dustOverlay.setAttribute('rx', '2');
       panel.appendChild(dustOverlay);
-
-      // Dust spots
       const numSpots = Math.floor(dustLevel * 10);
       for (let s = 0; s < numSpots; s++) {
         const spot = document.createElementNS(SVG_NS, 'circle');
@@ -613,7 +544,6 @@ function drawPanels() {
       }
     }
 
-    // Shine effect (reduced if dusty)
     const psh = state.month === 'year' ? yearlyAvgPSH : monthlyPSH[state.month];
     const sunNormalized = (psh / 6.0) * (1 - dustLevel * 0.5);
     if (sunNormalized > 0.3) {
@@ -633,31 +563,132 @@ function drawPanels() {
   }
 
   drawTiltIndicator();
+  drawCompass();
   drawRain();
 }
 
-// ============ RAIN ANIMATION (rainy months) ============
+// COMPASS visualization with arrow showing panel facing direction
+function drawCompass() {
+  const group = document.getElementById('compassIndicator');
+  group.innerHTML = '';
+  const cx = 100, cy = 480, r = 40;
+
+  // Outer circle
+  const bg = document.createElementNS(SVG_NS, 'circle');
+  bg.setAttribute('cx', cx);
+  bg.setAttribute('cy', cy);
+  bg.setAttribute('r', r + 5);
+  bg.setAttribute('fill', 'rgba(255,255,255,0.9)');
+  bg.setAttribute('stroke', '#1a2332');
+  bg.setAttribute('stroke-width', '2');
+  group.appendChild(bg);
+
+  // Cardinal directions
+  const dirs = [
+    {label: 'N', x: cx, y: cy - r + 4, color: '#e74c3c'},
+    {label: 'E', x: cx + r - 5, y: cy + 4, color: '#1a2332'},
+    {label: 'S', x: cx, y: cy + r - 1, color: '#27ae60'},
+    {label: 'W', x: cx - r + 5, y: cy + 4, color: '#1a2332'}
+  ];
+  dirs.forEach(d => {
+    const t = document.createElementNS(SVG_NS, 'text');
+    t.setAttribute('x', d.x);
+    t.setAttribute('y', d.y);
+    t.setAttribute('text-anchor', 'middle');
+    t.setAttribute('font-size', '11');
+    t.setAttribute('font-weight', 'bold');
+    t.setAttribute('fill', d.color);
+    t.textContent = d.label;
+    group.appendChild(t);
+  });
+
+  // Tick marks
+  for (let i = 0; i < 8; i++) {
+    const angle = i * 45;
+    const rad = (angle - 90) * Math.PI / 180;
+    const t = document.createElementNS(SVG_NS, 'line');
+    t.setAttribute('x1', cx + (r - 3) * Math.cos(rad));
+    t.setAttribute('y1', cy + (r - 3) * Math.sin(rad));
+    t.setAttribute('x2', cx + r * Math.cos(rad));
+    t.setAttribute('y2', cy + r * Math.sin(rad));
+    t.setAttribute('stroke', '#888');
+    t.setAttribute('stroke-width', '1');
+    group.appendChild(t);
+  }
+
+  // Arrow pointing to azimuth (panel facing direction)
+  // Convert azimuth: 0=N, 90=E, 180=S, 270=W
+  const azRad = (state.azimuth - 90) * Math.PI / 180;
+  const arrowLen = r - 8;
+  const tipX = cx + arrowLen * Math.cos(azRad);
+  const tipY = cy + arrowLen * Math.sin(azRad);
+
+  // Arrow shaft
+  const shaft = document.createElementNS(SVG_NS, 'line');
+  shaft.setAttribute('x1', cx);
+  shaft.setAttribute('y1', cy);
+  shaft.setAttribute('x2', tipX);
+  shaft.setAttribute('y2', tipY);
+  shaft.setAttribute('stroke', '#ff8c00');
+  shaft.setAttribute('stroke-width', '4');
+  shaft.setAttribute('stroke-linecap', 'round');
+  group.appendChild(shaft);
+
+  // Arrow head
+  const headSize = 8;
+  const headAngle1 = azRad + 2.5;
+  const headAngle2 = azRad - 2.5;
+  const head = document.createElementNS(SVG_NS, 'polygon');
+  const points = `${tipX},${tipY} ${tipX - headSize * Math.cos(headAngle1)},${tipY - headSize * Math.sin(headAngle1)} ${tipX - headSize * Math.cos(headAngle2)},${tipY - headSize * Math.sin(headAngle2)}`;
+  head.setAttribute('points', points);
+  head.setAttribute('fill', '#ff8c00');
+  group.appendChild(head);
+
+  // Center dot
+  const center = document.createElementNS(SVG_NS, 'circle');
+  center.setAttribute('cx', cx);
+  center.setAttribute('cy', cy);
+  center.setAttribute('r', '3');
+  center.setAttribute('fill', '#1a2332');
+  group.appendChild(center);
+
+  // Label below
+  const label = document.createElementNS(SVG_NS, 'text');
+  label.setAttribute('x', cx);
+  label.setAttribute('y', cy + r + 18);
+  label.setAttribute('text-anchor', 'middle');
+  label.setAttribute('font-size', '10');
+  label.setAttribute('font-weight', 'bold');
+  label.setAttribute('fill', '#1a2332');
+  label.textContent = 'หันหน้าไป: ' + getAzimuthName(state.azimuth);
+  group.appendChild(label);
+
+  // Title
+  const title = document.createElementNS(SVG_NS, 'text');
+  title.setAttribute('x', cx);
+  title.setAttribute('y', cy - r - 8);
+  title.setAttribute('text-anchor', 'middle');
+  title.setAttribute('font-size', '10');
+  title.setAttribute('font-weight', 'bold');
+  title.setAttribute('fill', '#1a2332');
+  title.textContent = '🧭 ทิศหันแผง';
+  group.appendChild(title);
+}
+
 function drawRain() {
   const group = document.getElementById('rainGroup');
   group.innerHTML = '';
   const cloud = document.getElementById('cloudGroup');
-
   if (!isRainyMonth(state.month)) {
     cloud.style.display = 'none';
     return;
   }
-
   cloud.style.display = '';
 
-  // Rain drops over panels
-  const startX = 200;
-  const endX = 540;
-  const numDrops = 30;
-
-  for (let i = 0; i < numDrops; i++) {
+  const startX = 200, endX = 540;
+  for (let i = 0; i < 30; i++) {
     const x = startX + Math.random() * (endX - startX);
     const dropDelay = Math.random() * 1.5;
-
     const drop = document.createElementNS(SVG_NS, 'line');
     drop.setAttribute('x1', x);
     drop.setAttribute('y1', '60');
@@ -666,7 +697,6 @@ function drawRain() {
     drop.setAttribute('stroke', '#6495ED');
     drop.setAttribute('stroke-width', '1.5');
     drop.setAttribute('opacity', '0.7');
-
     const am = document.createElementNS(SVG_NS, 'animateTransform');
     am.setAttribute('attributeName', 'transform');
     am.setAttribute('type', 'translate');
@@ -676,7 +706,6 @@ function drawRain() {
     am.setAttribute('repeatCount', 'indefinite');
     am.setAttribute('begin', `${dropDelay}s`);
     drop.appendChild(am);
-
     const ao = document.createElementNS(SVG_NS, 'animate');
     ao.setAttribute('attributeName', 'opacity');
     ao.setAttribute('values', '0;0.7;0.7;0');
@@ -684,7 +713,6 @@ function drawRain() {
     ao.setAttribute('repeatCount', 'indefinite');
     ao.setAttribute('begin', `${dropDelay}s`);
     drop.appendChild(ao);
-
     group.appendChild(drop);
   }
 }
@@ -777,32 +805,27 @@ function animateLightRays() {
   const intensity = psh / 6.0;
   if (intensity < 0.1) return;
 
-  // Less rays during rainy season
   const reduceFactor = isRainyMonth(state.month) ? 0.4 : 1;
   const sunX = 120, sunY = 100;
 
   state.panelPositions.forEach((pos, i) => {
     if (Math.random() > reduceFactor) return;
     if (i % 2 !== 0 && intensity < 0.6) return;
-
     const ray = document.createElementNS(SVG_NS, 'circle');
     ray.setAttribute('r', '3');
     ray.setAttribute('fill', '#FFD700');
     ray.setAttribute('opacity', '0');
-
     const am = document.createElementNS(SVG_NS, 'animateMotion');
     am.setAttribute('dur', `${2 + Math.random()}s`);
     am.setAttribute('repeatCount', 'indefinite');
     am.setAttribute('begin', `${i * 0.2}s`);
     am.setAttribute('path', `M ${sunX} ${sunY} L ${pos.x} ${pos.y - 45}`);
-
     const ao = document.createElementNS(SVG_NS, 'animate');
     ao.setAttribute('attributeName', 'opacity');
     ao.setAttribute('values', '0;1;1;0');
     ao.setAttribute('dur', `${2 + Math.random()}s`);
     ao.setAttribute('repeatCount', 'indefinite');
     ao.setAttribute('begin', `${i * 0.2}s`);
-
     ray.appendChild(am);
     ray.appendChild(ao);
     group.appendChild(ray);
@@ -881,30 +904,30 @@ function animateCurrent() {
 function computeStats() {
   const psh = state.month === 'year' ? yearlyAvgPSH : monthlyPSH[state.month];
   const tiltEff = tiltEfficiency(state.tiltAngle);
+  const azEff = azimuthEfficiency(state.azimuth);
   const degradeEff = degradationFactor(state.systemAge);
   const dustEff = dustEfficiency(state.month, state.dustEnabled);
   const systemEff = 0.85;
   const installedW = state.panelWatt * state.panelCount;
   const inverterMaxW = state.inverterSize * 1000;
 
-  const peakPowerW = installedW * tiltEff * degradeEff * dustEff * systemEff;
+  const peakPowerW = installedW * tiltEff * azEff * degradeEff * dustEff * systemEff;
   const actualPowerW = Math.min(peakPowerW, inverterMaxW);
 
-  const dailyKWh = (installedW / 1000) * psh * tiltEff * degradeEff * dustEff * systemEff;
+  const dailyKWh = (installedW / 1000) * psh * tiltEff * azEff * degradeEff * dustEff * systemEff;
   const dailyKWhCapped = Math.min(dailyKWh, (inverterMaxW / 1000) * psh);
 
-  // Yearly accurate (sum 12 months with proper dust per month)
   let yearlyKWhAccurate = 0;
   for (let m = 1; m <= 12; m++) {
     const mPsh = monthlyPSH[m];
     const mDust = dustEfficiency(m, state.dustEnabled);
-    const mDaily = (installedW / 1000) * mPsh * tiltEff * degradeEff * mDust * systemEff;
+    const mDaily = (installedW / 1000) * mPsh * tiltEff * azEff * degradeEff * mDust * systemEff;
     const mDailyCapped = Math.min(mDaily, (inverterMaxW / 1000) * mPsh);
     yearlyKWhAccurate += mDailyCapped * 30;
   }
 
   return {
-    psh, tiltEff, degradeEff, dustEff, installedW,
+    psh, tiltEff, azEff, degradeEff, dustEff, installedW,
     actualPowerW: Math.round(actualPowerW),
     dailyKWh: dailyKWhCapped,
     yearlyKWh: yearlyKWhAccurate,
@@ -913,14 +936,15 @@ function computeStats() {
   };
 }
 
-// ============ ROI / PAYBACK CALCULATION ============
 function computePayback() {
   const installedW = state.panelWatt * state.panelCount;
   const inverterMaxW = state.inverterSize * 1000;
   const tiltEff = tiltEfficiency(state.tiltAngle);
+  const azEff = azimuthEfficiency(state.azimuth);
 
   const yearlyData = [];
   let cumulative = -state.systemCost;
+  let totalRevenue = 0;
   let paybackYear = null;
   let paybackFraction = 0;
 
@@ -930,7 +954,7 @@ function computePayback() {
     for (let m = 1; m <= 12; m++) {
       const psh = monthlyPSH[m];
       const dustE = dustEfficiency(m, state.dustEnabled);
-      const daily = (installedW / 1000) * psh * tiltEff * deg * dustE * 0.85;
+      const daily = (installedW / 1000) * psh * tiltEff * azEff * deg * dustE * 0.85;
       const dailyCapped = Math.min(daily, (inverterMaxW / 1000) * psh);
       yearlyKWh += dailyCapped * 30;
     }
@@ -938,11 +962,10 @@ function computePayback() {
     const prevCumulative = cumulative;
 
     if (yr === 0) {
-      // Year 0 = installation year, no saving yet
       yearlyData.push({ year: yr, saving: 0, cumulative });
     } else {
       cumulative += yearSaving;
-      // Detect payback crossing zero
+      totalRevenue += yearSaving;
       if (paybackYear === null && cumulative >= 0) {
         paybackYear = yr - 1;
         paybackFraction = (-prevCumulative) / yearSaving;
@@ -954,7 +977,7 @@ function computePayback() {
   const paybackTotal = paybackYear !== null ? paybackYear + paybackFraction : null;
   const profit30 = cumulative;
 
-  return { yearlyData, paybackYears: paybackTotal, profit30 };
+  return { yearlyData, paybackYears: paybackTotal, profit30, totalRevenue };
 }
 
 function updateStats() {
@@ -974,11 +997,15 @@ function updateStats() {
   document.getElementById('tiltEfficiencyBar').style.width = tiltPct + '%';
   document.getElementById('tiltEfficiencyText').textContent = tiltPct + '%';
 
-  const dustPct = Math.round(s.dustEff * 100);
-  document.getElementById('dustEffPct').textContent = dustPct;
+  const azPct = Math.round(s.azEff * 100);
+  document.getElementById('azimuthEfficiencyBar').style.width = azPct + '%';
+  document.getElementById('azimuthEfficiencyText').textContent = azPct + '%';
+
+  const azDustPct = Math.round(s.azEff * s.dustEff * 100);
+  document.getElementById('azDustEffPct').textContent = azDustPct;
   document.getElementById('degradationValue').textContent = (100 - Math.round(s.degradeEff * 100)).toFixed(1);
 
-  const totalEff = Math.round(s.tiltEff * s.degradeEff * s.dustEff * 100);
+  const totalEff = Math.round(s.tiltEff * s.azEff * s.degradeEff * s.dustEff * 100);
   document.getElementById('totalEfficiency').textContent = totalEff;
 
   const warning = document.getElementById('warning');
@@ -999,10 +1026,8 @@ function updateStats() {
 
   document.getElementById('batteryGroup').style.opacity = state.batteryEnabled ? '1' : '0.3';
 
-  // Status badge
   const statusText = document.getElementById('statusText');
-  let statusEmoji = '☀️';
-  let statusMsg = 'แสงดี';
+  let statusEmoji = '☀️', statusMsg = 'แสงดี';
   if (isRainyMonth(state.month)) {
     statusEmoji = '🌧️';
     statusMsg = 'ฝนตก';
@@ -1010,18 +1035,16 @@ function updateStats() {
   } else {
     document.getElementById('sunGroup').style.opacity = Math.max(0.3, s.psh / 6.5);
   }
-
   let dustMsg = state.dustEnabled
-    ? (isRainyMonth(state.month) ? ' · ฝนล้างฝุ่น' : ' · มีฝุ่นสะสม')
-    : ' · แผงสะอาด';
+    ? (isRainyMonth(state.month) ? ' · ฝนล้างฝุ่น' : ' · มีฝุ่น')
+    : ' · สะอาด';
   statusText.textContent = `${statusEmoji} ${statusMsg}${dustMsg}`;
 
-  // ROI Banner
+  // ROI
   const roi = computePayback();
   const roiBanner = document.getElementById('roiBanner');
   const paybackEl = document.getElementById('paybackYears');
   const paybackDateEl = document.getElementById('paybackDate');
-  const profit30El = document.getElementById('profit30Years');
 
   if (roi.paybackYears === null) {
     paybackEl.textContent = '∞';
@@ -1030,13 +1053,12 @@ function updateStats() {
     roiBanner.classList.add('bad');
   } else {
     paybackEl.textContent = roi.paybackYears.toFixed(1);
-    // Calculate payback date from now (April 2026)
     const today = new Date();
-    const paybackDate = new Date(today.getFullYear() + Math.floor(roi.paybackYears),
-                                   today.getMonth() + Math.round((roi.paybackYears % 1) * 12), 1);
+    const totalMonths = today.getMonth() + Math.round(roi.paybackYears * 12);
+    const paybackYear = today.getFullYear() + Math.floor(totalMonths / 12);
+    const paybackMonth = totalMonths % 12;
     const thaiMonths = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
-    paybackDateEl.textContent = `${thaiMonths[paybackDate.getMonth()]} ${paybackDate.getFullYear() + 543}`;
-
+    paybackDateEl.textContent = `${thaiMonths[paybackMonth]} ${paybackYear + 543}`;
     roiBanner.classList.remove('bad', 'warning');
     if (roi.paybackYears > 12) roiBanner.classList.add('warning');
     if (roi.paybackYears > 20) {
@@ -1044,7 +1066,26 @@ function updateStats() {
       roiBanner.classList.add('bad');
     }
   }
-  profit30El.textContent = Math.round(roi.profit30).toLocaleString();
+
+  // 30-Year Profit Banner
+  const profitBanner = document.getElementById('profitBanner');
+  document.getElementById('profit30Years').textContent = Math.round(roi.profit30).toLocaleString();
+  document.getElementById('totalRevenue').textContent = Math.round(roi.totalRevenue).toLocaleString();
+  document.getElementById('totalInvestment').textContent = state.systemCost.toLocaleString();
+
+  const roiPct = state.systemCost > 0 ? Math.round((roi.profit30 / state.systemCost) * 100) : 0;
+  document.getElementById('roiPercent').textContent = roiPct;
+  document.getElementById('avgProfit').textContent = Math.round(roi.profit30 / 30).toLocaleString();
+
+  // Color coding for profit
+  profitBanner.classList.remove('warning', 'bad');
+  if (roi.profit30 < 0) {
+    profitBanner.style.background = 'linear-gradient(135deg, #c0392b, #922b21)';
+  } else if (roi.profit30 < state.systemCost) {
+    profitBanner.style.background = 'linear-gradient(135deg, #e67e22, #d35400)';
+  } else {
+    profitBanner.style.background = 'linear-gradient(135deg, #f39c12, #e67e22)';
+  }
 }
 
 function drawMonthChart() {
@@ -1053,18 +1094,19 @@ function drawMonthChart() {
   const installedW = state.panelWatt * state.panelCount;
   const inverterMaxW = state.inverterSize * 1000;
   const tiltEff = tiltEfficiency(state.tiltAngle);
+  const azEff = azimuthEfficiency(state.azimuth);
   const degradeEff = degradationFactor(state.systemAge);
 
   const monthlyData = [];
   for (let m = 1; m <= 12; m++) {
     const psh = monthlyPSH[m];
     const dustE = dustEfficiency(m, state.dustEnabled);
-    const daily = (installedW / 1000) * psh * tiltEff * degradeEff * dustE * 0.85;
+    const daily = (installedW / 1000) * psh * tiltEff * azEff * degradeEff * dustE * 0.85;
     const dailyCapped = Math.min(daily, (inverterMaxW / 1000) * psh);
     monthlyData.push({ month: m, kWh: dailyCapped * 30, isRainy: rainyMonths.includes(m) });
   }
 
-  const maxKWh = Math.max(...monthlyData.map(d => d.kWh));
+  const maxKWh = Math.max(...monthlyData.map(d => d.kWh), 1);
   const chartW = 800, chartH = 200;
   const padL = 50, padR = 20, padT = 20, padB = 40;
   const innerW = chartW - padL - padR;
@@ -1080,7 +1122,6 @@ function drawMonthChart() {
     line.setAttribute('y2', y);
     line.setAttribute('stroke', 'rgba(255,255,255,0.1)');
     chart.appendChild(line);
-
     const text = document.createElementNS(SVG_NS, 'text');
     text.setAttribute('x', padL - 5);
     text.setAttribute('y', y + 4);
@@ -1098,7 +1139,6 @@ function drawMonthChart() {
     const y = padT + innerH - h;
     const isActive = (state.month === d.month) || (state.month === 'year');
     const isRainy = d.isRainy;
-
     const bar = document.createElementNS(SVG_NS, 'rect');
     bar.setAttribute('x', x);
     bar.setAttribute('y', y);
@@ -1110,7 +1150,6 @@ function drawMonthChart() {
     bar.setAttribute('fill', fillColor);
     bar.setAttribute('rx', '3');
     chart.appendChild(bar);
-
     const valText = document.createElementNS(SVG_NS, 'text');
     valText.setAttribute('x', x + barW / 2);
     valText.setAttribute('y', y - 3);
@@ -1120,7 +1159,6 @@ function drawMonthChart() {
     valText.setAttribute('font-weight', 'bold');
     valText.textContent = Math.round(d.kWh);
     chart.appendChild(valText);
-
     const monthText = document.createElementNS(SVG_NS, 'text');
     monthText.setAttribute('x', x + barW / 2);
     monthText.setAttribute('y', chartH - padB + 15);
@@ -1132,7 +1170,6 @@ function drawMonthChart() {
   });
 }
 
-// ============ PAYBACK CHART ============
 function drawPaybackChart() {
   const chart = document.getElementById('paybackChart');
   chart.innerHTML = '';
@@ -1152,18 +1189,15 @@ function drawPaybackChart() {
 
   const roi = computePayback();
   const data = roi.yearlyData;
-
   const chartW = 800, chartH = 220;
   const padL = 70, padR = 30, padT = 20, padB = 40;
   const innerW = chartW - padL - padR;
   const innerH = chartH - padT - padB;
-
   const minVal = Math.min(...data.map(d => d.cumulative), -state.systemCost);
   const maxVal = Math.max(...data.map(d => d.cumulative), 1000);
-  const range = maxVal - minVal;
+  const range = maxVal - minVal || 1;
   const zeroY = padT + innerH - ((-minVal) / range) * innerH;
 
-  // Grid lines
   for (let i = 0; i <= 4; i++) {
     const y = padT + (innerH * i / 4);
     const val = maxVal - (range * i / 4);
@@ -1174,7 +1208,6 @@ function drawPaybackChart() {
     line.setAttribute('y2', y);
     line.setAttribute('stroke', 'rgba(255,255,255,0.08)');
     chart.appendChild(line);
-
     const text = document.createElementNS(SVG_NS, 'text');
     text.setAttribute('x', padL - 5);
     text.setAttribute('y', y + 4);
@@ -1186,7 +1219,6 @@ function drawPaybackChart() {
     chart.appendChild(text);
   }
 
-  // Zero line (break-even)
   const zeroLine = document.createElementNS(SVG_NS, 'line');
   zeroLine.setAttribute('x1', padL);
   zeroLine.setAttribute('y1', zeroY);
@@ -1207,7 +1239,6 @@ function drawPaybackChart() {
   zeroLabel.textContent = 'Break-even (คืนทุน)';
   chart.appendChild(zeroLabel);
 
-  // Build path for cumulative curve
   let pathD = '';
   data.forEach((d, i) => {
     const x = padL + (innerW * i / 30);
@@ -1215,7 +1246,6 @@ function drawPaybackChart() {
     pathD += (i === 0 ? 'M' : 'L') + ` ${x} ${y}`;
   });
 
-  // Area under curve
   const lastX = padL + innerW;
   const areaD = pathD + ` L ${lastX} ${zeroY} L ${padL} ${zeroY} Z`;
   const area = document.createElementNS(SVG_NS, 'path');
@@ -1224,7 +1254,6 @@ function drawPaybackChart() {
   area.setAttribute('opacity', '0.5');
   chart.appendChild(area);
 
-  // Main line
   const line = document.createElementNS(SVG_NS, 'path');
   line.setAttribute('d', pathD);
   line.setAttribute('stroke', '#2ecc71');
@@ -1232,10 +1261,8 @@ function drawPaybackChart() {
   line.setAttribute('fill', 'none');
   chart.appendChild(line);
 
-  // Payback marker
   if (roi.paybackYears !== null) {
     const markerX = padL + (innerW * roi.paybackYears / 30);
-
     const vLine = document.createElementNS(SVG_NS, 'line');
     vLine.setAttribute('x1', markerX);
     vLine.setAttribute('y1', padT);
@@ -1245,7 +1272,6 @@ function drawPaybackChart() {
     vLine.setAttribute('stroke-width', '2');
     vLine.setAttribute('stroke-dasharray', '4,2');
     chart.appendChild(vLine);
-
     const dot = document.createElementNS(SVG_NS, 'circle');
     dot.setAttribute('cx', markerX);
     dot.setAttribute('cy', zeroY);
@@ -1254,9 +1280,8 @@ function drawPaybackChart() {
     dot.setAttribute('stroke', '#fff');
     dot.setAttribute('stroke-width', '2');
     chart.appendChild(dot);
-
-    const labelBg = document.createElementNS(SVG_NS, 'rect');
     const lblX = Math.max(padL, Math.min(markerX - 50, chartW - padR - 100));
+    const labelBg = document.createElementNS(SVG_NS, 'rect');
     labelBg.setAttribute('x', lblX);
     labelBg.setAttribute('y', zeroY - 38);
     labelBg.setAttribute('width', '100');
@@ -1264,7 +1289,6 @@ function drawPaybackChart() {
     labelBg.setAttribute('fill', '#ffd700');
     labelBg.setAttribute('rx', '4');
     chart.appendChild(labelBg);
-
     const lt = document.createElementNS(SVG_NS, 'text');
     lt.setAttribute('x', lblX + 50);
     lt.setAttribute('y', zeroY - 22);
@@ -1276,7 +1300,29 @@ function drawPaybackChart() {
     chart.appendChild(lt);
   }
 
-  // Investment label
+  // Year 30 marker - profit point
+  const lastData = data[30];
+  const year30X = padL + innerW;
+  const year30Y = padT + innerH - ((lastData.cumulative - minVal) / range) * innerH;
+  const profit30Dot = document.createElementNS(SVG_NS, 'circle');
+  profit30Dot.setAttribute('cx', year30X);
+  profit30Dot.setAttribute('cy', year30Y);
+  profit30Dot.setAttribute('r', '8');
+  profit30Dot.setAttribute('fill', '#f39c12');
+  profit30Dot.setAttribute('stroke', '#fff');
+  profit30Dot.setAttribute('stroke-width', '2');
+  chart.appendChild(profit30Dot);
+
+  const profitLabel = document.createElementNS(SVG_NS, 'text');
+  profitLabel.setAttribute('x', chartW - padR - 5);
+  profitLabel.setAttribute('y', padT + 12);
+  profitLabel.setAttribute('text-anchor', 'end');
+  profitLabel.setAttribute('font-size', '11');
+  profitLabel.setAttribute('fill', '#f39c12');
+  profitLabel.setAttribute('font-weight', 'bold');
+  profitLabel.textContent = `🎯 กำไร 30 ปี: ฿${Math.round(roi.profit30).toLocaleString()}`;
+  chart.appendChild(profitLabel);
+
   const invLabel = document.createElementNS(SVG_NS, 'text');
   invLabel.setAttribute('x', padL + 5);
   invLabel.setAttribute('y', padT + innerH - 5);
@@ -1286,18 +1332,6 @@ function drawPaybackChart() {
   invLabel.textContent = `ลงทุน: ฿${state.systemCost.toLocaleString()}`;
   chart.appendChild(invLabel);
 
-  // Profit at year 30
-  const profitLabel = document.createElementNS(SVG_NS, 'text');
-  profitLabel.setAttribute('x', chartW - padR - 5);
-  profitLabel.setAttribute('y', padT + 12);
-  profitLabel.setAttribute('text-anchor', 'end');
-  profitLabel.setAttribute('font-size', '11');
-  profitLabel.setAttribute('fill', '#2ecc71');
-  profitLabel.setAttribute('font-weight', 'bold');
-  profitLabel.textContent = `กำไร 30 ปี: ฿${Math.round(roi.profit30).toLocaleString()}`;
-  chart.appendChild(profitLabel);
-
-  // X axis
   [0, 5, 10, 15, 20, 25, 30].forEach(yr => {
     const x = padL + (innerW * yr / 30);
     const t = document.createElementNS(SVG_NS, 'text');
@@ -1314,7 +1348,6 @@ function drawPaybackChart() {
 function drawDegradeChart() {
   const chart = document.getElementById('degradeChart');
   chart.innerHTML = '';
-
   const defs = document.createElementNS(SVG_NS, 'defs');
   defs.innerHTML = `<linearGradient id="degradeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
     <stop offset="0%" stop-color="#ff8c00" stop-opacity="0.8"/>
@@ -1325,6 +1358,7 @@ function drawDegradeChart() {
   const installedW = state.panelWatt * state.panelCount;
   const inverterMaxW = state.inverterSize * 1000;
   const tiltEff = tiltEfficiency(state.tiltAngle);
+  const azEff = azimuthEfficiency(state.azimuth);
 
   const data = [];
   for (let y = 0; y <= 30; y++) {
@@ -1333,7 +1367,7 @@ function drawDegradeChart() {
     for (let m = 1; m <= 12; m++) {
       const psh = monthlyPSH[m];
       const dustE = dustEfficiency(m, state.dustEnabled);
-      const daily = (installedW / 1000) * psh * tiltEff * deg * dustE * 0.85;
+      const daily = (installedW / 1000) * psh * tiltEff * azEff * deg * dustE * 0.85;
       const dailyCapped = Math.min(daily, (inverterMaxW / 1000) * psh);
       yearlyKWh += dailyCapped * 30;
     }
@@ -1354,7 +1388,6 @@ function drawDegradeChart() {
     line.setAttribute('y2', y);
     line.setAttribute('stroke', 'rgba(255,255,255,0.1)');
     chart.appendChild(line);
-
     const pct = 100 - (i * 25);
     const text = document.createElementNS(SVG_NS, 'text');
     text.setAttribute('x', padL - 5);
@@ -1373,7 +1406,6 @@ function drawDegradeChart() {
     pathD += ` L ${x} ${y}`;
   });
   pathD += ` L ${chartW - padR} ${padT + innerH} Z`;
-
   const area = document.createElementNS(SVG_NS, 'path');
   area.setAttribute('d', pathD);
   area.setAttribute('fill', 'url(#degradeGradient)');
@@ -1386,7 +1418,6 @@ function drawDegradeChart() {
     const y = padT + innerH - (d.eff / 100) * innerH;
     lineD += (i === 0 ? 'M' : 'L') + ` ${x} ${y}`;
   });
-
   const line = document.createElementNS(SVG_NS, 'path');
   line.setAttribute('d', lineD);
   line.setAttribute('stroke', '#ff8c00');
@@ -1397,7 +1428,6 @@ function drawDegradeChart() {
   const markerX = padL + (innerW * state.systemAge / 30);
   const currentEff = data[state.systemAge].eff;
   const markerY = padT + innerH - (currentEff / 100) * innerH;
-
   const verticalLine = document.createElementNS(SVG_NS, 'line');
   verticalLine.setAttribute('x1', markerX);
   verticalLine.setAttribute('y1', padT);
@@ -1407,7 +1437,6 @@ function drawDegradeChart() {
   verticalLine.setAttribute('stroke-width', '2');
   verticalLine.setAttribute('stroke-dasharray', '4,2');
   chart.appendChild(verticalLine);
-
   const dot = document.createElementNS(SVG_NS, 'circle');
   dot.setAttribute('cx', markerX);
   dot.setAttribute('cy', markerY);
@@ -1416,7 +1445,6 @@ function drawDegradeChart() {
   dot.setAttribute('stroke', '#fff');
   dot.setAttribute('stroke-width', '2');
   chart.appendChild(dot);
-
   const lblX = Math.max(padL, Math.min(markerX - 50, chartW - padR - 100));
   const labelBg = document.createElementNS(SVG_NS, 'rect');
   labelBg.setAttribute('x', lblX);
@@ -1426,7 +1454,6 @@ function drawDegradeChart() {
   labelBg.setAttribute('fill', '#ffd700');
   labelBg.setAttribute('rx', '4');
   chart.appendChild(labelBg);
-
   const lt = document.createElementNS(SVG_NS, 'text');
   lt.setAttribute('x', lblX + 50);
   lt.setAttribute('y', markerY - 14);
@@ -1563,6 +1590,16 @@ document.querySelectorAll('.preset-btn[data-cost]').forEach(btn => {
     state.systemCost = parseInt(btn.dataset.cost);
     document.getElementById('systemCost').value = state.systemCost;
     document.querySelectorAll('.preset-btn[data-cost]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    refresh();
+  });
+});
+
+// AZIMUTH compass buttons
+document.querySelectorAll('.compass-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.azimuth = parseInt(btn.dataset.azimuth);
+    document.querySelectorAll('.compass-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     refresh();
   });
