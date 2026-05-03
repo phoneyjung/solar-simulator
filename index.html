@@ -2,2019 +2,1902 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>สื่อการสอน: ระบบ Solar Cell ประเทศไทย v5</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FAF7F2">
+<title>โซล่าเซลล์ · เปรียบเทียบกับระบบน้ำ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Sarabun', sans-serif; }
-body { background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); min-height: 100vh; color: #fff; padding: 15px; }
-.container { max-width: 1500px; margin: 0 auto; }
-h1 { text-align: center; font-size: 1.9em; margin-bottom: 5px; background: linear-gradient(90deg, #ffd700, #ff8c00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.subtitle { text-align: center; color: #a0b0c0; margin-bottom: 18px; font-size: 0.95em; }
-.main-grid { display: grid; grid-template-columns: 320px 1fr; gap: 15px; }
-.controls { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 16px; height: fit-content; max-height: 95vh; overflow-y: auto; }
-.controls::-webkit-scrollbar { width: 6px; }
-.controls::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.3); border-radius: 3px; }
-.control-group { margin-bottom: 14px; }
-.control-group h3 { color: #ffd700; font-size: 0.92em; margin-bottom: 7px; border-bottom: 1px solid rgba(255,215,0,0.3); padding-bottom: 3px; }
-.control-group label { display: block; font-size: 0.8em; margin-bottom: 3px; color: #c0d0e0; }
-.control-group input[type="range"] { width: 100%; margin-bottom: 3px; accent-color: #ffd700; }
-.control-group select, .control-group input[type="number"] { width: 100%; padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #fff; font-size: 0.85em; }
-.value-display { color: #ffd700; font-weight: bold; font-size: 0.85em; }
-.toggle-btn { width: 100%; padding: 8px; border-radius: 8px; border: none; background: linear-gradient(90deg, #4CAF50, #45a049); color: white; font-weight: bold; cursor: pointer; margin-top: 4px; font-size: 0.85em; transition: all 0.3s; }
-.toggle-btn.off { background: linear-gradient(90deg, #666, #555); }
-.toggle-btn.dust-on { background: linear-gradient(90deg, #8b6f47, #6b5234); }
-.toggle-btn.shade-on { background: linear-gradient(90deg, #2c3e50, #34495e); }
-.toggle-btn.tracker-on { background: linear-gradient(90deg, #16a085, #1abc9c); }
-.toggle-btn:hover { transform: translateY(-2px); }
-.info-panel { background: rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; margin-top: 12px; border-left: 4px solid #ffd700; }
-.info-panel h3 { color: #ffd700; margin-bottom: 8px; font-size: 1em; }
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px; }
-.stat-box { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; text-align: center; }
-.stat-box .label { font-size: 0.72em; color: #a0b0c0; }
-.stat-box .value { font-size: 1.1em; font-weight: bold; color: #ffd700; margin-top: 3px; }
-.stat-box.highlight { background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,0,0.15)); border: 1px solid rgba(255,215,0,0.4); }
-.legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; justify-content: center; font-size: 0.8em; }
-.legend-item { display: flex; align-items: center; gap: 5px; }
-.legend-dot { width: 12px; height: 12px; border-radius: 50%; }
-.month-selector { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; margin-top: 5px; }
-.month-btn { padding: 5px 2px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 4px; cursor: pointer; font-size: 0.7em; transition: all 0.2s; position: relative; }
-.month-btn.active { background: linear-gradient(90deg, #ffd700, #ff8c00); color: #1a2332; font-weight: bold; border-color: #ffd700; }
-.month-btn.rainy::after { content: '🌧️'; position: absolute; top: -2px; right: -2px; font-size: 0.65em; }
-.month-btn:hover { background: rgba(255,215,0,0.2); }
-.efficiency-bar { height: 18px; background: rgba(0,0,0,0.4); border-radius: 10px; overflow: hidden; margin-top: 5px; position: relative; }
-.efficiency-fill { height: 100%; background: linear-gradient(90deg, #4CAF50, #ffd700); transition: width 0.3s; }
-.efficiency-text { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; font-size: 0.72em; font-weight: bold; color: #1a2332; }
-.input-group { display: flex; gap: 5px; align-items: center; }
-.input-group input[type="number"] { flex: 1; }
-.input-group span { font-size: 0.82em; color: #ffd700; font-weight: bold; min-width: 40px; }
-.preset-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 5px; }
-.preset-btn { padding: 5px 4px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 5px; cursor: pointer; font-size: 0.7em; line-height: 1.3; transition: all 0.2s; }
-.preset-btn:hover { background: rgba(255,215,0,0.2); border-color: #ffd700; }
-.preset-btn.active { background: linear-gradient(90deg, #ffd700, #ff8c00); color: #1a2332; font-weight: bold; }
-.roi-banner { background: linear-gradient(135deg, #2ecc71, #27ae60); border-radius: 12px; padding: 15px; text-align: center; margin-top: 12px; box-shadow: 0 4px 15px rgba(46,204,113,0.3); }
-.roi-banner.warning { background: linear-gradient(135deg, #e67e22, #d35400); }
-.roi-banner.bad { background: linear-gradient(135deg, #c0392b, #922b21); }
-.roi-banner h2 { font-size: 1.05em; margin-bottom: 5px; opacity: 0.95; }
-.roi-banner .roi-value { font-size: 2.2em; font-weight: bold; }
-.roi-banner .roi-sub { font-size: 0.85em; opacity: 0.9; margin-top: 5px; }
-.profit-banner { background: linear-gradient(135deg, #f39c12, #e67e22); border-radius: 12px; padding: 18px; text-align: center; margin-top: 12px; box-shadow: 0 4px 15px rgba(243,156,18,0.3); }
-.profit-banner h2 { font-size: 1em; opacity: 0.95; margin-bottom: 8px; }
-.profit-banner .big-number { font-size: 2.5em; font-weight: bold; line-height: 1; }
-.profit-banner .currency { font-size: 0.6em; opacity: 0.8; }
-.profit-banner .breakdown { font-size: 0.85em; margin-top: 10px; opacity: 0.95; line-height: 1.6; background: rgba(0,0,0,0.15); padding: 8px; border-radius: 8px; }
-.compass-control { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 5px; }
-.compass-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 5px; }
-.compass-fine { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
-.compass-center { display: flex; align-items: center; justify-content: center; font-size: 1.5em; background: rgba(255,215,0,0.1); border-radius: 6px; }
-.compass-btn.small { padding: 6px 2px; font-size: 0.65em; line-height: 1.2; }
-.compass-btn.tiny { padding: 4px 1px; font-size: 0.62em; line-height: 1.2; }
-.compass-btn { padding: 8px 2px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 6px; cursor: pointer; font-size: 0.72em; line-height: 1.3; transition: all 0.2s; text-align: center; }
-.compass-btn:hover { background: rgba(255,215,0,0.2); }
-.compass-btn.active { background: linear-gradient(90deg, #ffd700, #ff8c00); color: #1a2332; font-weight: bold; border-color: #ffd700; }
-.compass-btn.optimal { border-color: #2ecc71; box-shadow: 0 0 8px rgba(46,204,113,0.5); }
-.factor-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 8px; padding: 8px; background: rgba(0,0,0,0.3); border-radius: 8px; font-size: 0.72em; }
-.factor-item { display: flex; justify-content: space-between; padding: 3px 5px; background: rgba(255,255,255,0.05); border-radius: 4px; }
-.factor-item .factor-val { font-weight: bold; }
-.factor-good { color: #2ecc71; }
-.factor-bad { color: #e74c3c; }
-.factor-neutral { color: #ffd700; }
-.province-info { font-size: 0.72em; color: #a0b0c0; margin-top: 5px; padding: 6px 8px; background: rgba(0,0,0,0.3); border-radius: 6px; line-height: 1.5; }
-.province-info strong { color: #ffd700; }
-.tech-info { font-size: 0.7em; color: #a0b0c0; margin-top: 5px; line-height: 1.4; }
-@media (max-width: 900px) {
-  .main-grid { grid-template-columns: 1fr; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .factor-summary { grid-template-columns: 1fr; }
+:root {
+  --bg: #FAF7F2;
+  --bg-card: #FFFFFF;
+  --bg-deep: #1A1614;
+  --ink: #1A1614;
+  --ink-soft: #5C544D;
+  --ink-faint: #8A8079;
+  --border: rgba(26, 22, 20, 0.08);
+  --border-strong: rgba(26, 22, 20, 0.18);
+  --sun: #E8843D;
+  --sun-deep: #B85A1A;
+  --sun-soft: #F9E5D0;
+  --water: #2D5A8C;
+  --water-deep: #1A3D63;
+  --water-soft: #DCE8F2;
+  --leaf: #4A7C3F;
+  --leaf-soft: #E0EAD8;
+  --warn: #C84A2C;
+  --warn-soft: #FAE0D8;
+  --shadow-sm: 0 1px 2px rgba(26, 22, 20, 0.04);
+  --shadow: 0 4px 12px rgba(26, 22, 20, 0.06);
+  --shadow-lg: 0 12px 40px rgba(26, 22, 20, 0.08);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(ellipse at 0% 0%, rgba(232, 132, 61, 0.06) 0%, transparent 40%),
+    radial-gradient(ellipse at 100% 30%, rgba(45, 90, 140, 0.04) 0%, transparent 40%);
+  background-attachment: fixed;
+  padding-bottom: calc(72px + var(--safe-bottom));
+  overflow-x: hidden;
+}
+
+.serif { font-family: 'IBM Plex Serif', 'IBM Plex Sans Thai', serif; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* === LAYOUT === */
+.container { width: 100%; padding: 0 20px; max-width: 760px; margin: 0 auto; }
+
+/* === HERO === */
+.hero {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 60px 20px 40px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sun-deep);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--sun-deep);
+}
+
+.hero-title {
+  font-family: 'IBM Plex Serif', 'IBM Plex Sans Thai', serif;
+  font-size: clamp(34px, 9vw, 56px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--sun-deep);
+}
+.hero-title .accent-water {
+  font-style: italic;
+  color: var(--water-deep);
+}
+
+.hero-lead {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  margin-bottom: 32px;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.hero-stat-num {
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1;
+}
+.hero-stat-lbl {
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-top: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+}
+
+.hero-illustration {
+  position: absolute;
+  top: -10%;
+  right: -30%;
+  width: 380px;
+  height: 380px;
+  z-index: 1;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ink);
+  color: var(--bg);
+  padding: 14px 24px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  margin-top: 32px;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+}
+.hero-cta-arrow { transition: transform 0.3s; }
+.hero-cta:active .hero-cta-arrow { transform: translateY(2px); }
+
+@keyframes float-sun {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-12px) scale(1.04); }
+}
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+@keyframes pulse-ring {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.06); }
+}
+
+.hero-sun { animation: float-sun 6s ease-in-out infinite; transform-origin: center; }
+.hero-rays { animation: spin-slow 60s linear infinite; transform-origin: 190px 190px; }
+
+/* === SECTIONS === */
+section {
+  padding: 64px 0 48px;
+  position: relative;
+}
+
+.section-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-eyebrow::before {
+  content: counter(section-counter, decimal-leading-zero);
+  counter-increment: section-counter;
+  color: var(--sun-deep);
+  font-weight: 500;
+}
+
+body { counter-reset: section-counter; }
+
+.section-title {
+  font-family: 'IBM Plex Serif', 'IBM Plex Sans Thai', serif;
+  font-size: clamp(26px, 6.5vw, 36px);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin-bottom: 16px;
+}
+.section-title em { font-style: italic; color: var(--sun-deep); }
+.section-title .water-em { font-style: italic; color: var(--water-deep); }
+
+.section-lead {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  margin-bottom: 32px;
+}
+
+/* === ANALOGY === */
+.analogy-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 14px;
+  align-items: center;
+}
+
+.analogy-icon-big {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.analogy-icon-big.electric {
+  background: var(--sun-soft);
+  color: var(--sun-deep);
+}
+.analogy-icon-big.water {
+  background: var(--water-soft);
+  color: var(--water-deep);
+}
+
+.analogy-pair-text { min-width: 0; }
+.analogy-pair-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 15px;
+  line-height: 1.4;
+}
+.analogy-pair-name {
+  font-weight: 500;
+}
+.analogy-equal {
+  color: var(--ink-faint);
+  font-style: italic;
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 18px;
+}
+.analogy-pair-water {
+  color: var(--water-deep);
+  font-weight: 500;
+}
+.analogy-pair-desc {
+  font-size: 12px;
+  color: var(--ink-faint);
+  margin-top: 2px;
+}
+
+/* === SIM FRAME === */
+.sim-frame {
+  background: var(--bg-card);
+  border-radius: 20px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Horizontal scroll tabs for mobile */
+.tabs-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tabs-scroll::-webkit-scrollbar { display: none; }
+
+.tab {
+  flex-shrink: 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--ink-soft);
+  transition: all 0.2s;
+  white-space: nowrap;
+  scroll-snap-align: start;
+  min-height: 38px;
+}
+.tab:active { transform: scale(0.97); }
+.tab.active {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+.sim-stage {
+  background: linear-gradient(180deg, #FFFBF5 0%, #FFF7EC 100%);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.sim-svg { width: 100%; height: auto; display: block; position: relative; z-index: 1; }
+
+@keyframes flow-anim { to { stroke-dashoffset: -30; } }
+.flow-pipe { stroke-dasharray: 8 4; stroke-linecap: round; fill: none; }
+.flow-pipe.active { animation: flow-anim 1.4s linear infinite; }
+.flow-pipe.off { opacity: 0.15; }
+
+.sim-desc {
+  background: var(--bg);
+  border-left: 3px solid var(--sun);
+  padding: 14px 16px;
+  border-radius: 0 12px 12px 0;
+  margin-bottom: 12px;
+}
+.sim-desc-title { font-weight: 500; margin-bottom: 4px; font-size: 15px; }
+.sim-desc-body { font-size: 14px; color: var(--ink-soft); line-height: 1.7; }
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.legend-dot {
+  display: inline-block;
+  width: 28px;
+  height: 4px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* === SIZE SELECTOR === */
+.size-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.size-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  padding: 14px 4px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+  font-family: inherit;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.size-btn:active { transform: scale(0.96); }
+.size-btn.active {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+  box-shadow: var(--shadow);
+}
+.size-btn-num {
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1;
+}
+.size-btn-unit { font-size: 11px; opacity: 0.7; margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+
+.size-hero {
+  background: var(--bg-card);
+  border-radius: 20px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+
+.size-scene-mobile {
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto 20px;
+  display: block;
+}
+
+.size-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 8px;
+}
+
+.size-target-h {
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.25;
+  margin-bottom: 10px;
+}
+.size-target-h em { font-style: italic; color: var(--sun-deep); }
+
+.size-desc {
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+.size-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.size-stat {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+}
+.size-stat-lbl {
+  font-size: 10px;
+  color: var(--ink-faint);
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+.size-stat-val { font-size: 17px; font-weight: 500; }
+
+.target-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.target-pill {
+  background: var(--sun-soft);
+  color: var(--sun-deep);
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.app-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.app-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+}
+.app-card.bad { background: var(--warn-soft); border-color: transparent; }
+.app-card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--leaf-soft);
+  color: var(--leaf);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.app-card.bad .app-card-icon { background: rgba(255, 255, 255, 0.6); color: var(--warn); }
+.app-card-name { font-weight: 500; line-height: 1.3; color: var(--ink); }
+.app-card.bad .app-card-name { color: var(--warn); }
+.app-card-watt { font-size: 12px; color: var(--ink-faint); }
+
+.subsection-h {
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 17px;
+  font-weight: 500;
+  margin: 24px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.subsection-h::before {
+  content: '';
+  width: 14px;
+  height: 1px;
+  background: var(--ink);
+}
+
+.subsection-h.warn { color: var(--warn); }
+.subsection-h.warn::before { background: var(--warn); }
+
+/* === LOAD BARS === */
+.load-bars { background: var(--bg); padding: 14px; border-radius: 12px; }
+.load-bar-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 60px;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+.load-bar-row:last-child { margin-bottom: 0; }
+.load-bar-track {
+  height: 14px;
+  background: var(--bg-card);
+  border-radius: 7px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.load-bar-fill { height: 100%; transition: width 0.6s ease; border-radius: 7px; }
+.load-bar-val { text-align: right; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; }
+
+/* === SURGE === */
+.surge-controls {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.surge-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  padding: 14px 10px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  text-align: center;
+  transition: all 0.2s;
+  min-height: 48px;
+}
+.surge-btn:active { transform: scale(0.97); }
+.surge-btn.active {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+.surge-stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.surge-stat {
+  background: var(--bg-card);
+  border-radius: 14px;
+  padding: 14px 10px;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+.surge-stat-lbl {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-faint);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.surge-stat-val {
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+/* === TIMELINE === */
+.timeline-frame { background: var(--bg-card); border-radius: 20px; padding: 20px; border: 1px solid var(--border); }
+
+.time-control { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.time-control input[type="range"] {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: var(--border-strong);
+  border-radius: 3px;
+  outline: none;
+}
+.time-control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px;
+  height: 28px;
+  background: var(--ink);
+  border-radius: 50%;
+  cursor: pointer;
+  border: 4px solid var(--bg);
+  box-shadow: var(--shadow);
+}
+.time-control input[type="range"]::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
+  background: var(--ink);
+  border-radius: 50%;
+  cursor: pointer;
+  border: 4px solid var(--bg);
+}
+.time-display {
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 22px;
+  font-weight: 400;
+  min-width: 76px;
+  text-align: right;
+}
+
+.time-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.time-metric {
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+}
+.time-metric-lbl {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-faint);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.time-metric-val { font-size: 17px; font-weight: 500; }
+
+.time-story {
+  background: linear-gradient(135deg, #FFF7EC, #FFFBF5);
+  border-radius: 12px;
+  padding: 14px 16px;
+  border-left: 3px solid var(--sun);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+/* === CALLOUT === */
+.callout {
+  background: linear-gradient(135deg, #1A1614 0%, #2D2521 100%);
+  color: #F2EBE0;
+  border-radius: 20px;
+  padding: 32px 24px;
+  margin: 32px 0;
+  position: relative;
+  overflow: hidden;
+}
+.callout::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(232, 132, 61, 0.25) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.callout-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sun);
+  margin-bottom: 14px;
+}
+.callout-title {
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.4;
+  position: relative;
+}
+.callout-title em { color: var(--sun); font-style: italic; }
+
+/* === COMPARE TABLE === */
+.compare-mobile {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.compare-mobile-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.compare-mobile-tab {
+  padding: 14px 4px;
+  text-align: center;
+  font-family: 'IBM Plex Serif', serif;
+  cursor: pointer;
+  border-right: 1px solid var(--border);
+  transition: all 0.2s;
+  background: transparent;
+  border-top: none;
+  border-bottom: none;
+  border-left: none;
+  font-family: inherit;
+}
+.compare-mobile-tab:last-child { border-right: none; }
+.compare-mobile-tab.active {
+  background: var(--ink);
+  color: var(--bg);
+}
+.compare-mobile-tab-num {
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1;
+}
+.compare-mobile-tab.active .compare-mobile-tab-num { color: var(--bg); }
+.compare-mobile-tab-unit { font-size: 10px; opacity: 0.7; font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+
+.compare-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 14px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  align-items: center;
+}
+.compare-row:last-child { border-bottom: none; }
+.compare-row-label {
+  color: var(--ink-faint);
+  font-size: 12px;
+  font-weight: 500;
+}
+.compare-row-value {
+  font-weight: 500;
+  line-height: 1.4;
+}
+.compare-row-value.warn { color: var(--warn); }
+
+/* === FOOTER === */
+footer {
+  padding: 48px 20px 32px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--ink-faint);
+  font-size: 13px;
+  margin-top: 40px;
+}
+footer .mark {
+  font-family: 'IBM Plex Serif', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--ink);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+/* === BOTTOM NAV === */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  padding: 8px 0 calc(8px + var(--safe-bottom));
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
+}
+.bottom-nav-inner {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  max-width: 760px;
+  margin: 0 auto;
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 4px;
+  color: var(--ink-faint);
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 500;
+  transition: color 0.2s;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  border-radius: 8px;
+  min-height: 56px;
+}
+.nav-item:active { background: var(--bg); }
+.nav-item.active { color: var(--sun-deep); }
+.nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+/* Animations */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.06); }
+}
+.pulse-soft { animation: pulse-soft 3s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+
+/* Tablet+ improvements */
+@media (min-width: 768px) {
+  .container { padding: 0 32px; }
+  .hero { padding: 80px 32px 60px; }
+  .hero-title { font-size: 64px; }
+  .hero-lead { font-size: 18px; }
+  .hero-illustration { width: 540px; height: 540px; right: -10%; top: 5%; opacity: 0.6; }
+  section { padding: 80px 0 60px; }
+  .section-title { font-size: 44px; }
+  .section-lead { font-size: 17px; }
+  .analogy-card { padding: 20px; gap: 16px; }
+  .app-grid { grid-template-columns: repeat(2, 1fr); }
+  .size-row { gap: 12px; }
+  .size-btn { padding: 18px 8px; min-height: 96px; }
+  .size-btn-num { font-size: 32px; }
+  .size-stats { grid-template-columns: repeat(4, 1fr); }
+  .surge-controls { grid-template-columns: repeat(3, 1fr); }
+  .time-metrics { grid-template-columns: repeat(4, 1fr); }
+  .compare-row { grid-template-columns: 140px 1fr 1fr 1fr 1fr; }
+  .compare-mobile-tabs.desktop-extra { grid-template-columns: 140px repeat(4, 1fr); }
+  .callout { padding: 48px; }
+  .callout-title { font-size: 28px; }
+  .bottom-nav { display: none; }
+  body { padding-bottom: 0; }
+}
+
+/* Smaller screens fine-tune */
+@media (max-width: 360px) {
+  .hero-title { font-size: 30px; }
+  .section-title { font-size: 24px; }
+  .size-btn-num { font-size: 24px; }
+  .surge-stat-val { font-size: 18px; }
+  .container { padding: 0 16px; }
+  .nav-item { font-size: 9px; }
+  .compare-row { grid-template-columns: 90px 1fr; gap: 10px; padding: 12px; }
+}
+
 </style>
 </head>
 <body>
-<div class="container">
-<h1>☀️ ระบบโซลาร์เซลล์ Interactive (ประเทศไทย) v5</h1>
-<p class="subtitle">จังหวัด · มุม · ทิศ · อุณหภูมิ · ฝุ่น · เงา · Tracker · ประเภทแผง · กำไร 30 ปี</p>
 
-<div class="main-grid">
-<div class="controls">
-
-<div class="control-group">
-<h3>📍 จังหวัด (Province)</h3>
-<select id="provinceSelect"></select>
-<div class="province-info" id="provinceInfo">
-PM2.5: <strong>23 µg/m³</strong> · อุณหภูมิเฉลี่ย: <strong>28°C</strong>
-</div>
-</div>
-
-<div class="control-group">
-<h3>📅 เดือน</h3>
-<div class="month-selector" id="monthSelector"></div>
-<button class="toggle-btn" id="yearAvgBtn" style="margin-top:6px;">📊 ค่าเฉลี่ยทั้งปี</button>
-<div style="margin-top:5px; font-size:0.75em; color:#ffd700;">PSH: <span id="pshValue">5.0</span> kWh/m²/วัน</div>
-</div>
-
-<div class="control-group">
-<h3>🌟 ประเภทแผง (Technology)</h3>
-<select id="panelType">
-  <option value="poly">Poly-Si (มาตรฐาน) -0.45%/°C</option>
-  <option value="mono" selected>Mono-Si (พรีเมียม) -0.38%/°C</option>
-  <option value="topcon">TOPCon (ใหม่) -0.30%/°C</option>
-  <option value="hjt">HJT (ดีที่สุด) -0.26%/°C</option>
-  <option value="bifacial">Bifacial 2 หน้า -0.35%/°C +10%</option>
-</select>
-<div class="tech-info" id="panelTechInfo">📌 Mono-Si: ทนความร้อนดี ราคากลาง</div>
-</div>
-
-<div class="control-group">
-<h3>🔄 Solar Tracker</h3>
-<button class="toggle-btn tracker-on" id="trackerToggle">📍 แบบติดตั้งคงที่ (Fixed)</button>
-<div class="tech-info">Single-axis: +25% · Dual-axis: +35%</div>
-</div>
-
-<div class="control-group">
-<h3>🧭 ทิศหันแผง (16 ทิศ + ปรับเอียงได้)</h3>
-<div class="compass-grid">
-  <button class="compass-btn small" data-azimuth="315">↖️<br>NW<br>315°</button>
-  <button class="compass-btn small" data-azimuth="0">⬆️<br>N<br>0°</button>
-  <button class="compass-btn small" data-azimuth="45">↗️<br>NE<br>45°</button>
-  <button class="compass-btn small" data-azimuth="270">⬅️<br>W<br>270°</button>
-  <div class="compass-center">🧭</div>
-  <button class="compass-btn small" data-azimuth="90">➡️<br>E<br>90°</button>
-  <button class="compass-btn small" data-azimuth="225">↙️<br>SW<br>225°</button>
-  <button class="compass-btn optimal active small" data-azimuth="180">⬇️<br>S ⭐<br>180°</button>
-  <button class="compass-btn small" data-azimuth="135">↘️<br>SE<br>135°</button>
-</div>
-<div class="compass-fine" style="margin-top:6px;">
-  <button class="compass-btn tiny" data-azimuth="157">SSE<br>157°</button>
-  <button class="compass-btn tiny" data-azimuth="202">SSW<br>202°</button>
-  <button class="compass-btn tiny" data-azimuth="112">ESE<br>112°</button>
-  <button class="compass-btn tiny" data-azimuth="247">WSW<br>247°</button>
-  <button class="compass-btn tiny" data-azimuth="67">ENE<br>67°</button>
-  <button class="compass-btn tiny" data-azimuth="292">WNW<br>292°</button>
-  <button class="compass-btn tiny" data-azimuth="22">NNE<br>22°</button>
-  <button class="compass-btn tiny" data-azimuth="337">NNW<br>337°</button>
-</div>
-<label style="margin-top:8px;">🎚️ ปรับละเอียด: <span class="value-display" id="azimuthSliderValue">180</span>°</label>
-<input type="range" id="azimuthSlider" min="0" max="359" step="1" value="180">
-<div class="efficiency-bar">
-  <div class="efficiency-fill" id="azimuthEfficiencyBar" style="width: 100%;"></div>
-  <div class="efficiency-text" id="azimuthEfficiencyText">100%</div>
-</div>
-<div style="font-size:0.7em; color:#a0b0c0; margin-top:4px;">
-  💡 ลากเพื่อปรับมุมแบบเฉียงทุกองศา (0-359°)
-</div>
-</div>
-
-<div class="control-group">
-<h3>📐 มุมเอียงแผง</h3>
-<input type="range" id="tiltAngle" min="0" max="60" value="15">
-<div class="value-display"><span id="tiltValue">15</span>° (แนะนำ 14-18°)</div>
-<div class="efficiency-bar">
-  <div class="efficiency-fill" id="tiltEfficiencyBar" style="width: 100%;"></div>
-  <div class="efficiency-text" id="tiltEfficiencyText">100%</div>
-</div>
-</div>
-
-<div class="control-group">
-<h3>🌳 เงาบดบัง (Shading)</h3>
-<select id="shadeLevel">
-  <option value="0" selected>0% - ไม่มีเงา (โล่ง)</option>
-  <option value="5">5% - เงาเล็กน้อย</option>
-  <option value="15">15% - เงาบางส่วน</option>
-  <option value="30">30% - เงามาก (ต้นไม้/อาคาร)</option>
-  <option value="50">50% - เงาหนัก (เสี่ยงมาก)</option>
-</select>
-<div class="tech-info">⚠️ เงาแม้จุดเดียวอาจกระทบทั้งแผง</div>
-</div>
-
-<div class="control-group">
-<h3>💨 ฝุ่นบนแผง + PM2.5</h3>
-<button class="toggle-btn dust-on" id="dustToggle">🌫️ มีฝุ่น</button>
-<div class="tech-info">PM2.5 จากจังหวัดจะถูกคำนวณอัตโนมัติ</div>
-</div>
-
-<div class="control-group">
-<h3>📆 อายุระบบ (สูงสุด 30 ปี)</h3>
-<input type="range" id="systemAge" min="0" max="30" value="0">
-<div class="value-display">ปีที่ <span id="ageValue">0</span> · ลด <span id="degradationValue">0</span>%</div>
-</div>
-
-<div class="control-group">
-<h3>💰 ค่าไฟฟ้า</h3>
-<div class="input-group">
-  <input type="number" id="electricityRate" min="1" max="15" step="0.01" value="4.50">
-  <span>฿/kWh</span>
-</div>
-<div class="preset-btns">
-  <button class="preset-btn" data-rate="3.50">บ้านเล็ก<br>3.50฿</button>
-  <button class="preset-btn active" data-rate="4.50">ทั่วไป<br>4.50฿</button>
-  <button class="preset-btn" data-rate="5.00">ขึ้นแล้ว<br>5.00฿</button>
-</div>
-<div class="preset-btns" style="margin-top:4px;">
-  <button class="preset-btn" data-rate="4.18">TOU Off<br>4.18฿</button>
-  <button class="preset-btn" data-rate="5.80">TOU On<br>5.80฿</button>
-  <button class="preset-btn" data-rate="6.50">Peak<br>6.50฿</button>
-</div>
-</div>
-
-<div class="control-group">
-<h3>💵 ราคาซื้อระบบ</h3>
-<div class="input-group">
-  <input type="number" id="systemCost" min="0" step="1000" value="180000">
-  <span>บาท</span>
-</div>
-<div class="preset-btns">
-  <button class="preset-btn" data-cost="80000">3kW<br>~80,000</button>
-  <button class="preset-btn active" data-cost="180000">5kW<br>~180,000</button>
-  <button class="preset-btn" data-cost="350000">10kW<br>~350,000</button>
-</div>
-</div>
-
-<div class="control-group">
-<h3>🔲 แผงโซลาร์</h3>
-<label>กำลัง/แผง: <span class="value-display" id="panelWattValue">450</span> W</label>
-<input type="range" id="panelWatt" min="100" max="700" step="50" value="450">
-<label style="margin-top:6px;">จำนวน: <span class="value-display" id="panelCountValue">8</span> แผง</label>
-<input type="range" id="panelCount" min="2" max="20" value="8">
-</div>
-
-<div class="control-group">
-<h3>⚡ อินเวอร์เตอร์</h3>
-<select id="inverterSize">
-  <option value="3">3 kW</option>
-  <option value="5" selected>5 kW</option>
-  <option value="10">10 kW</option>
-  <option value="15">15 kW</option>
-  <option value="20">20 kW</option>
-</select>
-</div>
-
-<div class="control-group">
-<h3>🔋 แบตเตอรี่</h3>
-<button class="toggle-btn" id="batteryToggle">เปิดใช้งาน</button>
-</div>
-
-<div class="control-group">
-<h3>📊 ปัจจัยทุกตัว (Real-time)</h3>
-<div class="factor-summary" id="factorSummary"></div>
-</div>
-
-</div>
-
-<div>
-<svg id="solarSvg" viewBox="0 0 1000 600" style="width: 100%; height: 580px; background: linear-gradient(180deg, #87CEEB 0%, #B0E0E6 35%, #DEB887 70%, #6B8E23 100%); border-radius: 15px;">
-<defs>
-  <linearGradient id="shineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-    <stop offset="0%" stop-color="#fff" stop-opacity="0.8"/>
-    <stop offset="50%" stop-color="#fff" stop-opacity="0.2"/>
-    <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
-  </linearGradient>
-</defs>
-
-<g id="hazeOverlay"></g>
-<g id="rainGroup"></g>
-
-<g id="sunGroup">
-  <circle cx="120" cy="100" r="45" fill="#FFD700">
-    <animate attributeName="r" values="45;48;45" dur="2s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="120" cy="100" r="55" fill="none" stroke="#FFA500" stroke-width="2" opacity="0.6">
-    <animate attributeName="r" values="55;65;55" dur="2s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2s" repeatCount="indefinite"/>
-  </circle>
-  <text x="120" y="106" text-anchor="middle" font-size="20" font-weight="bold" fill="#FF6347">SUN</text>
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+<svg class="hero-illustration" viewBox="0 0 380 380" aria-hidden="true">
+<g class="hero-rays" opacity="0.15">
+<line x1="190" y1="50" x2="190" y2="20" stroke="#E8843D" stroke-width="2" stroke-linecap="round"/>
+<line x1="190" y1="330" x2="190" y2="360" stroke="#E8843D" stroke-width="2" stroke-linecap="round"/>
+<line x1="50" y1="190" x2="20" y2="190" stroke="#E8843D" stroke-width="2" stroke-linecap="round"/>
+<line x1="330" y1="190" x2="360" y2="190" stroke="#E8843D" stroke-width="2" stroke-linecap="round"/>
+<line x1="90" y1="90" x2="65" y2="65" stroke="#E8843D" stroke-width="2" stroke-linecap="round"/>
+<line x1="290" y1="290" x2="315" y2="315" stroke="#E8843D" stroke-width="2" stroke-linecap="round"/>
+<line x1="90" y1="290" x2="65" y2="315" stroke="#E8843D" stroke-width="2" stroke-linecap="round"/>
+<line x1="290" y1="90" x2="315" y2="65" stroke="#E8843D" stroke-width="2" stroke-linecap="round"/>
 </g>
-
-<g id="cloudGroup" style="display:none;">
-  <ellipse cx="100" cy="95" rx="35" ry="18" fill="#7a7a8a" opacity="0.85"/>
-  <ellipse cx="135" cy="88" rx="38" ry="22" fill="#8a8a9a" opacity="0.9"/>
-  <ellipse cx="165" cy="98" rx="30" ry="17" fill="#7a7a8a" opacity="0.85"/>
-</g>
-
-<g id="lightRays"></g>
-<g id="shadowGroup"></g>
-<g id="solarPanels"></g>
-<g id="tiltIndicator"></g>
-<g id="compassIndicator"></g>
-<g id="thermometer"></g>
-<g id="dcCables"></g>
-
-<g id="combinerBox">
-  <rect x="430" y="320" width="80" height="100" fill="#2c3e50" stroke="#ffd700" stroke-width="2" rx="5"/>
-  <rect x="440" y="335" width="60" height="15" fill="#ff6b6b" rx="2"/>
-  <rect x="440" y="355" width="60" height="15" fill="#ff6b6b" rx="2"/>
-  <rect x="440" y="375" width="60" height="15" fill="#4ecdc4" rx="2"/>
-  <circle cx="450" cy="405" r="3" fill="#ffd700"/>
-  <circle cx="470" cy="405" r="3" fill="#ffd700">
-    <animate attributeName="opacity" values="1;0.3;1" dur="1s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="490" cy="405" r="3" fill="#ffd700"/>
-  <text x="470" y="435" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Combiner</text>
-  <text x="470" y="448" text-anchor="middle" font-size="9" fill="#fff">ตู้รวมไฟ DC</text>
-</g>
-
-<line x1="510" y1="370" x2="600" y2="370" stroke="#ff6b6b" stroke-width="3" stroke-dasharray="5,3"/>
-<text x="555" y="362" text-anchor="middle" font-size="10" font-weight="bold" fill="#c0392b">DC</text>
-
-<g id="inverterGroup">
-  <rect x="600" y="330" width="100" height="80" fill="#34495e" stroke="#ffd700" stroke-width="2" rx="8"/>
-  <rect x="610" y="345" width="80" height="30" fill="#1a2332" rx="3"/>
-  <text x="650" y="360" text-anchor="middle" font-size="9" fill="#0f0">INVERTER</text>
-  <text id="inverterSizeText" x="650" y="372" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f0">5 kW</text>
-  <circle cx="620" cy="395" r="4" fill="#0f0">
-    <animate attributeName="opacity" values="1;0.3;1" dur="0.8s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="640" cy="395" r="4" fill="#ffa500"/>
-  <text x="650" y="425" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">อินเวอร์เตอร์</text>
-  <text x="650" y="438" text-anchor="middle" font-size="9" fill="#fff">DC → AC</text>
-</g>
-
-<line x1="700" y1="370" x2="780" y2="370" stroke="#4ecdc4" stroke-width="3"/>
-<text x="740" y="362" text-anchor="middle" font-size="10" font-weight="bold" fill="#16a085">AC</text>
-
-<g id="batteryGroup">
-  <rect x="780" y="330" width="80" height="80" fill="#27ae60" stroke="#ffd700" stroke-width="2" rx="5"/>
-  <rect x="790" y="345" width="60" height="10" fill="#1a2332" rx="2"/>
-  <rect x="792" y="347" width="50" height="6" fill="#0f0" rx="1"/>
-  <text x="820" y="378" text-anchor="middle" font-size="20" fill="#fff">🔋</text>
-  <text x="820" y="425" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">แบตเตอรี่</text>
-  <text x="820" y="438" text-anchor="middle" font-size="9" fill="#fff">Battery</text>
-</g>
-
-<line x1="860" y1="370" x2="900" y2="370" stroke="#4ecdc4" stroke-width="3"/>
-<line x1="900" y1="370" x2="900" y2="490" stroke="#4ecdc4" stroke-width="3"/>
-<line x1="900" y1="490" x2="780" y2="490" stroke="#4ecdc4" stroke-width="3"/>
-
-<g id="houseGroup">
-  <polygon points="700,470 780,470 740,420" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
-  <rect x="710" y="470" width="60" height="60" fill="#ecf0f1" stroke="#95a5a6" stroke-width="2"/>
-  <rect x="720" y="485" width="15" height="20" fill="#3498db"/>
-  <rect x="745" y="485" width="15" height="20" fill="#3498db"/>
-  <rect x="730" y="510" width="20" height="20" fill="#8B4513"/>
-  <text x="740" y="555" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">บ้าน</text>
-</g>
-
-<g id="currentParticles"></g>
-
-<text x="280" y="40" font-size="13" font-weight="bold" fill="#1a2332">① แผงโซลาร์</text>
-<text x="430" y="310" font-size="11" font-weight="bold" fill="#1a2332">② รวมไฟ</text>
-<text x="600" y="320" font-size="11" font-weight="bold" fill="#1a2332">③ แปลง AC</text>
-<text x="780" y="320" font-size="11" font-weight="bold" fill="#1a2332">④ เก็บ/ใช้</text>
-<text x="700" y="410" font-size="11" font-weight="bold" fill="#1a2332">⑤ บ้าน</text>
-
-<g id="statusBadge">
-  <rect x="720" y="20" width="260" height="32" fill="rgba(0,0,0,0.7)" rx="6"/>
-  <text id="statusText" x="850" y="40" text-anchor="middle" font-size="11" font-weight="bold" fill="#ffd700">☀️ สภาพ: แสงดี</text>
+<g class="hero-sun">
+<circle cx="190" cy="190" r="140" fill="#E8843D" opacity="0.1"/>
+<circle cx="190" cy="190" r="100" fill="#E8843D" opacity="0.2"/>
+<circle cx="190" cy="190" r="70" fill="#F2A057"/>
+<circle cx="190" cy="190" r="48" fill="#FCDE5A"/>
 </g>
 </svg>
 
+<div class="hero-content">
+<div class="hero-eyebrow">a beginner's guide · solar power</div>
+<h1 class="hero-title">
+ติดตั้ง<em>โซล่าเซลล์</em>
+ก็เหมือน<span class="accent-water">ทำระบบน้ำ</span>
+ที่บ้าน
+</h1>
+<p class="hero-lead">
+ไฟฟ้ากับน้ำมีพฤติกรรมคล้ายกันมาก · เมื่อเข้าใจระบบประปาแล้ว เข้าใจระบบโซล่าเซลล์ได้ทันที · เรียนรู้ผ่านภาพจำลองและตัวเล่นที่ออกแบบให้คนทั่วไปเข้าใจได้ใน 10 นาที
+</p>
+
+<div class="hero-stats">
+<div>
+<div class="hero-stat-num">6</div>
+<div class="hero-stat-lbl">สถานการณ์</div>
+</div>
+<div>
+<div class="hero-stat-num">24<span style="font-size:14px">h</span></div>
+<div class="hero-stat-lbl">ตัวเลื่อนเวลา</div>
+</div>
+<div>
+<div class="hero-stat-num">4</div>
+<div class="hero-stat-lbl">ขนาด Inverter</div>
+</div>
+</div>
+
+<button class="hero-cta" onclick="document.getElementById('analogy').scrollIntoView({behavior:'smooth'})">
+เริ่มเรียนรู้
+<svg class="hero-cta-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+</button>
+</div>
+</header>
+
+<!-- ============ ANALOGY ============ -->
+<section id="analogy">
+<div class="container">
+<div class="section-eyebrow">การเปรียบเทียบ</div>
+<h2 class="section-title">ทุกอย่างในระบบไฟฟ้า มี<em>คู่ที่เหมือนกัน</em>ในระบบน้ำ</h2>
+<p class="section-lead">
+ไฟฟ้ามองไม่เห็น แต่น้ำมองเห็น เลยใช้น้ำเป็นแบบจำลองได้ดี · ลองดูคู่เปรียบทั้ง 7 รายการ
+</p>
+
+<div class="analogy-card">
+<div class="analogy-icon-big electric">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 L4 14 L12 14 L11 22 L20 10 L12 10 Z" stroke-linejoin="round"/></svg>
+</div>
+<div class="analogy-pair-text">
+<div class="analogy-pair-row">
+<span class="analogy-pair-name">แรงดันไฟ</span>
+<span class="analogy-equal">=</span>
+<span class="analogy-pair-water">ความสูงหอน้ำ</span>
+</div>
+<div class="analogy-pair-desc">ยิ่งสูง · ยิ่งแรง</div>
+</div>
+</div>
+
+<div class="analogy-card">
+<div class="analogy-icon-big electric">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12 L21 12 M3 8 L21 8 M3 16 L21 16" stroke-linecap="round"/></svg>
+</div>
+<div class="analogy-pair-text">
+<div class="analogy-pair-row">
+<span class="analogy-pair-name">กระแสไฟ</span>
+<span class="analogy-equal">=</span>
+<span class="analogy-pair-water">อัตราการไหล</span>
+</div>
+<div class="analogy-pair-desc">ลิตรต่อวินาที</div>
+</div>
+</div>
+
+<div class="analogy-card">
+<div class="analogy-icon-big electric">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="2" rx="1" fill="currentColor"/></svg>
+</div>
+<div class="analogy-pair-text">
+<div class="analogy-pair-row">
+<span class="analogy-pair-name">สายไฟ</span>
+<span class="analogy-equal">=</span>
+<span class="analogy-pair-water">ท่อน้ำ</span>
+</div>
+<div class="analogy-pair-desc">ทางผ่าน</div>
+</div>
+</div>
+
+<div class="analogy-card">
+<div class="analogy-icon-big electric">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="6" width="16" height="12" rx="1"/><line x1="9" y1="6" x2="9" y2="18"/><line x1="14" y1="6" x2="14" y2="18"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
+</div>
+<div class="analogy-pair-text">
+<div class="analogy-pair-row">
+<span class="analogy-pair-name">แผงโซล่า</span>
+<span class="analogy-equal">=</span>
+<span class="analogy-pair-water">ปั๊มพลังแสง</span>
+</div>
+<div class="analogy-pair-desc">สร้างแรงดันจากแสง</div>
+</div>
+</div>
+
+<div class="analogy-card">
+<div class="analogy-icon-big electric">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="6" width="12" height="14" rx="1"/><rect x="9" y="3" width="6" height="3"/><line x1="9" y1="11" x2="15" y2="11"/></svg>
+</div>
+<div class="analogy-pair-text">
+<div class="analogy-pair-row">
+<span class="analogy-pair-name">แบตเตอรี่</span>
+<span class="analogy-equal">=</span>
+<span class="analogy-pair-water">แท็งก์เก็บน้ำ</span>
+</div>
+<div class="analogy-pair-desc">เก็บไว้ใช้กลางคืน</div>
+</div>
+</div>
+
+<div class="analogy-card">
+<div class="analogy-icon-big electric">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 12 L9 9 L11 14 L13 10 L15 13 L17 11" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div class="analogy-pair-text">
+<div class="analogy-pair-row">
+<span class="analogy-pair-name">Inverter</span>
+<span class="analogy-equal">=</span>
+<span class="analogy-pair-water">ปั๊มแรงดันคงที่</span>
+</div>
+<div class="analogy-pair-desc">เปลี่ยน DC เป็น AC</div>
+</div>
+</div>
+
+<div class="analogy-card">
+<div class="analogy-icon-big electric">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="3" y1="8" x2="21" y2="8"/><line x1="3" y1="16" x2="21" y2="16"/><circle cx="7" cy="8" r="1.5" fill="currentColor"/><circle cx="13" cy="8" r="1.5" fill="currentColor"/><circle cx="19" cy="8" r="1.5" fill="currentColor"/></svg>
+</div>
+<div class="analogy-pair-text">
+<div class="analogy-pair-row">
+<span class="analogy-pair-name">การไฟฟ้า</span>
+<span class="analogy-equal">=</span>
+<span class="analogy-pair-water">การประปา</span>
+</div>
+<div class="analogy-pair-desc">ระบบใหญ่</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- ============ 6 CASES ============ -->
+<section id="cases">
+<div class="container">
+<div class="section-eyebrow">สถานการณ์</div>
+<h2 class="section-title">6 รูปแบบ · <em class="water-em">น้ำไหลทางไหน?</em></h2>
+<p class="section-lead">
+ลองคลิกแต่ละกรณีดูว่าน้ำไหลไปทางไหน · ท่อสีส้มจากปั๊ม สีเขียวจากแท็งก์ สีเทาจากประปา
+</p>
+
+<div class="sim-frame">
+<div class="tabs-scroll" id="caseTabs">
+<button class="tab active" data-case="A">A · กลางวันแดดแรง</button>
+<button class="tab" data-case="B">B · ไฟดับ ไม่มีแบต</button>
+<button class="tab" data-case="C">C · Hybrid กลางวัน</button>
+<button class="tab" data-case="D">D · Hybrid ไฟดับ</button>
+<button class="tab" data-case="E">E · ไม่ปล่อยย้อน</button>
+<button class="tab" data-case="F">F · กลางคืน ใช้แบต</button>
+</div>
+
+<div class="sim-stage">
+<svg class="sim-svg" viewBox="0 0 400 360" id="caseSvg">
+<defs>
+<marker id="arrEnd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<circle id="caseSun" cx="60" cy="40" r="20" fill="#F2A057"/>
+<circle id="caseSunRing" cx="60" cy="40" r="28" fill="none" stroke="#E8843D" stroke-width="0.5" opacity="0.5"/>
+
+<g transform="translate(30, 80)">
+<rect x="0" y="0" width="64" height="48" rx="3" fill="#2D5A8C" stroke="#1A3D63" stroke-width="0.5"/>
+<line x1="16" y1="0" x2="16" y2="48" stroke="#5A8FBC" stroke-width="0.5"/>
+<line x1="32" y1="0" x2="32" y2="48" stroke="#5A8FBC" stroke-width="0.5"/>
+<line x1="48" y1="0" x2="48" y2="48" stroke="#5A8FBC" stroke-width="0.5"/>
+<line x1="0" y1="24" x2="64" y2="24" stroke="#5A8FBC" stroke-width="0.5"/>
+</g>
+<text x="62" y="148" text-anchor="middle" font-size="13" font-weight="500" fill="#1A1614" font-family="'IBM Plex Sans Thai'">แผง</text>
+
+<rect x="160" y="80" width="80" height="60" rx="6" fill="#FFFBF5" stroke="#8A8079" stroke-width="0.5"/>
+<rect x="172" y="92" width="16" height="18" rx="1" fill="#F9E5D0" stroke="#B85A1A" stroke-width="0.5"/>
+<rect x="195" y="96" width="12" height="6" rx="1" fill="#DCE8F2" stroke="#1A3D63" stroke-width="0.5"/>
+<rect x="214" y="92" width="16" height="18" rx="1" fill="#E0EAD8" stroke="#4A7C3F" stroke-width="0.5"/>
+<text x="200" y="158" text-anchor="middle" font-size="13" font-weight="500" fill="#1A1614" font-family="'IBM Plex Sans Thai'">บ้าน</text>
+
+<rect x="30" y="200" width="80" height="80" rx="4" fill="#FFFFFF" stroke="#4A7C3F" stroke-width="0.5"/>
+<rect id="batLevel" x="30" y="232" width="80" height="48" rx="0" fill="#A8C99B" opacity="0.7"/>
+<text x="70" y="226" text-anchor="middle" font-size="13" font-weight="500" fill="#1A1614" font-family="'IBM Plex Sans Thai'">แท็งก์</text>
+<text id="batPct" x="70" y="296" text-anchor="middle" font-size="11" font-weight="500" fill="#2A4A1F" font-family="'JetBrains Mono'">SOC 60%</text>
+
+<rect x="290" y="200" width="80" height="80" rx="4" fill="#FFFFFF" stroke="#5C544D" stroke-width="0.5"/>
+<rect x="302" y="212" width="56" height="11" rx="2" fill="#D5CDC0"/>
+<rect x="302" y="228" width="56" height="11" rx="2" fill="#D5CDC0" opacity="0.7"/>
+<rect x="302" y="244" width="56" height="11" rx="2" fill="#D5CDC0"/>
+<text x="330" y="296" text-anchor="middle" font-size="13" font-weight="500" fill="#1A1614" font-family="'IBM Plex Sans Thai'">ประปา</text>
+
+<path id="cp1" class="flow-pipe active" d="M94 102 L160 102" stroke="#E8843D" stroke-width="3" marker-end="url(#arrEnd)"/>
+<path id="cp2" class="flow-pipe active" d="M94 120 Q94 200 50 232" stroke="#E8843D" stroke-width="3" marker-end="url(#arrEnd)"/>
+<path id="cp3" class="flow-pipe off" d="M240 110 Q280 110 290 230" stroke="#4A7C3F" stroke-width="3" marker-end="url(#arrEnd)"/>
+<path id="cp4" class="flow-pipe off" d="M110 240 Q150 240 160 130" stroke="#4A7C3F" stroke-width="3" marker-end="url(#arrEnd)"/>
+<path id="cp5" class="flow-pipe off" d="M290 240 Q250 240 240 130" stroke="#5C544D" stroke-width="3" marker-end="url(#arrEnd)"/>
+
+<g id="caseXmark" style="display:none">
+<line x1="105" y1="35" x2="135" y2="65" stroke="#C84A2C" stroke-width="3" stroke-linecap="round"/>
+<line x1="135" y1="35" x2="105" y2="65" stroke="#C84A2C" stroke-width="3" stroke-linecap="round"/>
+</g>
+<g id="gridXmark" style="display:none">
+<line x1="305" y1="200" x2="355" y2="250" stroke="#C84A2C" stroke-width="3" stroke-linecap="round"/>
+<line x1="355" y1="200" x2="305" y2="250" stroke="#C84A2C" stroke-width="3" stroke-linecap="round"/>
+</g>
+</svg>
+</div>
+
+<div class="sim-desc">
+<div class="sim-desc-title" id="caseTitle"></div>
+<div class="sim-desc-body" id="caseBody"></div>
+</div>
+
 <div class="legend">
-<div class="legend-item"><div class="legend-dot" style="background: #FFD700;"></div>แสงอาทิตย์</div>
-<div class="legend-item"><div class="legend-dot" style="background: #ff6b6b;"></div>กระแส DC</div>
-<div class="legend-item"><div class="legend-dot" style="background: #4ecdc4;"></div>กระแส AC</div>
-<div class="legend-item"><div class="legend-dot" style="background: #8b6f47;"></div>ฝุ่น/PM2.5</div>
-<div class="legend-item"><div class="legend-dot" style="background: #6495ED;"></div>ฝน</div>
-<div class="legend-item"><div class="legend-dot" style="background: #2c3e50;"></div>เงา</div>
+<div class="legend-row"><span class="legend-dot" style="background:#E8843D"></span><span>น้ำจากปั๊ม · ไฟจากแผง</span></div>
+<div class="legend-row"><span class="legend-dot" style="background:#4A7C3F"></span><span>น้ำจากแท็งก์ · ไฟจากแบต</span></div>
+<div class="legend-row"><span class="legend-dot" style="background:#5C544D"></span><span>น้ำจากประปา · ไฟจากกริด</span></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============ TIMELINE ============ -->
+<section id="timeline">
+<div class="container">
+<div class="section-eyebrow">ตลอด 24 ชั่วโมง</div>
+<h2 class="section-title">หนึ่งวัน <em>ในชีวิตของระบบ Hybrid</em></h2>
+<p class="section-lead">
+ลากแถบเลื่อนเพื่อดูระบบทำงานในแต่ละช่วงเวลา · ดูแท็งก์เพิ่ม-ลด ปั๊มทำงานตามแสงแดด
+</p>
+
+<div class="timeline-frame">
+<div class="time-control">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--ink-faint);flex-shrink:0">
+<circle cx="12" cy="12" r="9"/>
+<path d="M12 7 L12 12 L15 14"/>
+</svg>
+<input type="range" id="hourSlider" min="0" max="23" value="12" step="1">
+<div class="time-display" id="hourDisplay">12:00</div>
 </div>
 
-<div class="roi-banner" id="roiBanner">
-<h2>💸 ระยะเวลาคืนทุน (Payback Period)</h2>
-<div class="roi-value"><span id="paybackYears">7.5</span> ปี</div>
-<div class="roi-sub">คืนทุน: <strong id="paybackDate">เม.ย. 2568</strong></div>
+<div class="time-metrics">
+<div class="time-metric">
+<div class="time-metric-lbl">ปั๊ม · แผง</div>
+<div class="time-metric-val" id="tmSolar" style="color:#B85A1A">5.0 kW</div>
 </div>
-
-<div class="profit-banner" id="profitBanner">
-<h2>🎯 กำไรสุทธิเมื่อใช้ครบ 30 ปี</h2>
-<div class="big-number"><span class="currency">฿</span><span id="profit30Years">450,000</span></div>
-<div class="breakdown" id="profitBreakdown">
-  📥 รายได้สะสม: <strong>฿<span id="totalRevenue">630,000</span></strong> &nbsp;|&nbsp;
-  📤 เงินลงทุน: <strong>฿<span id="totalInvestment">180,000</span></strong><br>
-  🔥 ROI: <strong><span id="roiPercent">250</span>%</strong> &nbsp;|&nbsp;
-  📈 กำไรเฉลี่ย: <strong>฿<span id="avgProfit">15,000</span>/ปี</strong>
+<div class="time-metric">
+<div class="time-metric-lbl">บ้านใช้</div>
+<div class="time-metric-val" id="tmHome">2.0 kW</div>
 </div>
+<div class="time-metric">
+<div class="time-metric-lbl">แท็งก์ SOC</div>
+<div class="time-metric-val" id="tmBat" style="color:#4A7C3F">75%</div>
 </div>
-
-<div class="info-panel">
-<h3>📈 ประสิทธิภาพระบบ</h3>
-<div class="stats-grid">
-<div class="stat-box"><div class="label">กำลังติดตั้ง</div><div class="value"><span id="theoreticalPower">3,600</span> W</div></div>
-<div class="stat-box"><div class="label">ผลิตจริง</div><div class="value"><span id="actualPower">2,880</span> W</div></div>
-<div class="stat-box"><div class="label">ผลิต/วัน</div><div class="value"><span id="dailyProduction">14.4</span> kWh</div></div>
-<div class="stat-box"><div class="label">ผลิต/ปี</div><div class="value"><span id="yearlyProduction">5,256</span> kWh</div></div>
-</div>
-<div class="stats-grid" style="margin-top:8px;">
-<div class="stat-box highlight"><div class="label">ประหยัด/เดือน</div><div class="value">฿<span id="monthlySaving">1,728</span></div></div>
-<div class="stat-box highlight"><div class="label">ประหยัด/ปี</div><div class="value">฿<span id="yearlySaving">21,024</span></div></div>
-<div class="stat-box"><div class="label">อุณหภูมิแผง</div><div class="value"><span id="panelTempVal">45</span>°C</div></div>
-<div class="stat-box"><div class="label">รวมประสิทธิภาพ</div><div class="value"><span id="totalEfficiency">85</span>%</div></div>
+<div class="time-metric">
+<div class="time-metric-lbl" id="tmGridLbl">ขายให้ประปา</div>
+<div class="time-metric-val" id="tmGrid">2.0 kW</div>
 </div>
 </div>
 
-<div class="info-panel" style="border-left-color: #4ecdc4;">
-<h3>📊 ผลิตไฟตลอดปี (kWh/เดือน)</h3>
-<svg id="monthChart" viewBox="0 0 800 200" style="width: 100%; height: 180px;"></svg>
+<svg viewBox="0 0 360 160" style="width:100%;margin:16px 0">
+<line x1="30" y1="20" x2="30" y2="120" stroke="#8A8079" stroke-width="0.5"/>
+<line x1="30" y1="120" x2="340" y2="120" stroke="#8A8079" stroke-width="0.5"/>
+<text x="26" y="26" text-anchor="end" font-size="10" fill="#8A8079">5kW</text>
+<text x="26" y="74" text-anchor="end" font-size="10" fill="#8A8079">2.5</text>
+<text x="26" y="124" text-anchor="end" font-size="10" fill="#8A8079">0</text>
+<text x="30" y="138" text-anchor="middle" font-size="10" fill="#8A8079">0</text>
+<text x="108" y="138" text-anchor="middle" font-size="10" fill="#8A8079">6</text>
+<text x="185" y="138" text-anchor="middle" font-size="10" fill="#8A8079">12</text>
+<text x="262" y="138" text-anchor="middle" font-size="10" fill="#8A8079">18</text>
+<text x="340" y="138" text-anchor="middle" font-size="10" fill="#8A8079">24</text>
+<text x="185" y="154" text-anchor="middle" font-size="10" fill="#8A8079">เวลา (ชม.)</text>
+<path d="M 30 120 L 95 120 Q 105 120 115 110 Q 150 75 185 25 Q 220 75 255 110 Q 265 120 275 120 L 340 120 Z" fill="#F9E5D0" opacity="0.5"/>
+<path d="M 30 120 L 95 120 Q 105 120 115 110 Q 150 75 185 25 Q 220 75 255 110 Q 265 120 275 120" fill="none" stroke="#B85A1A" stroke-width="1.5"/>
+<line id="tlCursor" x1="185" y1="20" x2="185" y2="120" stroke="#C84A2C" stroke-width="1.5" stroke-dasharray="3 3"/>
+<circle id="tlDot" cx="185" cy="25" r="5" fill="#C84A2C"/>
+</svg>
+
+<div class="time-story" id="tlStory"></div>
+</div>
+</div>
+</section>
+
+<!-- ============ CALLOUT ============ -->
+<div class="container">
+<div class="callout">
+<div class="callout-eyebrow">หลักการสำคัญ</div>
+<div class="callout-title">
+แผงโซล่าเหมือน<em>ปั๊มน้ำที่ใช้แสง</em> · แบตเตอรี่เหมือน<em>แท็งก์น้ำ</em>ที่เก็บไว้ใช้ตอนไม่มีปั๊ม
+</div>
+</div>
 </div>
 
-<div class="info-panel" style="border-left-color: #2ecc71;">
-<h3>💰 กราฟคืนทุน 30 ปี</h3>
-<svg id="paybackChart" viewBox="0 0 800 220" style="width: 100%; height: 200px;"></svg>
+<!-- ============ SURGE ============ -->
+<section id="surge">
+<div class="container">
+<div class="section-eyebrow">Surge · กระแสกระชาก</div>
+<h2 class="section-title">เครื่องตอนเปิด · <em>กินไฟเยอะกว่าตอนใช้</em></h2>
+<p class="section-lead">
+มอเตอร์ตอนสตาร์ทกินไฟ 2-7 เท่าของพิกัด · ลองเลือกเครื่องดูตัวเลขจริง
+</p>
+
+<div class="sim-frame">
+<div class="surge-controls" id="surgeControls">
+<button class="surge-btn active" data-app="ac">แอร์ 12000 BTU</button>
+<button class="surge-btn" data-app="fridge">ตู้เย็น</button>
+<button class="surge-btn" data-app="pump">ปั๊มน้ำ 1HP</button>
+<button class="surge-btn" data-app="washer">เครื่องซักผ้า</button>
+<button class="surge-btn" data-app="iron">เตารีด</button>
+<button class="surge-btn" data-app="led">หลอด LED</button>
 </div>
 
-<div class="info-panel" style="border-left-color: #ff8c00;">
-<h3>📉 Degradation 30 ปี</h3>
-<svg id="degradeChart" viewBox="0 0 800 180" style="width: 100%; height: 160px;"></svg>
+<div class="surge-stat-row">
+<div class="surge-stat">
+<div class="surge-stat-lbl">พิกัดปกติ</div>
+<div class="surge-stat-val" id="ssRun" style="color:#4A7C3F">1,200W</div>
+</div>
+<div class="surge-stat">
+<div class="surge-stat-lbl">surge สูงสุด</div>
+<div class="surge-stat-val" id="ssSurge" style="color:#C84A2C">3,600W</div>
+</div>
+<div class="surge-stat">
+<div class="surge-stat-lbl">เท่าของพิกัด</div>
+<div class="surge-stat-val" id="ssRatio" style="color:#B85A1A">3.0×</div>
+</div>
 </div>
 
+<div class="sim-stage">
+<svg class="sim-svg" viewBox="0 0 400 220">
+<line x1="40" y1="30" x2="40" y2="180" stroke="#8A8079" stroke-width="0.5"/>
+<line x1="40" y1="180" x2="380" y2="180" stroke="#8A8079" stroke-width="0.5"/>
+<text x="36" y="36" text-anchor="end" font-size="10" fill="#8A8079">สูง</text>
+<text x="36" y="184" text-anchor="end" font-size="10" fill="#8A8079">0</text>
+<text x="40" y="200" text-anchor="middle" font-size="10" fill="#8A8079">0s</text>
+<text x="125" y="200" text-anchor="middle" font-size="10" fill="#8A8079">1s</text>
+<text x="245" y="200" text-anchor="middle" font-size="10" fill="#8A8079">5s</text>
+<text x="370" y="200" text-anchor="middle" font-size="10" fill="#8A8079">10s</text>
+
+<line id="surgeRunLine" x1="40" y1="140" x2="380" y2="140" stroke="#4A7C3F" stroke-width="0.5" stroke-dasharray="3 3"/>
+<text id="surgeRunLbl" x="375" y="136" text-anchor="end" font-size="10" fill="#4A7C3F">running</text>
+<line id="surgePeakLine" x1="40" y1="50" x2="380" y2="50" stroke="#C84A2C" stroke-width="0.5" stroke-dasharray="3 3"/>
+<text id="surgePeakLbl" x="375" y="46" text-anchor="end" font-size="10" fill="#C84A2C">surge</text>
+
+<path id="surgeArea" d="M 40 180 L 55 50 L 90 50 L 130 140 L 380 140 L 380 180 Z" fill="#F9E5D0" opacity="0.6"/>
+<path id="surgeCurve" d="M 40 180 L 55 50 L 90 50 L 130 140 L 380 140" fill="none" stroke="#B85A1A" stroke-width="2"/>
+</svg>
+</div>
+
+<div class="sim-desc" id="surgeDesc"></div>
+</div>
+</div>
+</section>
+
+<!-- ============ SIZES ============ -->
+<section id="sizes">
+<div class="container">
+<div class="section-eyebrow">เลือกขนาด Inverter</div>
+<h2 class="section-title">5 · 10 · 15 · 20 kW · <em>เลือกให้เหมาะ</em></h2>
+<p class="section-lead">
+แต่ละขนาดเหมาะกับบ้านและธุรกิจที่ต่างกัน · คลิกดูว่าเปิดเครื่องอะไรได้บ้าง
+</p>
+
+<div class="size-row">
+<button class="size-btn active" data-size="5"><div class="size-btn-num">5</div><div class="size-btn-unit">kW</div></button>
+<button class="size-btn" data-size="10"><div class="size-btn-num">10</div><div class="size-btn-unit">kW</div></button>
+<button class="size-btn" data-size="15"><div class="size-btn-num">15</div><div class="size-btn-unit">kW</div></button>
+<button class="size-btn" data-size="20"><div class="size-btn-num">20</div><div class="size-btn-unit">kW</div></button>
+</div>
+
+<div class="size-hero">
+<svg id="sizeScene" class="size-scene-mobile" viewBox="0 0 400 280"></svg>
+
+<div class="size-eyebrow" id="sizeSubtitle">บ้านพักอาศัย</div>
+<div class="size-target-h" id="sizeTitle">บ้านพักอาศัยขนาด<em>เล็ก-กลาง</em></div>
+<div class="size-desc" id="sizeDesc"></div>
+
+<div class="size-stats">
+<div class="size-stat">
+<div class="size-stat-lbl">โหลดต่อเนื่อง</div>
+<div class="size-stat-val" id="sizeLoad" style="color:#4A7C3F">~ 4 kW</div>
+</div>
+<div class="size-stat">
+<div class="size-stat-lbl">surge</div>
+<div class="size-stat-val" id="sizeSurge" style="color:#B85A1A">~ 10 kW</div>
+</div>
+<div class="size-stat">
+<div class="size-stat-lbl">แผงโซล่า</div>
+<div class="size-stat-val" id="sizePanel">5-7 kWp</div>
+</div>
+<div class="size-stat">
+<div class="size-stat-lbl">peak</div>
+<div class="size-stat-val" id="sizePeak">3-4 kW</div>
 </div>
 </div>
 </div>
+
+<div class="subsection-h">โหลดเฉลี่ยช่วง peak</div>
+<div class="load-bars" id="sizeBars" style="margin-bottom:24px"></div>
+
+<div class="subsection-h">เหมาะกับ</div>
+<div class="target-pills" id="sizeTargets" style="margin-bottom:24px"></div>
+
+<div class="subsection-h">เปิดได้พร้อมกัน</div>
+<div class="app-grid" id="sizeGood" style="margin-bottom:24px"></div>
+
+<div class="subsection-h warn">ระวัง · เกินกำลัง</div>
+<div class="app-grid" id="sizeBad" style="margin-bottom:24px"></div>
+
+<div class="sim-desc" style="border-left-color:var(--water-deep); background:var(--water-soft);">
+<div class="sim-desc-title">สถานการณ์จริง</div>
+<div class="sim-desc-body" id="sizeStory"></div>
+</div>
+</div>
+</section>
+
+<!-- ============ COMPARE TABLE ============ -->
+<section style="padding-top:0">
+<div class="container">
+<div class="section-eyebrow">เปรียบเทียบ</div>
+<h2 class="section-title">ภาพรวม <em>4 ขนาด</em></h2>
+
+<div class="compare-mobile">
+<div class="compare-mobile-tabs">
+<button class="compare-mobile-tab active" data-cmp="5">
+<div class="compare-mobile-tab-num">5</div>
+<div class="compare-mobile-tab-unit">kW</div>
+</button>
+<button class="compare-mobile-tab" data-cmp="10">
+<div class="compare-mobile-tab-num">10</div>
+<div class="compare-mobile-tab-unit">kW</div>
+</button>
+<button class="compare-mobile-tab" data-cmp="15">
+<div class="compare-mobile-tab-num">15</div>
+<div class="compare-mobile-tab-unit">kW</div>
+</button>
+<button class="compare-mobile-tab" data-cmp="20">
+<div class="compare-mobile-tab-num">20</div>
+<div class="compare-mobile-tab-unit">kW</div>
+</button>
+</div>
+
+<div id="compareContent"></div>
+</div>
+
+<div class="sim-desc" style="margin-top:20px">
+<div class="sim-desc-title">เคล็ดลับการเลือก</div>
+<div class="sim-desc-body">
+ดูที่โหลด peak ของบ้าน/ธุรกิจ เลือก Inverter ให้พิกัดต่อเนื่องสูงกว่า peak ประมาณ 20-30% เพื่อรองรับ Surge · มอเตอร์ใหญ่ต้องคำนวณ Surge เป็น 5-7 เท่าเสมอ
+</div>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="mark">— เพราะไฟฟ้าไม่ได้ยากเลย<br>ถ้าเข้าใจมันเหมือนน้ำ —</div>
+<div>คู่มือพื้นฐานสำหรับคนอยากติด Solar Cell</div>
+</footer>
+
+<!-- ============ BOTTOM NAV ============ -->
+<nav class="bottom-nav" id="bottomNav">
+<div class="bottom-nav-inner">
+<button class="nav-item active" data-target="top">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12 L12 4 L21 12 M5 10 V20 H19 V10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<span>หน้าหลัก</span>
+</button>
+<button class="nav-item" data-target="analogy">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6 L4 12 L8 18 M16 6 L20 12 L16 18" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<span>เปรียบเทียบ</span>
+</button>
+<button class="nav-item" data-target="cases">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7 V12 L15 14" stroke-linecap="round"/></svg>
+<span>สถานการณ์</span>
+</button>
+<button class="nav-item" data-target="surge">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17 L7 13 L11 16 L17 8 L21 11" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<span>Surge</span>
+</button>
+<button class="nav-item" data-target="sizes">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+<span>ขนาด</span>
+</button>
+</div>
+</nav>
 
 <script>
-// ============ THAILAND DATA ============
-const monthlyPSH = {1:5.2,2:5.8,3:6.0,4:5.7,5:5.0,6:4.6,7:4.5,8:4.4,9:4.5,10:4.7,11:5.0,12:5.0};
-const monthNames = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
-const rainyMonths = [5, 6, 7, 8, 9, 10];
-const yearlyAvgPSH = Object.values(monthlyPSH).reduce((a,b)=>a+b,0) / 12;
+// === BOTTOM NAV ===
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const target = item.dataset.target;
+    const el = document.getElementById(target);
+    if (el) {
+      const offset = target === 'top' ? 0 : el.offsetTop - 20;
+      window.scrollTo({ top: offset, behavior: 'smooth' });
+    }
+  });
+});
 
-// PM2.5 (µg/m³ annual avg) + อุณหภูมิเฉลี่ย (°C) ของแต่ละจังหวัด
-// PM2.5 ตามค่าเฉลี่ยปี (µg/m³) + อุณหภูมิเฉลี่ย (°C) ของ 77 จังหวัดไทย
-// ข้อมูลจาก Pollution Control Department + AQLI 2025 + ค่าประมาณตามภูมิภาค
-const provinces = {
-  // ============ ภาคเหนือ (PM2.5 สูงเพราะเผาป่า) ============
-  'chiang_mai':    { name: 'เชียงใหม่',     pm25: 35, temp: 27, region: 'เหนือ' },
-  'chiang_rai':    { name: 'เชียงราย',      pm25: 42, temp: 26, region: 'เหนือ' },
-  'lampang':       { name: 'ลำปาง',         pm25: 32, temp: 27, region: 'เหนือ' },
-  'lamphun':       { name: 'ลำพูน',         pm25: 33, temp: 27, region: 'เหนือ' },
-  'mae_hong_son':  { name: 'แม่ฮ่องสอน',   pm25: 40, temp: 26, region: 'เหนือ' },
-  'nan':           { name: 'น่าน',          pm25: 36, temp: 26, region: 'เหนือ' },
-  'phayao':        { name: 'พะเยา',         pm25: 38, temp: 26, region: 'เหนือ' },
-  'phrae':         { name: 'แพร่',          pm25: 34, temp: 27, region: 'เหนือ' },
-  'uttaradit':     { name: 'อุตรดิตถ์',     pm25: 30, temp: 28, region: 'เหนือ' },
-  'tak':           { name: 'ตาก',           pm25: 33, temp: 28, region: 'เหนือ' },
-  'sukhothai':     { name: 'สุโขทัย',       pm25: 28, temp: 28, region: 'เหนือ' },
-  'phitsanulok':   { name: 'พิษณุโลก',      pm25: 28, temp: 28, region: 'เหนือ' },
-  'phichit':       { name: 'พิจิตร',        pm25: 26, temp: 28, region: 'เหนือ' },
-  'phetchabun':    { name: 'เพชรบูรณ์',     pm25: 27, temp: 27, region: 'เหนือ' },
-  'kamphaeng_phet':{ name: 'กำแพงเพชร',   pm25: 27, temp: 28, region: 'เหนือ' },
-  'nakhon_sawan':  { name: 'นครสวรรค์',   pm25: 26, temp: 28, region: 'เหนือ' },
-  'uthai_thani':   { name: 'อุทัยธานี',     pm25: 25, temp: 28, region: 'เหนือ' },
+// Highlight nav as you scroll
+const sections = ['top', 'analogy', 'cases', 'surge', 'sizes'];
+const navItems = document.querySelectorAll('.nav-item');
+function updateNav() {
+  const scrollY = window.scrollY + 100;
+  let current = 'top';
+  for (const id of sections) {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop <= scrollY) current = id;
+  }
+  navItems.forEach(item => {
+    item.classList.toggle('active', item.dataset.target === current);
+  });
+}
+window.addEventListener('scroll', updateNav, { passive: true });
 
-  // ============ ภาคอีสาน ============
-  'khon_kaen':     { name: 'ขอนแก่น',       pm25: 26, temp: 28, region: 'อีสาน' },
-  'nakhon_ratch':  { name: 'นครราชสีมา',  pm25: 26, temp: 28, region: 'อีสาน' },
-  'udon_thani':    { name: 'อุดรธานี',      pm25: 25, temp: 28, region: 'อีสาน' },
-  'ubon':          { name: 'อุบลราชธานี',   pm25: 24, temp: 28, region: 'อีสาน' },
-  'nong_khai':     { name: 'หนองคาย',       pm25: 26, temp: 28, region: 'อีสาน' },
-  'nong_bua':      { name: 'หนองบัวลำภู',  pm25: 25, temp: 28, region: 'อีสาน' },
-  'loei':          { name: 'เลย',           pm25: 28, temp: 27, region: 'อีสาน' },
-  'sakon_nakhon':  { name: 'สกลนคร',        pm25: 24, temp: 28, region: 'อีสาน' },
-  'nakhon_phanom': { name: 'นครพนม',        pm25: 25, temp: 28, region: 'อีสาน' },
-  'mukdahan':      { name: 'มุกดาหาร',      pm25: 24, temp: 28, region: 'อีสาน' },
-  'kalasin':       { name: 'กาฬสินธุ์',     pm25: 25, temp: 28, region: 'อีสาน' },
-  'maha_sarakham': { name: 'มหาสารคาม',    pm25: 26, temp: 28, region: 'อีสาน' },
-  'roi_et':        { name: 'ร้อยเอ็ด',      pm25: 26, temp: 28, region: 'อีสาน' },
-  'yasothon':      { name: 'ยโสธร',         pm25: 24, temp: 28, region: 'อีสาน' },
-  'amnat_charoen': { name: 'อำนาจเจริญ',   pm25: 24, temp: 28, region: 'อีสาน' },
-  'sisaket':       { name: 'ศรีสะเกษ',      pm25: 25, temp: 28, region: 'อีสาน' },
-  'surin':         { name: 'สุรินทร์',      pm25: 25, temp: 28, region: 'อีสาน' },
-  'buriram':       { name: 'บุรีรัมย์',     pm25: 25, temp: 28, region: 'อีสาน' },
-  'chaiyaphum':    { name: 'ชัยภูมิ',       pm25: 26, temp: 28, region: 'อีสาน' },
-  'bueng_kan':     { name: 'บึงกาฬ',        pm25: 24, temp: 28, region: 'อีสาน' },
-
-  // ============ ภาคกลาง ============
-  'bangkok':       { name: 'กรุงเทพมหานคร', pm25: 28, temp: 30, region: 'กลาง' },
-  'nonthaburi':    { name: 'นนทบุรี',       pm25: 27, temp: 30, region: 'กลาง' },
-  'pathum':        { name: 'ปทุมธานี',      pm25: 28, temp: 30, region: 'กลาง' },
-  'samut_prakan':  { name: 'สมุทรปราการ',  pm25: 30, temp: 30, region: 'กลาง' },
-  'samut_sakhon':  { name: 'สมุทรสาคร',     pm25: 30, temp: 30, region: 'กลาง' },
-  'samut_songkhram':{name: 'สมุทรสงคราม',   pm25: 25, temp: 29, region: 'กลาง' },
-  'nakhon_pathom': { name: 'นครปฐม',        pm25: 28, temp: 29, region: 'กลาง' },
-  'ayutthaya':     { name: 'พระนครศรีอยุธยา', pm25: 30, temp: 29, region: 'กลาง' },
-  'ang_thong':     { name: 'อ่างทอง',       pm25: 27, temp: 29, region: 'กลาง' },
-  'lopburi':       { name: 'ลพบุรี',        pm25: 27, temp: 29, region: 'กลาง' },
-  'singburi':      { name: 'สิงห์บุรี',     pm25: 26, temp: 29, region: 'กลาง' },
-  'chai_nat':      { name: 'ชัยนาท',        pm25: 26, temp: 29, region: 'กลาง' },
-  'saraburi':      { name: 'สระบุรี',       pm25: 32, temp: 29, region: 'กลาง' },
-  'suphanburi':    { name: 'สุพรรณบุรี',   pm25: 26, temp: 29, region: 'กลาง' },
-  'kanchanaburi':  { name: 'กาญจนบุรี',    pm25: 25, temp: 29, region: 'กลาง' },
-  'ratchaburi':    { name: 'ราชบุรี',       pm25: 26, temp: 29, region: 'กลาง' },
-  'phetchaburi':   { name: 'เพชรบุรี',      pm25: 22, temp: 29, region: 'กลาง' },
-  'prachuap':      { name: 'ประจวบคีรีขันธ์', pm25: 21, temp: 29, region: 'กลาง' },
-  'nakhon_nayok':  { name: 'นครนายก',       pm25: 25, temp: 29, region: 'กลาง' },
-  'prachinburi':   { name: 'ปราจีนบุรี',   pm25: 26, temp: 29, region: 'กลาง' },
-  'sa_kaeo':       { name: 'สระแก้ว',       pm25: 24, temp: 29, region: 'กลาง' },
-
-  // ============ ภาคตะวันออก ============
-  'chonburi':      { name: 'ชลบุรี',        pm25: 25, temp: 29, region: 'ตอ' },
-  'rayong':        { name: 'ระยอง',         pm25: 26, temp: 29, region: 'ตอ' },
-  'chanthaburi':   { name: 'จันทบุรี',      pm25: 22, temp: 28, region: 'ตอ' },
-  'trat':          { name: 'ตราด',          pm25: 21, temp: 28, region: 'ตอ' },
-  'chachoengsao':  { name: 'ฉะเชิงเทรา',   pm25: 27, temp: 29, region: 'ตอ' },
-
-  // ============ ภาคใต้ (PM2.5 ดีที่สุด) ============
-  'chumphon':      { name: 'ชุมพร',         pm25: 18, temp: 28, region: 'ใต้' },
-  'ranong':        { name: 'ระนอง',         pm25: 16, temp: 28, region: 'ใต้' },
-  'surat_thani':   { name: 'สุราษฎร์ธานี',  pm25: 17, temp: 28, region: 'ใต้' },
-  'phangnga':      { name: 'พังงา',         pm25: 16, temp: 28, region: 'ใต้' },
-  'phuket':        { name: 'ภูเก็ต',        pm25: 18, temp: 28, region: 'ใต้' },
-  'krabi':         { name: 'กระบี่',        pm25: 16, temp: 28, region: 'ใต้' },
-  'nakhon_si':     { name: 'นครศรีธรรมราช', pm25: 17, temp: 28, region: 'ใต้' },
-  'phatthalung':   { name: 'พัทลุง',        pm25: 18, temp: 28, region: 'ใต้' },
-  'trang':         { name: 'ตรัง',          pm25: 17, temp: 28, region: 'ใต้' },
-  'satun':         { name: 'สตูล',          pm25: 18, temp: 28, region: 'ใต้' },
-  'songkhla':      { name: 'สงขลา',         pm25: 19, temp: 28, region: 'ใต้' },
-  'pattani':       { name: 'ปัตตานี',       pm25: 19, temp: 28, region: 'ใต้' },
-  'yala':          { name: 'ยะลา',          pm25: 18, temp: 28, region: 'ใต้' },
-  'narathiwat':    { name: 'นราธิวาส',     pm25: 18, temp: 28, region: 'ใต้' }
+// === CASES ===
+const caseData = {
+  A: {
+    title: 'A · กลางวันแดดแรง · ขายคืน',
+    body: 'ปั๊มดันน้ำเต็มที่ · ส่งให้บ้านก่อน เหลือก็ส่งกลับเข้าระบบประปาขายคืน · ระบบ On-Grid ปกติ',
+    pipes: { cp1:'#E8843D', cp2:'off', cp3:'off', cp4:'off', cp5:'off' },
+    extra: 'M240 110 L290 230|#E8843D',
+    sun: true, gridX: false, batPct: 0, pumpStop: false
+  },
+  B: {
+    title: 'B · ไฟดับ · ไม่มีแบต',
+    body: 'ประปาเมนใหญ่ดับ ปั๊มต้องหยุดทำงาน (Anti-Islanding) เพื่อป้องกันช่างซ่อมโดนไฟ · ไม่มีแท็งก์เก็บไว้ บ้านจึงไม่มีน้ำใช้',
+    pipes: { cp1:'off', cp2:'off', cp3:'off', cp4:'off', cp5:'off' },
+    sun: true, gridX: true, batPct: 0, pumpStop: true
+  },
+  C: {
+    title: 'C · Hybrid · กลางวัน',
+    body: 'ปั๊มดันน้ำมาก · ส่งบ้านก่อน เติมแท็งก์ และเหลือก็ยังขายเข้าประปาได้ด้วย',
+    pipes: { cp1:'#E8843D', cp2:'#E8843D', cp3:'off', cp4:'off', cp5:'off' },
+    extra: 'M240 110 L290 230|#E8843D',
+    sun: true, gridX: false, batPct: 75, pumpStop: false
+  },
+  D: {
+    title: 'D · Hybrid · ไฟดับ',
+    body: 'ประปาดับ แต่มีปั๊มและแท็งก์ · ระบบตัดออกจากประปา แล้วใช้ปั๊ม+แท็งก์เลี้ยงบ้านเอง · ข้อดีของ Hybrid',
+    pipes: { cp1:'#E8843D', cp2:'#E8843D', cp3:'off', cp4:'#4A7C3F', cp5:'off' },
+    sun: true, gridX: true, batPct: 70, pumpStop: false
+  },
+  E: {
+    title: 'E · ไม่ปล่อยย้อน',
+    body: 'แท็งก์เต็มแล้ว · บ้านใช้น้อย · ปั๊มต้องลดความเร็ว เพราะห้ามดันกลับเข้าประปา · ใช้ในกรณีไม่ได้สมัคร Net Metering',
+    pipes: { cp1:'#E8843D', cp2:'off', cp3:'off', cp4:'off', cp5:'off' },
+    sun: true, gridX: false, batPct: 100, pumpStop: false
+  },
+  F: {
+    title: 'F · กลางคืน · ใช้แบต',
+    body: 'ปั๊มหยุด (ไม่มีแสง) · ใช้น้ำจากแท็งก์ · ถ้าน้ำหมดค่อยดึงจากประปา · นี่คือสาเหตุที่ต้องมีแบต',
+    pipes: { cp1:'off', cp2:'off', cp3:'off', cp4:'#4A7C3F', cp5:'#5C544D' },
+    sun: false, gridX: false, batPct: 30, pumpStop: false
+  }
 };
 
-// Panel technology specs
-const panelTechs = {
-  poly:     { name: 'Poly-Si',  tempCoef: -0.45, baseEff: 1.00, info: '📌 มาตรฐาน ราคาถูก' },
-  mono:     { name: 'Mono-Si',  tempCoef: -0.38, baseEff: 1.00, info: '📌 พรีเมียม ทนความร้อนดี' },
-  topcon:   { name: 'TOPCon',   tempCoef: -0.30, baseEff: 1.05, info: '🌟 เทคโนโลยีใหม่ ประสิทธิภาพสูง' },
-  hjt:      { name: 'HJT',      tempCoef: -0.26, baseEff: 1.07, info: '⭐ ดีที่สุด ทนร้อนเยี่ยม' },
-  bifacial: { name: 'Bifacial', tempCoef: -0.35, baseEff: 1.10, info: '🔄 รับแสง 2 หน้า เพิ่ม +10%' }
-};
-
-const ELECTRICITY_RATE_DEFAULT = 4.50;
-
-let state = {
-  province: 'bangkok',
-  month: 'year',
-  panelType: 'mono',
-  trackerMode: 'fixed', // 'fixed', 'single', 'dual'
-  tiltAngle: 15,
-  azimuth: 180,
-  shadeLevel: 0,
-  systemAge: 0,
-  panelWatt: 450,
-  panelCount: 8,
-  inverterSize: 5,
-  batteryEnabled: true,
-  dustEnabled: true,
-  electricityRate: 4.50,
-  systemCost: 180000
-};
-
-const SVG_NS = 'http://www.w3.org/2000/svg';
-
-// ============ EFFICIENCY FUNCTIONS ============
-function tiltEfficiency(angle) {
-  const diff = Math.abs(angle - 15);
-  if (diff <= 5) return 1.0;
-  if (diff <= 10) return 0.99;
-  if (diff <= 15) return 0.97;
-  if (diff <= 20) return 0.94;
-  if (diff <= 30) return 0.88;
-  if (diff <= 40) return 0.80;
-  return 0.70;
-}
-
-function azimuthEfficiency(az) {
-  // Continuous formula - smooth interpolation for any angle
-  let diff = Math.abs(az - 180);
-  if (diff > 180) diff = 360 - diff;
-  // Cosine-based formula matching real-world data
-  // South (diff=0) = 100%, East/West (diff=90) = 85%, North (diff=180) = 70%
-  if (diff === 0) return 1.0;
-  if (diff <= 90) {
-    // Smooth curve from 100% to 85% as we go from S to E/W
-    const t = diff / 90;
-    return 1.0 - 0.15 * t * t;  // quadratic falloff
-  } else {
-    // From 85% at E/W (90°) to 70% at N (180°)
-    const t = (diff - 90) / 90;
-    return 0.85 - 0.15 * t;
-  }
-}
-
-function getAzimuthName(az) {
-  const dirs = [
-    {az: 0,   name: 'เหนือ (N)'},
-    {az: 22,  name: 'NNE'},
-    {az: 45,  name: 'NE'},
-    {az: 67,  name: 'ENE'},
-    {az: 90,  name: 'ตะวันออก (E)'},
-    {az: 112, name: 'ESE'},
-    {az: 135, name: 'SE'},
-    {az: 157, name: 'SSE'},
-    {az: 180, name: 'ใต้ (S) ⭐'},
-    {az: 202, name: 'SSW'},
-    {az: 225, name: 'SW'},
-    {az: 247, name: 'WSW'},
-    {az: 270, name: 'ตะวันตก (W)'},
-    {az: 292, name: 'WNW'},
-    {az: 315, name: 'NW'},
-    {az: 337, name: 'NNW'}
-  ];
-  // Find closest
-  let closest = dirs[0];
-  let minDiff = 360;
-  dirs.forEach(d => {
-    let diff = Math.abs(d.az - az);
-    if (diff > 180) diff = 360 - diff;
-    if (diff < minDiff) {
-      minDiff = diff;
-      closest = d;
-    }
-  });
-  if (minDiff <= 5) return closest.name;
-  return `${az}° (≈${closest.name})`;
-}
-
-function degradationFactor(year) {
-  if (year === 0) return 1.0;
-  if (year === 1) return 0.975;
-  return 0.975 - (year - 1) * 0.005;
-}
-
-function dustEfficiency(month, dustEnabled) {
-  if (!dustEnabled) return 1.0;
-  if (month === 'year') return 0.94;
-  if (rainyMonths.includes(month)) return 0.97;
-  return 0.90;
-}
-
-// PM2.5 effect: ทุก 10 µg/m³ ลดประสิทธิภาพ ~1-2%
-function pm25Efficiency(pm25) {
-  if (pm25 <= 15) return 1.0;
-  if (pm25 <= 25) return 0.98;
-  if (pm25 <= 35) return 0.96;
-  if (pm25 <= 45) return 0.94;
-  return 0.92;
-}
-
-// คำนวณอุณหภูมิแผง: ปกติแผงร้อนกว่าอากาศ ~25-30°C
-function calculatePanelTemp(ambient, irradiance) {
-  // NOCT formula: Tcell = Tamb + (NOCT-20)/800 * irradiance
-  // For Thailand: irradiance ~700 W/m² avg
-  const heatRise = (45 - 20) / 800 * 700; // ~22°C heat rise
-  return ambient + heatRise;
-}
-
-function temperatureEfficiency(panelTemp, panelType) {
-  const coef = panelTechs[panelType].tempCoef;
-  const tempDiff = panelTemp - 25;
-  if (tempDiff <= 0) return 1.0;
-  return 1 + (coef / 100) * tempDiff;
-}
-
-function shadeEfficiency(shadePct) {
-  // Real shading impact is bigger than just %, due to hot-spot effect
-  // 5% shade can cause 10% loss, 30% shade can cause 50% loss
-  const impactMultiplier = 1.5;
-  const loss = Math.min(0.7, (shadePct / 100) * impactMultiplier);
-  return 1 - loss;
-}
-
-function trackerGain(mode) {
-  if (mode === 'single') return 1.25;
-  if (mode === 'dual') return 1.35;
-  return 1.0;
-}
-
-// ============ DRAW PANELS ============
-function drawPanels() {
-  const group = document.getElementById('solarPanels');
-  group.innerHTML = '';
-  const count = state.panelCount;
-  const cols = Math.ceil(count / 2);
-  const startX = 220;
-  const startY = 180;
-  const panelW = Math.min(70, 320 / cols);
-  const panelH = 45;
-  const gap = 5;
-  const tilt = state.tiltAngle;
-  const dustLevel = state.dustEnabled
-    ? (state.month === 'year' ? 0.5 : (rainyMonths.includes(state.month) ? 0.25 : 0.85))
-    : 0;
-
-  // PM2.5 dust visual addition
-  const prov = provinces[state.province];
-  const pm25Visual = Math.min(0.4, (prov.pm25 - 15) / 100);
-  const totalDust = Math.min(0.95, dustLevel + (state.dustEnabled ? pm25Visual : 0));
-
-  state.panelPositions = [];
-
-  for (let i = 0; i < count; i++) {
-    const col = i % cols;
-    const row = Math.floor(i / cols);
-    const x = startX + col * (panelW + gap);
-    const y = startY + row * (panelH + gap);
-    const heightAdjust = panelH * (1 - Math.sin(tilt * Math.PI / 180) * 0.15);
-
-    const panel = document.createElementNS(SVG_NS, 'g');
-    panel.setAttribute('transform', `translate(${x}, ${y}) skewX(-${tilt * 0.3})`);
-
-    const rect = document.createElementNS(SVG_NS, 'rect');
-    rect.setAttribute('x', '0');
-    rect.setAttribute('y', '0');
-    rect.setAttribute('width', panelW);
-    rect.setAttribute('height', heightAdjust);
-    // Color based on panel tech
-    const techColor = {
-      poly: '#1a3a5c', mono: '#0d1f3d', topcon: '#0a1a30',
-      hjt: '#0d2440', bifacial: '#1a2c4a'
-    }[state.panelType];
-    rect.setAttribute('fill', techColor);
-    rect.setAttribute('stroke', '#34495e');
-    rect.setAttribute('stroke-width', '1.5');
-    rect.setAttribute('rx', '2');
-    panel.appendChild(rect);
-
-    for (let g = 1; g < 4; g++) {
-      const line = document.createElementNS(SVG_NS, 'line');
-      line.setAttribute('x1', panelW * g / 4);
-      line.setAttribute('y1', 0);
-      line.setAttribute('x2', panelW * g / 4);
-      line.setAttribute('y2', heightAdjust);
-      line.setAttribute('stroke', '#4a90c2');
-      line.setAttribute('stroke-width', '0.5');
-      panel.appendChild(line);
-    }
-    for (let g = 1; g < 3; g++) {
-      const line = document.createElementNS(SVG_NS, 'line');
-      line.setAttribute('x1', 0);
-      line.setAttribute('y1', heightAdjust * g / 3);
-      line.setAttribute('x2', panelW);
-      line.setAttribute('y2', heightAdjust * g / 3);
-      line.setAttribute('stroke', '#4a90c2');
-      line.setAttribute('stroke-width', '0.5');
-      panel.appendChild(line);
-    }
-
-    if (state.systemAge > 5) {
-      const ageOverlay = document.createElementNS(SVG_NS, 'rect');
-      ageOverlay.setAttribute('x', '0');
-      ageOverlay.setAttribute('y', '0');
-      ageOverlay.setAttribute('width', panelW);
-      ageOverlay.setAttribute('height', heightAdjust);
-      ageOverlay.setAttribute('fill', '#888');
-      ageOverlay.setAttribute('opacity', Math.min(0.4, state.systemAge * 0.012));
-      ageOverlay.setAttribute('rx', '2');
-      panel.appendChild(ageOverlay);
-    }
-
-    if (totalDust > 0) {
-      const dustOverlay = document.createElementNS(SVG_NS, 'rect');
-      dustOverlay.setAttribute('x', '0');
-      dustOverlay.setAttribute('y', '0');
-      dustOverlay.setAttribute('width', panelW);
-      dustOverlay.setAttribute('height', heightAdjust);
-      dustOverlay.setAttribute('fill', '#a0815c');
-      dustOverlay.setAttribute('opacity', totalDust * 0.5);
-      dustOverlay.setAttribute('rx', '2');
-      panel.appendChild(dustOverlay);
-      const numSpots = Math.floor(totalDust * 12);
-      for (let s = 0; s < numSpots; s++) {
-        const spot = document.createElementNS(SVG_NS, 'circle');
-        spot.setAttribute('cx', Math.random() * panelW);
-        spot.setAttribute('cy', Math.random() * heightAdjust);
-        spot.setAttribute('r', 0.6 + Math.random() * 1.2);
-        spot.setAttribute('fill', '#6b4f2a');
-        spot.setAttribute('opacity', 0.7);
-        panel.appendChild(spot);
-      }
-    }
-
-    // Shadow overlay if shading
-    if (state.shadeLevel > 0 && i < Math.ceil(count * state.shadeLevel / 100)) {
-      const shadow = document.createElementNS(SVG_NS, 'rect');
-      shadow.setAttribute('x', '0');
-      shadow.setAttribute('y', '0');
-      shadow.setAttribute('width', panelW);
-      shadow.setAttribute('height', heightAdjust);
-      shadow.setAttribute('fill', '#1a1a2e');
-      shadow.setAttribute('opacity', '0.6');
-      shadow.setAttribute('rx', '2');
-      panel.appendChild(shadow);
-    }
-
-    const psh = state.month === 'year' ? yearlyAvgPSH : monthlyPSH[state.month];
-    const sunNormalized = (psh / 6.0) * (1 - totalDust * 0.5);
-    if (sunNormalized > 0.3) {
-      const shine = document.createElementNS(SVG_NS, 'rect');
-      shine.setAttribute('x', '0');
-      shine.setAttribute('y', '0');
-      shine.setAttribute('width', panelW);
-      shine.setAttribute('height', heightAdjust);
-      shine.setAttribute('fill', 'url(#shineGradient)');
-      shine.setAttribute('opacity', sunNormalized * 0.5);
-      shine.setAttribute('rx', '2');
-      panel.appendChild(shine);
-    }
-
-    group.appendChild(panel);
-    state.panelPositions.push({ x: x + panelW / 2, y: y + heightAdjust });
-  }
-
-  drawTiltIndicator();
-  drawCompass();
-  drawThermometer();
-  drawShadows();
-  drawHaze();
-  drawRain();
-}
-
-// ============ THERMOMETER ============
-function drawThermometer() {
-  const group = document.getElementById('thermometer');
-  group.innerHTML = '';
-  const cx = 670, cy = 180;
-  const stats = computeStats();
-  const temp = stats.panelTemp;
-
-  // Background
-  const bg = document.createElementNS(SVG_NS, 'rect');
-  bg.setAttribute('x', cx - 25);
-  bg.setAttribute('y', cy - 70);
-  bg.setAttribute('width', '60');
-  bg.setAttribute('height', '110');
-  bg.setAttribute('fill', 'rgba(255,255,255,0.85)');
-  bg.setAttribute('stroke', '#e74c3c');
-  bg.setAttribute('stroke-width', '1.5');
-  bg.setAttribute('rx', '4');
-  group.appendChild(bg);
-
-  // Thermometer tube
-  const tube = document.createElementNS(SVG_NS, 'rect');
-  tube.setAttribute('x', cx - 4);
-  tube.setAttribute('y', cy - 60);
-  tube.setAttribute('width', '8');
-  tube.setAttribute('height', '70');
-  tube.setAttribute('fill', '#fff');
-  tube.setAttribute('stroke', '#1a2332');
-  tube.setAttribute('stroke-width', '1');
-  tube.setAttribute('rx', '4');
-  group.appendChild(tube);
-
-  // Mercury level (height based on temp 25-80°C)
-  const tempPct = Math.max(0, Math.min(1, (temp - 25) / 55));
-  const mercHeight = tempPct * 60;
-  const merc = document.createElementNS(SVG_NS, 'rect');
-  merc.setAttribute('x', cx - 3);
-  merc.setAttribute('y', cy - mercHeight);
-  merc.setAttribute('width', '6');
-  merc.setAttribute('height', mercHeight + 5);
-  let tempColor = '#3498db';
-  if (temp > 35) tempColor = '#f1c40f';
-  if (temp > 50) tempColor = '#e67e22';
-  if (temp > 60) tempColor = '#e74c3c';
-  merc.setAttribute('fill', tempColor);
-  group.appendChild(merc);
-
-  // Bulb
-  const bulb = document.createElementNS(SVG_NS, 'circle');
-  bulb.setAttribute('cx', cx);
-  bulb.setAttribute('cy', cy + 12);
-  bulb.setAttribute('r', '7');
-  bulb.setAttribute('fill', tempColor);
-  bulb.setAttribute('stroke', '#1a2332');
-  bulb.setAttribute('stroke-width', '1');
-  group.appendChild(bulb);
-
-  // Temp value
-  const tempText = document.createElementNS(SVG_NS, 'text');
-  tempText.setAttribute('x', cx + 18);
-  tempText.setAttribute('y', cy - 30);
-  tempText.setAttribute('font-size', '14');
-  tempText.setAttribute('font-weight', 'bold');
-  tempText.setAttribute('fill', '#c0392b');
-  tempText.textContent = Math.round(temp) + '°C';
-  group.appendChild(tempText);
-
-  // Label
-  const label = document.createElementNS(SVG_NS, 'text');
-  label.setAttribute('x', cx + 5);
-  label.setAttribute('y', cy - 55);
-  label.setAttribute('text-anchor', 'middle');
-  label.setAttribute('font-size', '9');
-  label.setAttribute('font-weight', 'bold');
-  label.setAttribute('fill', '#1a2332');
-  label.textContent = '🌡️ แผง';
-  group.appendChild(label);
-}
-
-// ============ SHADOWS ============
-function drawShadows() {
-  const group = document.getElementById('shadowGroup');
-  group.innerHTML = '';
-  if (state.shadeLevel === 0) return;
-
-  // Draw a tree casting shadow
-  const treeX = 180;
-  const treeY = 270;
-
-  // Tree trunk
-  const trunk = document.createElementNS(SVG_NS, 'rect');
-  trunk.setAttribute('x', treeX - 4);
-  trunk.setAttribute('y', treeY);
-  trunk.setAttribute('width', '8');
-  trunk.setAttribute('height', '30');
-  trunk.setAttribute('fill', '#5D4037');
-  group.appendChild(trunk);
-
-  // Tree leaves (size based on shade level)
-  const treeSize = 15 + state.shadeLevel * 0.5;
-  const leaves = document.createElementNS(SVG_NS, 'circle');
-  leaves.setAttribute('cx', treeX);
-  leaves.setAttribute('cy', treeY - 5);
-  leaves.setAttribute('r', treeSize);
-  leaves.setAttribute('fill', '#2d5016');
-  leaves.setAttribute('opacity', '0.95');
-  group.appendChild(leaves);
-
-  const leaves2 = document.createElementNS(SVG_NS, 'circle');
-  leaves2.setAttribute('cx', treeX - 8);
-  leaves2.setAttribute('cy', treeY);
-  leaves2.setAttribute('r', treeSize - 3);
-  leaves2.setAttribute('fill', '#3a6b1c');
-  leaves2.setAttribute('opacity', '0.9');
-  group.appendChild(leaves2);
-
-  const leaves3 = document.createElementNS(SVG_NS, 'circle');
-  leaves3.setAttribute('cx', treeX + 8);
-  leaves3.setAttribute('cy', treeY - 2);
-  leaves3.setAttribute('r', treeSize - 3);
-  leaves3.setAttribute('fill', '#3a6b1c');
-  leaves3.setAttribute('opacity', '0.9');
-  group.appendChild(leaves3);
-
-  // Shadow on ground (elongated ellipse)
-  const shadowLen = state.shadeLevel * 4;
-  const shadowEll = document.createElementNS(SVG_NS, 'ellipse');
-  shadowEll.setAttribute('cx', treeX + shadowLen);
-  shadowEll.setAttribute('cy', treeY + 35);
-  shadowEll.setAttribute('rx', shadowLen * 1.5);
-  shadowEll.setAttribute('ry', '10');
-  shadowEll.setAttribute('fill', '#1a1a2e');
-  shadowEll.setAttribute('opacity', '0.5');
-  group.appendChild(shadowEll);
-
-  // Label
-  const label = document.createElementNS(SVG_NS, 'text');
-  label.setAttribute('x', treeX);
-  label.setAttribute('y', treeY + 50);
-  label.setAttribute('text-anchor', 'middle');
-  label.setAttribute('font-size', '9');
-  label.setAttribute('font-weight', 'bold');
-  label.setAttribute('fill', '#1a2332');
-  label.textContent = `🌳 เงา ${state.shadeLevel}%`;
-  group.appendChild(label);
-}
-
-// ============ HAZE / PM2.5 ============
-function drawHaze() {
-  const group = document.getElementById('hazeOverlay');
-  group.innerHTML = '';
-  const prov = provinces[state.province];
-  const hazeLevel = Math.min(0.4, (prov.pm25 - 15) / 80);
-  if (hazeLevel <= 0.05) return;
-
-  // Haze layer
-  const haze = document.createElementNS(SVG_NS, 'rect');
-  haze.setAttribute('x', 0);
-  haze.setAttribute('y', 0);
-  haze.setAttribute('width', 1000);
-  haze.setAttribute('height', 200);
-  haze.setAttribute('fill', '#a09080');
-  haze.setAttribute('opacity', hazeLevel);
-  group.appendChild(haze);
-
-  // PM2.5 particles floating
-  for (let i = 0; i < hazeLevel * 30; i++) {
-    const particle = document.createElementNS(SVG_NS, 'circle');
-    const px = Math.random() * 1000;
-    const py = Math.random() * 180;
-    particle.setAttribute('cx', px);
-    particle.setAttribute('cy', py);
-    particle.setAttribute('r', 0.8 + Math.random() * 1.2);
-    particle.setAttribute('fill', '#6b5d3f');
-    particle.setAttribute('opacity', 0.6);
-
-    const am = document.createElementNS(SVG_NS, 'animate');
-    am.setAttribute('attributeName', 'cx');
-    am.setAttribute('from', px);
-    am.setAttribute('to', px - 100);
-    am.setAttribute('dur', `${5 + Math.random() * 5}s`);
-    am.setAttribute('repeatCount', 'indefinite');
-    particle.appendChild(am);
-
-    group.appendChild(particle);
-  }
-}
-
-// ============ COMPASS ============
-function drawCompass() {
-  const group = document.getElementById('compassIndicator');
-  group.innerHTML = '';
-  const cx = 100, cy = 480, r = 35;
-
-  const bg = document.createElementNS(SVG_NS, 'circle');
-  bg.setAttribute('cx', cx);
-  bg.setAttribute('cy', cy);
-  bg.setAttribute('r', r + 5);
-  bg.setAttribute('fill', 'rgba(255,255,255,0.9)');
-  bg.setAttribute('stroke', '#1a2332');
-  bg.setAttribute('stroke-width', '2');
-  group.appendChild(bg);
-
-  const dirs = [
-    {label: 'N', x: cx, y: cy - r + 4, color: '#e74c3c'},
-    {label: 'E', x: cx + r - 5, y: cy + 4, color: '#1a2332'},
-    {label: 'S', x: cx, y: cy + r - 1, color: '#27ae60'},
-    {label: 'W', x: cx - r + 5, y: cy + 4, color: '#1a2332'}
-  ];
-  dirs.forEach(d => {
-    const t = document.createElementNS(SVG_NS, 'text');
-    t.setAttribute('x', d.x);
-    t.setAttribute('y', d.y);
-    t.setAttribute('text-anchor', 'middle');
-    t.setAttribute('font-size', '11');
-    t.setAttribute('font-weight', 'bold');
-    t.setAttribute('fill', d.color);
-    t.textContent = d.label;
-    group.appendChild(t);
-  });
-
-  // For tracker mode, show current sun-following position
-  let displayAz = state.azimuth;
-  if (state.trackerMode === 'single' || state.trackerMode === 'dual') {
-    // Animated tracker - show 'tracking' indicator
-    displayAz = 180; // facing south at noon
-  }
-
-  const azRad = (displayAz - 90) * Math.PI / 180;
-  const arrowLen = r - 8;
-  const tipX = cx + arrowLen * Math.cos(azRad);
-  const tipY = cy + arrowLen * Math.sin(azRad);
-
-  const shaft = document.createElementNS(SVG_NS, 'line');
-  shaft.setAttribute('x1', cx);
-  shaft.setAttribute('y1', cy);
-  shaft.setAttribute('x2', tipX);
-  shaft.setAttribute('y2', tipY);
-  shaft.setAttribute('stroke', state.trackerMode !== 'fixed' ? '#16a085' : '#ff8c00');
-  shaft.setAttribute('stroke-width', '4');
-  shaft.setAttribute('stroke-linecap', 'round');
-  if (state.trackerMode !== 'fixed') {
-    const rotAnim = document.createElementNS(SVG_NS, 'animateTransform');
-    rotAnim.setAttribute('attributeName', 'transform');
-    rotAnim.setAttribute('type', 'rotate');
-    rotAnim.setAttribute('from', `-30 ${cx} ${cy}`);
-    rotAnim.setAttribute('to', `30 ${cx} ${cy}`);
-    rotAnim.setAttribute('dur', '6s');
-    rotAnim.setAttribute('repeatCount', 'indefinite');
-    rotAnim.setAttribute('values', `-30 ${cx} ${cy}; 30 ${cx} ${cy}; -30 ${cx} ${cy}`);
-    shaft.appendChild(rotAnim);
-  }
-  group.appendChild(shaft);
-
-  const headSize = 8;
-  const headAngle1 = azRad + 2.5;
-  const headAngle2 = azRad - 2.5;
-  const head = document.createElementNS(SVG_NS, 'polygon');
-  const points = `${tipX},${tipY} ${tipX - headSize * Math.cos(headAngle1)},${tipY - headSize * Math.sin(headAngle1)} ${tipX - headSize * Math.cos(headAngle2)},${tipY - headSize * Math.sin(headAngle2)}`;
-  head.setAttribute('points', points);
-  head.setAttribute('fill', state.trackerMode !== 'fixed' ? '#16a085' : '#ff8c00');
-  group.appendChild(head);
-
-  const center = document.createElementNS(SVG_NS, 'circle');
-  center.setAttribute('cx', cx);
-  center.setAttribute('cy', cy);
-  center.setAttribute('r', '3');
-  center.setAttribute('fill', '#1a2332');
-  group.appendChild(center);
-
-  let labelText = state.trackerMode !== 'fixed' ? '🔄 ติดตามดวงอาทิตย์' : '🧭 ' + getAzimuthName(state.azimuth);
-
-  const label = document.createElementNS(SVG_NS, 'text');
-  label.setAttribute('x', cx);
-  label.setAttribute('y', cy + r + 15);
-  label.setAttribute('text-anchor', 'middle');
-  label.setAttribute('font-size', '9');
-  label.setAttribute('font-weight', 'bold');
-  label.setAttribute('fill', '#1a2332');
-  label.textContent = labelText;
-  group.appendChild(label);
-}
-
-function drawTiltIndicator() {
-  const group = document.getElementById('tiltIndicator');
-  group.innerHTML = '';
-  const cx = 380, cy = 285;
-  const angle = state.tiltAngle;
-
-  const bg = document.createElementNS(SVG_NS, 'rect');
-  bg.setAttribute('x', cx - 35);
-  bg.setAttribute('y', cy - 32);
-  bg.setAttribute('width', '75');
-  bg.setAttribute('height', '55');
-  bg.setAttribute('fill', 'rgba(255,255,255,0.85)');
-  bg.setAttribute('stroke', '#ff6b6b');
-  bg.setAttribute('stroke-width', '1.5');
-  bg.setAttribute('rx', '4');
-  group.appendChild(bg);
-
-  const ground = document.createElementNS(SVG_NS, 'line');
-  ground.setAttribute('x1', cx - 25);
-  ground.setAttribute('y1', cy + 10);
-  ground.setAttribute('x2', cx + 25);
-  ground.setAttribute('y2', cy + 10);
-  ground.setAttribute('stroke', '#1a2332');
-  ground.setAttribute('stroke-width', '2');
-  group.appendChild(ground);
-
-  const tiltLine = document.createElementNS(SVG_NS, 'line');
-  tiltLine.setAttribute('x1', cx - 25);
-  tiltLine.setAttribute('y1', cy + 10);
-  tiltLine.setAttribute('x2', cx - 25 + 35 * Math.cos(angle * Math.PI / 180));
-  tiltLine.setAttribute('y2', cy + 10 - 35 * Math.sin(angle * Math.PI / 180));
-  tiltLine.setAttribute('stroke', '#1a3a5c');
-  tiltLine.setAttribute('stroke-width', '4');
-  group.appendChild(tiltLine);
-
-  const text = document.createElementNS(SVG_NS, 'text');
-  text.setAttribute('x', cx - 5);
-  text.setAttribute('y', cy + 5);
-  text.setAttribute('font-size', '12');
-  text.setAttribute('font-weight', 'bold');
-  text.setAttribute('fill', '#c0392b');
-  text.textContent = angle + '°';
-  group.appendChild(text);
-
-  const label = document.createElementNS(SVG_NS, 'text');
-  label.setAttribute('x', cx);
-  label.setAttribute('y', cy - 20);
-  label.setAttribute('font-size', '9');
-  label.setAttribute('text-anchor', 'middle');
-  label.setAttribute('font-weight', 'bold');
-  label.setAttribute('fill', '#1a2332');
-  label.textContent = 'มุมเอียง';
-  group.appendChild(label);
-}
-
-function drawDcCables() {
-  const group = document.getElementById('dcCables');
-  group.innerHTML = '';
-  const combinerX = 470, combinerY = 320;
-  state.panelPositions.forEach((pos) => {
-    const path = document.createElementNS(SVG_NS, 'path');
-    const midY = (pos.y + combinerY) / 2 + 20;
-    const d = `M ${pos.x} ${pos.y} Q ${pos.x} ${midY}, ${(pos.x + combinerX) / 2} ${midY} T ${combinerX} ${combinerY}`;
-    path.setAttribute('d', d);
-    path.setAttribute('stroke', '#ff6b6b');
-    path.setAttribute('stroke-width', '1.5');
-    path.setAttribute('fill', 'none');
-    path.setAttribute('opacity', '0.6');
-    group.appendChild(path);
-  });
-}
-
-function drawRain() {
-  const group = document.getElementById('rainGroup');
-  group.innerHTML = '';
-  const cloud = document.getElementById('cloudGroup');
-  if (!rainyMonths.includes(state.month)) {
-    cloud.style.display = 'none';
-    return;
-  }
-  cloud.style.display = '';
-
-  for (let i = 0; i < 30; i++) {
-    const x = 200 + Math.random() * 340;
-    const dropDelay = Math.random() * 1.5;
-    const drop = document.createElementNS(SVG_NS, 'line');
-    drop.setAttribute('x1', x);
-    drop.setAttribute('y1', '60');
-    drop.setAttribute('x2', x - 3);
-    drop.setAttribute('y2', '75');
-    drop.setAttribute('stroke', '#6495ED');
-    drop.setAttribute('stroke-width', '1.5');
-    drop.setAttribute('opacity', '0.7');
-    const am = document.createElementNS(SVG_NS, 'animateTransform');
-    am.setAttribute('attributeName', 'transform');
-    am.setAttribute('type', 'translate');
-    am.setAttribute('from', '0 0');
-    am.setAttribute('to', '-30 200');
-    am.setAttribute('dur', `${0.8 + Math.random() * 0.4}s`);
-    am.setAttribute('repeatCount', 'indefinite');
-    am.setAttribute('begin', `${dropDelay}s`);
-    drop.appendChild(am);
-    const ao = document.createElementNS(SVG_NS, 'animate');
-    ao.setAttribute('attributeName', 'opacity');
-    ao.setAttribute('values', '0;0.7;0.7;0');
-    ao.setAttribute('dur', `${0.8 + Math.random() * 0.4}s`);
-    ao.setAttribute('repeatCount', 'indefinite');
-    ao.setAttribute('begin', `${dropDelay}s`);
-    drop.appendChild(ao);
-    group.appendChild(drop);
-  }
-}
-
-function animateLightRays() {
-  const group = document.getElementById('lightRays');
-  group.innerHTML = '';
-  const psh = state.month === 'year' ? yearlyAvgPSH : monthlyPSH[state.month];
-  const intensity = psh / 6.0;
-  if (intensity < 0.1) return;
-  const reduceFactor = rainyMonths.includes(state.month) ? 0.4 : 1;
-  const sunX = 120, sunY = 100;
-
-  state.panelPositions.forEach((pos, i) => {
-    if (Math.random() > reduceFactor) return;
-    if (i % 2 !== 0 && intensity < 0.6) return;
-    const ray = document.createElementNS(SVG_NS, 'circle');
-    ray.setAttribute('r', '3');
-    ray.setAttribute('fill', '#FFD700');
-    ray.setAttribute('opacity', '0');
-    const am = document.createElementNS(SVG_NS, 'animateMotion');
-    am.setAttribute('dur', `${2 + Math.random()}s`);
-    am.setAttribute('repeatCount', 'indefinite');
-    am.setAttribute('begin', `${i * 0.2}s`);
-    am.setAttribute('path', `M ${sunX} ${sunY} L ${pos.x} ${pos.y - 45}`);
-    const ao = document.createElementNS(SVG_NS, 'animate');
-    ao.setAttribute('attributeName', 'opacity');
-    ao.setAttribute('values', '0;1;1;0');
-    ao.setAttribute('dur', `${2 + Math.random()}s`);
-    ao.setAttribute('repeatCount', 'indefinite');
-    ao.setAttribute('begin', `${i * 0.2}s`);
-    ray.appendChild(am);
-    ray.appendChild(ao);
-    group.appendChild(ray);
-  });
-}
-
-function animateCurrent() {
-  const group = document.getElementById('currentParticles');
-  group.innerHTML = '';
-  const stats = computeStats();
-  const actualPower = stats.actualPowerW;
-  if (actualPower < 50) return;
-  const speed = Math.max(0.6, 3 - actualPower / 5000);
-  const particleCount = Math.min(8, Math.floor(actualPower / 500) + 2);
-
-  state.panelPositions.forEach((pos, i) => {
-    for (let p = 0; p < 2; p++) {
-      const particle = document.createElementNS(SVG_NS, 'circle');
-      particle.setAttribute('r', '3');
-      particle.setAttribute('fill', '#ff3333');
-      particle.setAttribute('opacity', '0.9');
-      const combinerX = 470, combinerY = 320;
-      const midY = (pos.y + combinerY) / 2 + 20;
-      const path = `M ${pos.x} ${pos.y} Q ${pos.x} ${midY}, ${(pos.x + combinerX) / 2} ${midY} T ${combinerX} ${combinerY}`;
-      const am = document.createElementNS(SVG_NS, 'animateMotion');
-      am.setAttribute('dur', `${speed}s`);
-      am.setAttribute('repeatCount', 'indefinite');
-      am.setAttribute('begin', `${(i * 0.1 + p * (speed/2))}s`);
-      am.setAttribute('path', path);
-      particle.appendChild(am);
-      group.appendChild(particle);
-    }
-  });
-
-  const segments = [
-    { path: 'M 510 370 L 600 370', color: '#ff3333' },
-    { path: 'M 700 370 L 780 370', color: '#16a085' },
-    { path: 'M 860 370 L 900 370 L 900 490 L 780 490', color: '#16a085', durMul: 1.5 }
-  ];
-
-  segments.forEach(seg => {
-    for (let i = 0; i < particleCount; i++) {
-      const particle = document.createElementNS(SVG_NS, 'circle');
-      particle.setAttribute('r', '4');
-      particle.setAttribute('fill', seg.color);
-      const am = document.createElementNS(SVG_NS, 'animateMotion');
-      am.setAttribute('dur', `${speed * (seg.durMul || 1)}s`);
-      am.setAttribute('repeatCount', 'indefinite');
-      am.setAttribute('begin', `${i * (speed / particleCount)}s`);
-      am.setAttribute('path', seg.path);
-      particle.appendChild(am);
-      group.appendChild(particle);
-    }
-  });
-}
-
-// ============ COMPUTE STATS ============
-function computeStats() {
-  const psh = state.month === 'year' ? yearlyAvgPSH : monthlyPSH[state.month];
-  const tiltEff = state.trackerMode !== 'fixed' ? 1.0 : tiltEfficiency(state.tiltAngle);
-  const azEff = state.trackerMode !== 'fixed' ? 1.0 : azimuthEfficiency(state.azimuth);
-  const degradeEff = degradationFactor(state.systemAge);
-  const dustEff = dustEfficiency(state.month, state.dustEnabled);
-  const prov = provinces[state.province];
-  const pm25Eff = state.dustEnabled ? pm25Efficiency(prov.pm25) : 1.0;
-  const shadeEff = shadeEfficiency(state.shadeLevel);
-  const trackGain = trackerGain(state.trackerMode);
-  const tech = panelTechs[state.panelType];
-
-  // Calculate panel temp (ambient + heat from sun)
-  const ambientTemp = prov.temp + (rainyMonths.includes(state.month) ? -2 : 2);
-  const panelTemp = calculatePanelTemp(ambientTemp, 700);
-  const tempEff = temperatureEfficiency(panelTemp, state.panelType);
-
-  const systemEff = 0.85; // wiring + inverter losses
-  const installedW = state.panelWatt * state.panelCount * tech.baseEff;
-  const inverterMaxW = state.inverterSize * 1000;
-
-  const allLosses = tiltEff * azEff * degradeEff * dustEff * pm25Eff * shadeEff * tempEff * systemEff * trackGain;
-  const peakPowerW = installedW * allLosses;
-  const actualPowerW = Math.min(peakPowerW, inverterMaxW);
-
-  const dailyKWh = (installedW / 1000) * psh * allLosses;
-  const dailyKWhCapped = Math.min(dailyKWh, (inverterMaxW / 1000) * psh);
-
-  // Yearly: sum 12 months
-  let yearlyKWhAccurate = 0;
-  for (let m = 1; m <= 12; m++) {
-    const mPsh = monthlyPSH[m];
-    const mDust = dustEfficiency(m, state.dustEnabled);
-    const mAmbTemp = prov.temp + (rainyMonths.includes(m) ? -2 : 2);
-    const mPanelTemp = calculatePanelTemp(mAmbTemp, 700);
-    const mTempEff = temperatureEfficiency(mPanelTemp, state.panelType);
-    const mAllLosses = tiltEff * azEff * degradeEff * mDust * pm25Eff * shadeEff * mTempEff * systemEff * trackGain;
-    const mDaily = (installedW / 1000) * mPsh * mAllLosses;
-    const mDailyCapped = Math.min(mDaily, (inverterMaxW / 1000) * mPsh);
-    yearlyKWhAccurate += mDailyCapped * 30;
-  }
-
-  return {
-    psh, tiltEff, azEff, degradeEff, dustEff, pm25Eff, shadeEff, tempEff, trackGain,
-    panelTemp, ambientTemp, installedW,
-    actualPowerW: Math.round(actualPowerW),
-    dailyKWh: dailyKWhCapped,
-    yearlyKWh: yearlyKWhAccurate,
-    monthlySavingTHB: Math.round(dailyKWhCapped * 30 * state.electricityRate),
-    yearlySavingTHB: Math.round(yearlyKWhAccurate * state.electricityRate)
-  };
-}
-
-function computePayback() {
-  const installedW = state.panelWatt * state.panelCount * panelTechs[state.panelType].baseEff;
-  const inverterMaxW = state.inverterSize * 1000;
-  const tiltEff = state.trackerMode !== 'fixed' ? 1.0 : tiltEfficiency(state.tiltAngle);
-  const azEff = state.trackerMode !== 'fixed' ? 1.0 : azimuthEfficiency(state.azimuth);
-  const prov = provinces[state.province];
-  const pm25Eff = state.dustEnabled ? pm25Efficiency(prov.pm25) : 1.0;
-  const shadeEff = shadeEfficiency(state.shadeLevel);
-  const trackGain = trackerGain(state.trackerMode);
-
-  const yearlyData = [];
-  let cumulative = -state.systemCost;
-  let totalRevenue = 0;
-  let paybackYear = null;
-  let paybackFraction = 0;
-
-  for (let yr = 0; yr <= 30; yr++) {
-    const deg = degradationFactor(yr);
-    let yearlyKWh = 0;
-    for (let m = 1; m <= 12; m++) {
-      const psh = monthlyPSH[m];
-      const dustE = dustEfficiency(m, state.dustEnabled);
-      const ambTemp = prov.temp + (rainyMonths.includes(m) ? -2 : 2);
-      const panelTemp = calculatePanelTemp(ambTemp, 700);
-      const tempEff = temperatureEfficiency(panelTemp, state.panelType);
-      const losses = tiltEff * azEff * deg * dustE * pm25Eff * shadeEff * tempEff * 0.85 * trackGain;
-      const daily = (installedW / 1000) * psh * losses;
-      const dailyCapped = Math.min(daily, (inverterMaxW / 1000) * psh);
-      yearlyKWh += dailyCapped * 30;
-    }
-    const yearSaving = yearlyKWh * state.electricityRate;
-    const prevCumulative = cumulative;
-    if (yr === 0) {
-      yearlyData.push({ year: yr, saving: 0, cumulative });
+let extraPath = null;
+
+function showCase(key) {
+  document.querySelectorAll('#caseTabs .tab').forEach(t => t.classList.toggle('active', t.dataset.case === key));
+  const c = caseData[key];
+  document.getElementById('caseTitle').textContent = c.title;
+  document.getElementById('caseBody').textContent = c.body;
+  ['cp1','cp2','cp3','cp4','cp5'].forEach(id => {
+    const el = document.getElementById(id);
+    const v = c.pipes[id];
+    if (v === 'off' || !v) {
+      el.classList.remove('active');
+      el.classList.add('off');
     } else {
-      cumulative += yearSaving;
-      totalRevenue += yearSaving;
-      if (paybackYear === null && cumulative >= 0) {
-        paybackYear = yr - 1;
-        paybackFraction = (-prevCumulative) / yearSaving;
-      }
-      yearlyData.push({ year: yr, saving: yearSaving, cumulative });
+      el.classList.add('active');
+      el.classList.remove('off');
+      el.setAttribute('stroke', v);
     }
+  });
+  if (extraPath) { extraPath.remove(); extraPath = null; }
+  if (c.extra) {
+    const [d, color] = c.extra.split('|');
+    const svg = document.getElementById('caseSvg');
+    extraPath = document.createElementNS('http://www.w3.org/2000/svg','path');
+    extraPath.setAttribute('class','flow-pipe active');
+    extraPath.setAttribute('d', d);
+    extraPath.setAttribute('stroke', color);
+    extraPath.setAttribute('stroke-width', '3');
+    extraPath.setAttribute('marker-end','url(#arrEnd)');
+    svg.appendChild(extraPath);
   }
-  const paybackTotal = paybackYear !== null ? paybackYear + paybackFraction : null;
-  return { yearlyData, paybackYears: paybackTotal, profit30: cumulative, totalRevenue };
+  document.getElementById('caseSun').setAttribute('opacity', c.sun ? 1 : 0.2);
+  document.getElementById('caseSunRing').setAttribute('opacity', c.sun ? 0.5 : 0.1);
+  document.getElementById('gridXmark').style.display = c.gridX ? 'block' : 'none';
+  document.getElementById('caseXmark').style.display = c.pumpStop ? 'block' : 'none';
+  const h = c.batPct;
+  const y = 200 + (80 - h * 0.8);
+  const heightVal = h * 0.8;
+  document.getElementById('batLevel').setAttribute('y', y);
+  document.getElementById('batLevel').setAttribute('height', heightVal);
+  document.getElementById('batPct').textContent = 'SOC ' + h + '%';
+  // Auto-scroll selected tab into view
+  const activeTab = document.querySelector('#caseTabs .tab.active');
+  if (activeTab) activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
 }
 
-// ============ UPDATE ============
-function updateStats() {
-  const s = computeStats();
-  document.getElementById('theoreticalPower').textContent = Math.round(s.installedW).toLocaleString();
-  document.getElementById('actualPower').textContent = s.actualPowerW.toLocaleString();
-  document.getElementById('dailyProduction').textContent = s.dailyKWh.toFixed(1);
-  document.getElementById('monthlySaving').textContent = s.monthlySavingTHB.toLocaleString();
-  document.getElementById('yearlyProduction').textContent = Math.round(s.yearlyKWh).toLocaleString();
-  document.getElementById('yearlySaving').textContent = s.yearlySavingTHB.toLocaleString();
-  document.getElementById('inverterSizeText').textContent = state.inverterSize + ' kW';
-  document.getElementById('pshValue').textContent = s.psh.toFixed(1);
-  document.getElementById('panelTempVal').textContent = Math.round(s.panelTemp);
+document.querySelectorAll('#caseTabs .tab').forEach(t => {
+  t.addEventListener('click', () => showCase(t.dataset.case));
+});
+showCase('A');
 
-  document.getElementById('tiltEfficiencyBar').style.width = Math.round(s.tiltEff * 100) + '%';
-  document.getElementById('tiltEfficiencyText').textContent = Math.round(s.tiltEff * 100) + '%';
-  document.getElementById('azimuthEfficiencyBar').style.width = Math.round(s.azEff * 100) + '%';
-  document.getElementById('azimuthEfficiencyText').textContent = Math.round(s.azEff * 100) + '%';
-
-  document.getElementById('degradationValue').textContent = (100 - Math.round(s.degradeEff * 100)).toFixed(1);
-
-  const totalEff = Math.round(s.tiltEff * s.azEff * s.degradeEff * s.dustEff * s.pm25Eff * s.shadeEff * s.tempEff * s.trackGain * 100);
-  document.getElementById('totalEfficiency').textContent = totalEff;
-
-  // Factor summary
-  updateFactorSummary(s);
-
-  // Province info
-  const prov = provinces[state.province];
-  const pmStatus = prov.pm25 <= 20 ? 'ดี' : prov.pm25 <= 30 ? 'ปานกลาง' : 'แย่';
-  const pmColor = prov.pm25 <= 20 ? '#2ecc71' : prov.pm25 <= 30 ? '#f39c12' : '#e74c3c';
-  document.getElementById('provinceInfo').innerHTML =
-    `PM2.5: <strong style="color:${pmColor};">${prov.pm25} µg/m³ (${pmStatus})</strong> · 
-    อุณหภูมิเฉลี่ย: <strong>${prov.temp}°C</strong> · 
-    ภาค${prov.region}`;
-
-  // Panel tech info
-  const tech = panelTechs[state.panelType];
-  document.getElementById('panelTechInfo').textContent = tech.info;
-
-  // Status
-  const statusText = document.getElementById('statusText');
-  let emoji = '☀️', msg = 'แสงดี';
-  if (rainyMonths.includes(state.month)) {
-    emoji = '🌧️'; msg = 'ฝนตก';
-    document.getElementById('sunGroup').style.opacity = 0.4;
-  } else {
-    document.getElementById('sunGroup').style.opacity = Math.max(0.3, s.psh / 6.5);
+// === TIMELINE ===
+const hours = [];
+for (let h = 0; h < 24; h++) {
+  let solar = 0;
+  if (h >= 6 && h <= 18) {
+    const t = (h - 12) / 6;
+    solar = Math.max(0, 5 * Math.cos(t * Math.PI / 2) ** 2);
   }
-  statusText.textContent = `${emoji} ${prov.name} · ${msg} · แผง ${Math.round(s.panelTemp)}°C`;
-  document.getElementById('batteryGroup').style.opacity = state.batteryEnabled ? '1' : '0.3';
-
-  // ROI Banner
-  const roi = computePayback();
-  const roiBanner = document.getElementById('roiBanner');
-  const paybackEl = document.getElementById('paybackYears');
-  const paybackDateEl = document.getElementById('paybackDate');
-
-  if (roi.paybackYears === null) {
-    paybackEl.textContent = '∞';
-    paybackDateEl.textContent = 'ไม่คืนทุนใน 30 ปี';
-    roiBanner.classList.remove('warning');
-    roiBanner.classList.add('bad');
-  } else {
-    paybackEl.textContent = roi.paybackYears.toFixed(1);
-    const today = new Date();
-    const totalMonths = today.getMonth() + Math.round(roi.paybackYears * 12);
-    const py = today.getFullYear() + Math.floor(totalMonths / 12);
-    const pm = totalMonths % 12;
-    paybackDateEl.textContent = `${monthNames[pm]} ${py + 543}`;
-    roiBanner.classList.remove('bad', 'warning');
-    if (roi.paybackYears > 12) roiBanner.classList.add('warning');
-    if (roi.paybackYears > 20) {
-      roiBanner.classList.remove('warning');
-      roiBanner.classList.add('bad');
-    }
-  }
-
-  // Profit Banner
-  const profitBanner = document.getElementById('profitBanner');
-  document.getElementById('profit30Years').textContent = Math.round(roi.profit30).toLocaleString();
-  document.getElementById('totalRevenue').textContent = Math.round(roi.totalRevenue).toLocaleString();
-  document.getElementById('totalInvestment').textContent = state.systemCost.toLocaleString();
-  const roiPct = state.systemCost > 0 ? Math.round((roi.profit30 / state.systemCost) * 100) : 0;
-  document.getElementById('roiPercent').textContent = roiPct;
-  document.getElementById('avgProfit').textContent = Math.round(roi.profit30 / 30).toLocaleString();
-
-  if (roi.profit30 < 0) {
-    profitBanner.style.background = 'linear-gradient(135deg, #c0392b, #922b21)';
-  } else if (roi.profit30 < state.systemCost) {
-    profitBanner.style.background = 'linear-gradient(135deg, #e67e22, #d35400)';
-  } else {
-    profitBanner.style.background = 'linear-gradient(135deg, #f39c12, #e67e22)';
-  }
+  let home = 1.0;
+  if (h >= 7 && h <= 9) home = 1.5;
+  if (h >= 12 && h <= 14) home = 2.0;
+  if (h >= 18 && h <= 22) home = 2.0;
+  if (h >= 23 || h <= 5) home = 0.8;
+  hours.push({ h, solar: Math.round(solar*10)/10, home: Math.round(home*10)/10 });
+}
+let bat = 50;
+const battery = [];
+for (const row of hours) {
+  const surplus = row.solar - row.home;
+  if (surplus > 0) bat = Math.min(100, bat + surplus * 8);
+  else bat = Math.max(20, bat + surplus * 8);
+  battery.push(Math.round(bat));
 }
 
-function updateFactorSummary(s) {
-  const summary = document.getElementById('factorSummary');
-  const factors = [
-    { name: 'มุมเอียง', val: s.tiltEff, label: Math.round(s.tiltEff*100)+'%' },
-    { name: 'ทิศ', val: s.azEff, label: Math.round(s.azEff*100)+'%' },
-    { name: 'อุณหภูมิ', val: s.tempEff, label: Math.round(s.tempEff*100)+'%' },
-    { name: 'ฝุ่น', val: s.dustEff, label: Math.round(s.dustEff*100)+'%' },
-    { name: 'PM2.5', val: s.pm25Eff, label: Math.round(s.pm25Eff*100)+'%' },
-    { name: 'เงา', val: s.shadeEff, label: Math.round(s.shadeEff*100)+'%' },
-    { name: 'อายุ', val: s.degradeEff, label: Math.round(s.degradeEff*100)+'%' },
-    { name: 'Tracker', val: s.trackGain, label: '×'+s.trackGain.toFixed(2) }
-  ];
+function updateHour(h) {
+  h = +h;
+  const r = hours[h];
+  const bp = battery[h];
+  const hh = String(h).padStart(2,'0');
+  document.getElementById('hourDisplay').textContent = hh + ':00';
+  document.getElementById('tmSolar').textContent = r.solar.toFixed(1) + ' kW';
+  document.getElementById('tmHome').textContent = r.home.toFixed(1) + ' kW';
+  document.getElementById('tmBat').textContent = bp + '%';
+  const surplus = r.solar - r.home;
+  let gV, gL;
+  if (surplus > 0.2 && bp >= 95) { gV = surplus.toFixed(1) + ' kW'; gL = 'ขายให้ประปา'; }
+  else if (surplus > 0.2) { gV = '0.0 kW'; gL = 'แท็งก์กำลังเก็บ'; }
+  else if (bp > 25) { gV = '0.0 kW'; gL = 'ใช้แท็งก์ก่อน'; }
+  else { gV = Math.abs(surplus).toFixed(1) + ' kW'; gL = 'ดึงจากประปา'; }
+  document.getElementById('tmGrid').textContent = gV;
+  document.getElementById('tmGridLbl').textContent = gL;
 
-  summary.innerHTML = factors.map(f => {
-    let cls = 'factor-neutral';
-    if (f.name === 'Tracker') {
-      cls = f.val > 1 ? 'factor-good' : 'factor-neutral';
-    } else {
-      if (f.val >= 0.95) cls = 'factor-good';
-      else if (f.val >= 0.85) cls = 'factor-neutral';
-      else cls = 'factor-bad';
-    }
-    return `<div class="factor-item"><span>${f.name}</span><span class="factor-val ${cls}">${f.label}</span></div>`;
+  const x = 30 + (h / 23) * 310;
+  let yVal = 120;
+  if (h >= 6 && h <= 18) {
+    const t = (h - 12) / 6;
+    const sv = Math.max(0, 5 * Math.cos(t * Math.PI / 2) ** 2);
+    yVal = 120 - (sv / 5) * 95;
+  }
+  document.getElementById('tlCursor').setAttribute('x1', x);
+  document.getElementById('tlCursor').setAttribute('x2', x);
+  document.getElementById('tlDot').setAttribute('cx', x);
+  document.getElementById('tlDot').setAttribute('cy', yVal);
+
+  let story = '';
+  if (h < 6) story = 'กลางคืนลึก · ปั๊มหยุดสนิท · ใช้น้ำจากแท็งก์ ถ้าหมดค่อยดึงประปา';
+  else if (h < 9) story = 'รุ่งอรุณ · แดดเริ่มมา ปั๊มเริ่มดันน้ำ พอใช้และเริ่มเติมแท็งก์';
+  else if (h < 11) story = 'ช่วงสาย · แดดแรงขึ้น น้ำเข้าแท็งก์เร็ว · ระบบทำงานเต็มที่';
+  else if (h <= 14) story = 'เที่ยงวัน · ปั๊มดันสุดกำลัง แท็งก์เกือบเต็ม เหลือก็ขายคืน';
+  else if (h < 17) story = 'ช่วงบ่าย · แดดเริ่มอ่อน แต่แท็งก์เต็มแล้ว · พลังงานพร้อมใช้';
+  else if (h < 19) story = 'พระอาทิตย์ตก · แดดอ่อนมาก เริ่มใช้แท็งก์เสริม';
+  else if (h < 22) story = 'ค่ำ · ไม่มีแสงแล้ว ใช้น้ำจากแท็งก์ · เวลาที่แบตได้ทำงาน';
+  else story = 'ดึก · แท็งก์ลดลงเรื่อยๆ · ถ้าหมดต้องดึงจากประปา';
+  document.getElementById('tlStory').textContent = story;
+}
+document.getElementById('hourSlider').addEventListener('input', e => updateHour(e.target.value));
+updateHour(12);
+
+// === SURGE ===
+const surgeApps = {
+  ac: { run:1200, surge:3600, ratio:3.0, dur:0.5, name:'แอร์ 12000 BTU', story:'แอร์มีคอมเพรสเซอร์ที่อัดน้ำยา · ตอนเริ่มต้องเอาชนะแรงดันในระบบ · Surge สูงถึง 3 เท่า · บ้านที่เปิดแอร์หลายตัวพร้อมกันแล้วเบรกเกอร์ตกเพราะเรื่องนี้' },
+  fridge: { run:150, surge:600, ratio:4.0, dur:0.3, name:'ตู้เย็น', story:'ตู้เย็นมีคอมเพรสเซอร์เหมือนแอร์ · Surge 4 เท่าแต่กำลังพิกัดต่ำกว่า · ตู้เย็น on/off ตลอดวัน เลยเกิด Surge บ่อย' },
+  pump: { run:750, surge:5250, ratio:7.0, dur:1.0, name:'ปั๊มน้ำ 1HP', story:'ปั๊มน้ำมี Surge 6-7 เท่า · ใบพัดต้องดันน้ำที่นิ่งให้เคลื่อน · ถ้าใช้ Inverter พิกัดต่ำ ปั๊มน้ำเป็นตัวการที่ทำให้ตัดบ่อยที่สุด' },
+  washer: { run:500, surge:1500, ratio:3.0, dur:2.0, name:'เครื่องซักผ้า', story:'มอเตอร์หมุนถัง · Surge 3 เท่า · โหมดปั่นแห้งจะ Surge อีกครั้ง · รุ่น Inverter จะ Surge ต่ำกว่า' },
+  iron: { run:1500, surge:1500, ratio:1.0, dur:0, name:'เตารีด', story:'เตารีดเป็นโหลดความร้อน (Resistive Load) ไม่มีมอเตอร์ · กินไฟเท่าพิกัดทันที · ไม่มี Surge' },
+  led: { run:10, surge:30, ratio:3.0, dur:0.05, name:'หลอด LED', story:'LED มี Surge เพราะตัวเก็บประจุชาร์จ · แต่ระยะสั้นมาก (50ms) และกำลังต่ำ จึงไม่กระทบ Inverter' }
+};
+
+function setSurge(key) {
+  document.querySelectorAll('#surgeControls .surge-btn').forEach(b => b.classList.toggle('active', b.dataset.app === key));
+  const a = surgeApps[key];
+  document.getElementById('ssRun').textContent = a.run.toLocaleString() + 'W';
+  document.getElementById('ssSurge').textContent = a.surge.toLocaleString() + 'W';
+  document.getElementById('ssRatio').textContent = a.ratio.toFixed(1) + '×';
+  const maxScale = Math.max(a.surge, 1000);
+  const yRun = 180 - (a.run / maxScale) * 130;
+  const yPeak = 180 - (a.surge / maxScale) * 130;
+  document.getElementById('surgeRunLine').setAttribute('y1', yRun);
+  document.getElementById('surgeRunLine').setAttribute('y2', yRun);
+  document.getElementById('surgeRunLbl').setAttribute('y', yRun - 4);
+  document.getElementById('surgePeakLine').setAttribute('y1', yPeak);
+  document.getElementById('surgePeakLine').setAttribute('y2', yPeak);
+  document.getElementById('surgePeakLbl').setAttribute('y', yPeak - 4);
+  let pathD;
+  if (a.ratio === 1.0) {
+    pathD = 'M 40 180 L 50 ' + yRun + ' L 380 ' + yRun;
+  } else {
+    const peakWidth = 25 + a.dur * 18;
+    pathD = 'M 40 180 L 53 ' + yPeak + ' L ' + (53 + peakWidth) + ' ' + yPeak + ' Q ' + (53 + peakWidth + 18) + ' ' + yRun + ' ' + (53 + peakWidth + 50) + ' ' + yRun + ' L 380 ' + yRun;
+  }
+  document.getElementById('surgeCurve').setAttribute('d', pathD);
+  document.getElementById('surgeArea').setAttribute('d', pathD + ' L 380 180 Z');
+  document.getElementById('surgeDesc').innerHTML = '<div class="sim-desc-title">' + a.name + '</div><div class="sim-desc-body">' + a.story + '</div>';
+}
+document.querySelectorAll('#surgeControls .surge-btn').forEach(b => b.addEventListener('click', () => setSurge(b.dataset.app)));
+setSurge('ac');
+
+// === SIZES ===
+const sizeData = {
+  5: {
+    sub: 'บ้านพักอาศัย · 80-150 ตร.ม.',
+    title: 'บ้านพักอาศัยขนาด<em>เล็ก-กลาง</em>',
+    desc: 'บ้าน 1-2 ชั้น · ครอบครัว 3-4 คน · เปิดแอร์ 1-2 ห้องพร้อมเครื่องใช้ทั่วไป',
+    load:'~ 4 kW', surge:'~ 10 kW', panel:'5-7 kWp', peak:'3-4 kW',
+    bars: [
+      { lbl: 'แอร์ 12000', val: 1200, max: 4000, color: '#2D5A8C' },
+      { lbl: 'ตู้เย็น', val: 150, max: 4000, color: '#4A7C3F' },
+      { lbl: 'ทีวี + ไฟ', val: 250, max: 4000, color: '#E8843D' },
+      { lbl: 'พัดลม + อื่นๆ', val: 400, max: 4000, color: '#8A8079' }
+    ],
+    targets: ['บ้านเดี่ยว 80-150', 'ทาวน์เฮาส์', 'คอนโด 1-2 ห้องนอน', 'ร้านกาแฟเล็ก', 'โฮมออฟฟิศ'],
+    good: [
+      { i: 'ac', n: 'แอร์ 12000 BTU', w: '× 1-2 ตัว' },
+      { i: 'fridge', n: 'ตู้เย็น', w: '150 W' },
+      { i: 'tv', n: 'ทีวี + ไฟ LED', w: '300 W' },
+      { i: 'fan', n: 'พัดลม', w: '× 4-5 ตัว' },
+      { i: 'rice', n: 'หม้อหุงข้าว', w: '700 W' },
+      { i: 'washer', n: 'เครื่องซักผ้า', w: '500 W' }
+    ],
+    bad: [
+      { i: 'water', n: 'เครื่องทำน้ำอุ่น', w: '3,500 W' },
+      { i: 'stove', n: 'เตาแม่เหล็กไฟฟ้า', w: '2,000+ W' },
+      { i: 'oven', n: 'เตาอบไฟฟ้า', w: '2,500 W' }
+    ],
+    story: 'เหมาะสำหรับครอบครัวเล็ก-กลาง · เปิดแอร์ 2 ห้องพร้อมเครื่องใช้ทั่วไปได้สบาย · แต่ห้ามใช้เครื่องทำน้ำอุ่นพร้อมแอร์ จะ overload ทันที · ปั๊มน้ำตอนสตาร์ทอาจทำให้ Inverter เตือน ถ้าเปิดพร้อมแอร์'
+  },
+  10: {
+    sub: 'บ้านขนาดกลาง / SME เล็ก',
+    title: 'บ้านขนาดกลาง · <em>ร้านอาหาร SME</em>',
+    desc: 'บ้าน 2-3 ชั้น · 4-6 คน · เปิดแอร์ 3-4 ห้อง พร้อมเครื่องใช้ขนาดใหญ่',
+    load:'~ 8 kW', surge:'~ 20 kW', panel:'10-13 kWp', peak:'6-8 kW',
+    bars: [
+      { lbl: 'แอร์ 3-4 ห้อง', val: 4500, max: 8000, color: '#2D5A8C' },
+      { lbl: 'น้ำอุ่น', val: 1500, max: 8000, color: '#C84A2C' },
+      { lbl: 'ตู้เย็น × 2', val: 400, max: 8000, color: '#4A7C3F' },
+      { lbl: 'อื่นๆ', val: 1200, max: 8000, color: '#8A8079' }
+    ],
+    targets: ['บ้าน 150-300 ตร.ม.', 'ร้านอาหาร 30-50 ที่นั่ง', 'ร้านกาแฟกลาง', 'คลินิกเล็ก', 'สำนักงาน 5-10 คน'],
+    good: [
+      { i: 'ac', n: 'แอร์ 12000-18000', w: '× 3-4 ตัว' },
+      { i: 'ac', n: 'แอร์ 24000 BTU', w: '× 1-2 ตัว' },
+      { i: 'fridge', n: 'ตู้เย็น 2 ประตู', w: '× 2' },
+      { i: 'water', n: 'เครื่องทำน้ำอุ่น', w: '3,500 W' },
+      { i: 'stove', n: 'เตาแม่เหล็ก', w: '2,000 W' },
+      { i: 'coffee', n: 'เครื่องชงกาแฟ', w: '1,500 W' }
+    ],
+    bad: [
+      { i: 'ev', n: 'EV Charger 7kW', w: 'ต้องลดโหลด' },
+      { i: 'ac', n: 'แอร์ 36000 BTU', w: '3,600 W' },
+      { i: 'oven', n: 'เตาอบเชิงพาณิชย์', w: '4,000+ W' }
+    ],
+    story: 'เหมาะกับบ้าน 2 ชั้นที่มีคน 5-6 คน · เปิดแอร์พร้อมกัน 3 ห้อง + ใช้น้ำอุ่นได้ · ร้านอาหาร 30 ที่นั่งใช้แอร์ 2 ตัว + ตู้แช่ + เครื่องชงกาแฟพอดี · ถ้ามี EV ต้องชาร์จกลางคืนตอนแอร์น้อย'
+  },
+  15: {
+    sub: 'บ้านหรู / ธุรกิจขนาดกลาง',
+    title: 'บ้านหรู · <em>ภัตตาคาร รีสอร์ท</em>',
+    desc: 'บ้านใหญ่ 4+ ห้องนอน · ภัตตาคาร · รีสอร์ทเล็ก',
+    load:'~ 12 kW', surge:'~ 30 kW', panel:'15-20 kWp', peak:'10-12 kW',
+    bars: [
+      { lbl: 'แอร์ 5-6 ตัว', val: 6500, max: 12000, color: '#2D5A8C' },
+      { lbl: 'EV Charger', val: 3500, max: 12000, color: '#C84A2C' },
+      { lbl: 'ครัว/น้ำอุ่น', val: 1500, max: 12000, color: '#E8843D' },
+      { lbl: 'อื่นๆ', val: 500, max: 12000, color: '#8A8079' }
+    ],
+    targets: ['บ้านเดี่ยว 300-500', 'ภัตตาคาร 80+ ที่นั่ง', 'รีสอร์ท 5-10 ห้อง', 'คลินิกเฉพาะทาง', 'โรงงานเล็ก'],
+    good: [
+      { i: 'ac', n: 'แอร์ 18000-24000', w: '× 5-6 ตัว' },
+      { i: 'ac', n: 'แอร์ 36000 BTU', w: '× 2 ตัว' },
+      { i: 'ev', n: 'EV Charger 7kW', w: '7,000 W' },
+      { i: 'oven', n: 'เตาอบเชิงพาณิชย์', w: '3,000 W' },
+      { i: 'stove', n: 'เตาแม่เหล็ก × 2', w: '4,000 W' },
+      { i: 'water', n: 'น้ำอุ่น × 2', w: '4,500 W × 2' }
+    ],
+    bad: [
+      { i: 'ev', n: 'EV Charger 22kW', w: 'เกินทันที' },
+      { i: 'cnc', n: 'CNC ขนาดใหญ่', w: '10,000+ W' },
+      { i: 'motor', n: 'มอเตอร์ 5+ HP', w: 'Surge สูง' }
+    ],
+    story: 'เหมาะกับบ้านหรูที่มีแอร์ทุกห้อง + ครัวจัดเต็ม + ที่ชาร์จรถ EV · ภัตตาคาร 80 ที่นั่งใช้แอร์ 4 ตัว + ครัวเชิงพาณิชย์ครบครันได้สบาย · รีสอร์ท 8 ห้องนอนใช้แอร์ทุกห้อง + ปั๊มน้ำขนาดใหญ่'
+  },
+  20: {
+    sub: 'อาคารพาณิชย์ / โรงงาน',
+    title: 'ธุรกิจ<em>ขนาดใหญ่</em> · โรงงาน',
+    desc: 'อาคารพาณิชย์ขนาดใหญ่ · โรงแรม · โรงงาน · อาคารสำนักงาน',
+    load:'~ 16 kW', surge:'~ 40 kW', panel:'20-26 kWp', peak:'14-16 kW',
+    bars: [
+      { lbl: 'แอร์รวม', val: 9000, max: 16000, color: '#2D5A8C' },
+      { lbl: 'มอเตอร์/ปั๊ม', val: 3500, max: 16000, color: '#7F77DD' },
+      { lbl: 'EV/อุปกรณ์', val: 2500, max: 16000, color: '#C84A2C' },
+      { lbl: 'อื่นๆ', val: 1000, max: 16000, color: '#8A8079' }
+    ],
+    targets: ['อาคารพาณิชย์', 'โรงแรม 15-30 ห้อง', 'โรงงานเล็ก', 'สำนักงาน 30+ คน', 'ฟาร์มอัจฉริยะ', 'คลังควบคุมอุณหภูมิ'],
+    good: [
+      { i: 'ac', n: 'แอร์รวม 8-10 ตัว', w: 'ขนาดต่างๆ' },
+      { i: 'ac', n: 'แอร์ใหญ่ 60000', w: '6,000 W' },
+      { i: 'ev', n: 'EV Charger 11kW', w: '11,000 W' },
+      { i: 'motor', n: 'มอเตอร์ 3-5 HP', w: '× หลายตัว' },
+      { i: 'freezer', n: 'ตู้แช่แข็ง', w: '× 3-4 ตัว' },
+      { i: 'oven', n: 'เตาอบใหญ่', w: '5,000 W' }
+    ],
+    bad: [
+      { i: 'ev', n: 'EV Charger 22kW', w: 'ต้องลดโหลด' },
+      { i: 'motor', n: 'มอเตอร์ 10+ HP', w: 'Surge เกิน 40 kW' },
+      { i: 'cnc', n: 'อุตสาหกรรมหนัก', w: 'ต้องระบบ 3 เฟส' }
+    ],
+    story: 'เหมาะกับธุรกิจที่ต้องเปิด 24 ชั่วโมง · โรงแรม 20 ห้องใช้แอร์ทุกห้อง + ลิฟต์ + ปั๊มน้ำกลาง · โรงงานผลิตขนาดเล็กใช้มอเตอร์ + เครื่องอัด + แอร์โรงงาน · ฟาร์มเลี้ยงสัตว์ใช้พัดลมอุตสาหกรรม + ระบบควบคุมอุณหภูมิ'
+  }
+};
+
+const sizeIcons = {
+  ac: '<rect x="3" y="6" width="18" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="6" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="1"/><line x1="6" y1="13" x2="18" y2="13" stroke="currentColor" stroke-width="1"/>',
+  fridge: '<rect x="6" y="3" width="12" height="18" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="6" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="1"/>',
+  tv: '<rect x="3" y="5" width="18" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="9" y1="20" x2="15" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+  fan: '<circle cx="12" cy="12" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 10 Q14 6 17 7 Q15 9 12 10" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M14 13 Q18 14 18 17 Q15 16 14 13" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M10 13 Q9 17 6 17 Q7 14 10 13" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M10 11 Q6 10 6 7 Q9 8 10 11" fill="none" stroke="currentColor" stroke-width="1.2"/>',
+  rice: '<path d="M4 9 Q4 7 6 7 L18 7 Q20 7 20 9 L20 18 Q20 20 18 20 L6 20 Q4 20 4 18 Z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9 5 Q9 3 12 3 Q15 3 15 5 L15 7 L9 7 Z" fill="none" stroke="currentColor" stroke-width="1.5"/>',
+  washer: '<rect x="4" y="3" width="16" height="18" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="13" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="13" r="2" fill="none" stroke="currentColor" stroke-width="1"/>',
+  water: '<rect x="6" y="4" width="12" height="14" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9 11 Q12 13 15 11" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M9 14 Q12 16 15 14" stroke="currentColor" stroke-width="1.2" fill="none"/>',
+  stove: '<rect x="3" y="6" width="18" height="14" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="9" cy="11" r="2" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="11" r="2" fill="none" stroke="currentColor" stroke-width="1.2"/>',
+  oven: '<rect x="3" y="4" width="18" height="17" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="1"/><rect x="6" y="13" width="12" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1"/>',
+  ev: '<rect x="3" y="9" width="13" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 9 L7 5 L12 5 L14 9" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M18 11 L20 11 L19 14 L21 14 L18 18" stroke="currentColor" stroke-width="1.2" fill="none"/>',
+  coffee: '<path d="M5 9 L17 9 L16 19 Q16 20 15 20 L7 20 Q6 20 6 19 Z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M17 11 Q20 11 20 14 Q20 16 17 16" fill="none" stroke="currentColor" stroke-width="1.5"/>',
+  motor: '<circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 8 L13 12 L11 12 Z" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/>',
+  cnc: '<rect x="3" y="14" width="18" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="6" x2="12" y2="14" stroke="currentColor" stroke-width="1.5"/>',
+  freezer: '<rect x="3" y="7" width="18" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7 11 L7 14 M5 12 L9 12" stroke="currentColor" stroke-width="1"/>'
+};
+
+const scenes = {
+  5: '<rect x="100" y="80" width="200" height="120" fill="none" stroke="#5C544D" stroke-width="0.5"/><polygon points="100,80 200,30 300,80" fill="none" stroke="#5C544D" stroke-width="0.5"/><rect x="120" y="130" width="40" height="70" fill="#D5CDC0" opacity="0.4" stroke="#5C544D" stroke-width="0.5"/><rect x="180" y="120" width="35" height="35" fill="#85B7EB" opacity="0.4" stroke="#1A3D63" stroke-width="0.5"/><rect x="235" y="120" width="35" height="35" fill="#85B7EB" opacity="0.4" stroke="#1A3D63" stroke-width="0.5"/><rect x="240" y="170" width="40" height="30" fill="#D5CDC0" opacity="0.4" stroke="#5C544D" stroke-width="0.5"/><g transform="translate(125, 35) skewX(-15)"><rect x="0" y="0" width="60" height="30" rx="2" fill="#1A3D63" opacity="0.7"/><line x1="20" y1="0" x2="20" y2="30" stroke="#5A8FBC" stroke-width="0.5"/><line x1="40" y1="0" x2="40" y2="30" stroke="#5A8FBC" stroke-width="0.5"/></g><circle cx="60" cy="60" r="20" fill="#F2A057" opacity="0.7" class="pulse-soft"/><circle cx="60" cy="60" r="14" fill="#FCDE5A"/><text x="200" y="240" text-anchor="middle" font-size="13" font-family="\'IBM Plex Serif\', serif" fill="#5C544D">บ้าน 80-150 ตร.ม.</text>',
+  10: '<rect x="80" y="60" width="240" height="160" fill="none" stroke="#5C544D" stroke-width="0.5"/><polygon points="80,60 200,20 320,60" fill="none" stroke="#5C544D" stroke-width="0.5"/><line x1="80" y1="135" x2="320" y2="135" stroke="#5C544D" stroke-width="0.5"/><rect x="100" y="90" width="30" height="30" fill="#85B7EB" opacity="0.4" stroke="#1A3D63" stroke-width="0.5"/><rect x="140" y="90" width="30" height="30" fill="#85B7EB" opacity="0.4" stroke="#1A3D63" stroke-width="0.5"/><rect x="180" y="90" width="30" height="30" fill="#85B7EB" opacity="0.4" stroke="#1A3D63" stroke-width="0.5"/><rect x="220" y="90" width="30" height="30" fill="#85B7EB" opacity="0.4" stroke="#1A3D63" stroke-width="0.5"/><rect x="265" y="90" width="40" height="30" fill="#D5CDC0" opacity="0.4" stroke="#5C544D" stroke-width="0.5"/><rect x="100" y="155" width="55" height="55" fill="#D5CDC0" opacity="0.3" stroke="#5C544D" stroke-width="0.5"/><rect x="165" y="155" width="40" height="55" fill="#85B7EB" opacity="0.4" stroke="#1A3D63" stroke-width="0.5"/><rect x="215" y="155" width="40" height="55" fill="#85B7EB" opacity="0.4" stroke="#1A3D63" stroke-width="0.5"/><rect x="265" y="155" width="40" height="55" fill="#D5CDC0" opacity="0.3" stroke="#5C544D" stroke-width="0.5"/><g transform="translate(100, 25) skewX(-15)"><rect x="0" y="0" width="100" height="32" rx="2" fill="#1A3D63" opacity="0.7"/><line x1="25" y1="0" x2="25" y2="32" stroke="#5A8FBC" stroke-width="0.5"/><line x1="50" y1="0" x2="50" y2="32" stroke="#5A8FBC" stroke-width="0.5"/><line x1="75" y1="0" x2="75" y2="32" stroke="#5A8FBC" stroke-width="0.5"/></g><circle cx="50" cy="50" r="22" fill="#F2A057" opacity="0.7" class="pulse-soft"/><circle cx="50" cy="50" r="15" fill="#FCDE5A"/><text x="200" y="245" text-anchor="middle" font-size="13" font-family="\'IBM Plex Serif\', serif" fill="#5C544D">บ้าน 2 ชั้น 150-300 ตร.ม.</text>',
+  15: '<rect x="50" y="50" width="300" height="170" fill="none" stroke="#5C544D" stroke-width="0.5"/><polygon points="50,50 200,15 350,50" fill="none" stroke="#5C544D" stroke-width="0.5"/><line x1="50" y1="100" x2="350" y2="100" stroke="#5C544D" stroke-width="0.5"/><line x1="50" y1="150" x2="350" y2="150" stroke="#5C544D" stroke-width="0.5"/><g><rect x="65" y="65" width="22" height="22" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="95" y="65" width="22" height="22" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="125" y="65" width="22" height="22" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="155" y="65" width="22" height="22" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="185" y="65" width="22" height="22" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="215" y="65" width="22" height="22" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="245" y="65" width="22" height="22" fill="#D5CDC0" opacity="0.4" stroke="#5C544D" stroke-width="0.5"/><rect x="275" y="65" width="22" height="22" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="305" y="65" width="22" height="22" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/></g><g><rect x="65" y="115" width="22" height="22" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="95" y="115" width="40" height="22" fill="#D5CDC0" opacity="0.4" stroke="#5C544D" stroke-width="0.5"/><rect x="145" y="115" width="60" height="22" fill="#FAC775" opacity="0.4" stroke="#854F0B" stroke-width="0.5"/><rect x="215" y="115" width="40" height="22" fill="#D5CDC0" opacity="0.4" stroke="#5C544D" stroke-width="0.5"/><rect x="265" y="115" width="22" height="22" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="295" y="115" width="40" height="22" fill="#A8C99B" opacity="0.5" stroke="#4A7C3F" stroke-width="0.5"/></g><rect x="100" y="165" width="120" height="40" fill="#D5CDC0" opacity="0.3" stroke="#5C544D" stroke-width="0.5"/><rect x="230" y="165" width="100" height="40" fill="#A8C99B" opacity="0.4" stroke="#4A7C3F" stroke-width="0.5"/><g transform="translate(70, 18) skewX(-15)"><rect x="0" y="0" width="160" height="22" rx="2" fill="#1A3D63" opacity="0.7"/><line x1="40" y1="0" x2="40" y2="22" stroke="#5A8FBC" stroke-width="0.5"/><line x1="80" y1="0" x2="80" y2="22" stroke="#5A8FBC" stroke-width="0.5"/><line x1="120" y1="0" x2="120" y2="22" stroke="#5A8FBC" stroke-width="0.5"/></g><circle cx="40" cy="40" r="24" fill="#F2A057" opacity="0.7" class="pulse-soft"/><circle cx="40" cy="40" r="17" fill="#FCDE5A"/><text x="200" y="245" text-anchor="middle" font-size="13" font-family="\'IBM Plex Serif\', serif" fill="#5C544D">บ้านหรู / ภัตตาคาร</text>',
+  20: '<rect x="20" y="40" width="360" height="180" fill="none" stroke="#5C544D" stroke-width="0.5"/><line x1="20" y1="80" x2="380" y2="80" stroke="#5C544D" stroke-width="0.5"/><line x1="20" y1="120" x2="380" y2="120" stroke="#5C544D" stroke-width="0.5"/><line x1="20" y1="160" x2="380" y2="160" stroke="#5C544D" stroke-width="0.5"/><g><rect x="32" y="50" width="18" height="18" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="58" y="50" width="18" height="18" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="84" y="50" width="18" height="18" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="110" y="50" width="18" height="18" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="136" y="50" width="18" height="18" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="162" y="50" width="18" height="18" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="188" y="50" width="18" height="18" fill="#D5CDC0" opacity="0.4" stroke="#5C544D" stroke-width="0.5"/><rect x="214" y="50" width="18" height="18" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="240" y="50" width="18" height="18" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="266" y="50" width="18" height="18" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="292" y="50" width="18" height="18" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="318" y="50" width="18" height="18" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/><rect x="344" y="50" width="18" height="18" fill="#D5CDC0" opacity="0.4" stroke="#5C544D" stroke-width="0.5"/></g><g><rect x="32" y="90" width="40" height="20" fill="#FAC775" opacity="0.5" stroke="#854F0B" stroke-width="0.5"/><rect x="80" y="90" width="40" height="20" fill="#FAC775" opacity="0.5" stroke="#854F0B" stroke-width="0.5"/><rect x="128" y="90" width="60" height="20" fill="#A8C99B" opacity="0.5" stroke="#4A7C3F" stroke-width="0.5"/><rect x="196" y="90" width="40" height="20" fill="#D5CDC0" opacity="0.4" stroke="#5C544D" stroke-width="0.5"/><rect x="244" y="90" width="40" height="20" fill="#A8C99B" opacity="0.5" stroke="#4A7C3F" stroke-width="0.5"/><rect x="292" y="90" width="60" height="20" fill="#D5CDC0" opacity="0.4" stroke="#5C544D" stroke-width="0.5"/></g><g><rect x="32" y="130" width="60" height="22" fill="#A8C99B" opacity="0.4" stroke="#4A7C3F" stroke-width="0.5"/><rect x="100" y="130" width="80" height="22" fill="#FAC775" opacity="0.4" stroke="#854F0B" stroke-width="0.5"/><rect x="188" y="130" width="80" height="22" fill="#D5CDC0" opacity="0.3" stroke="#5C544D" stroke-width="0.5"/><rect x="276" y="130" width="60" height="22" fill="#A8C99B" opacity="0.4" stroke="#4A7C3F" stroke-width="0.5"/><rect x="344" y="130" width="22" height="22" fill="#85B7EB" opacity="0.5" stroke="#1A3D63" stroke-width="0.5"/></g><rect x="60" y="170" width="100" height="40" fill="#D5CDC0" opacity="0.3" stroke="#5C544D" stroke-width="0.5"/><rect x="170" y="170" width="80" height="40" fill="#A8C99B" opacity="0.4" stroke="#4A7C3F" stroke-width="0.5"/><rect x="260" y="170" width="80" height="40" fill="#FAC775" opacity="0.4" stroke="#854F0B" stroke-width="0.5"/><g transform="translate(40, 12) skewX(-15)"><rect x="0" y="0" width="220" height="22" rx="2" fill="#1A3D63" opacity="0.7"/><line x1="40" y1="0" x2="40" y2="22" stroke="#5A8FBC" stroke-width="0.5"/><line x1="80" y1="0" x2="80" y2="22" stroke="#5A8FBC" stroke-width="0.5"/><line x1="120" y1="0" x2="120" y2="22" stroke="#5A8FBC" stroke-width="0.5"/><line x1="160" y1="0" x2="160" y2="22" stroke="#5A8FBC" stroke-width="0.5"/><line x1="200" y1="0" x2="200" y2="22" stroke="#5A8FBC" stroke-width="0.5"/></g><circle cx="30" cy="30" r="26" fill="#F2A057" opacity="0.7" class="pulse-soft"/><circle cx="30" cy="30" r="18" fill="#FCDE5A"/><text x="200" y="245" text-anchor="middle" font-size="13" font-family="\'IBM Plex Serif\', serif" fill="#5C544D">โรงงาน · โรงแรม</text>'
+};
+
+function setSize(size) {
+  document.querySelectorAll('.size-btn').forEach(b => b.classList.toggle('active', +b.dataset.size === size));
+  const d = sizeData[size];
+  document.getElementById('sizeSubtitle').textContent = d.sub;
+  document.getElementById('sizeTitle').innerHTML = d.title;
+  document.getElementById('sizeDesc').textContent = d.desc;
+  document.getElementById('sizeLoad').textContent = d.load;
+  document.getElementById('sizeSurge').textContent = d.surge;
+  document.getElementById('sizePanel').textContent = d.panel;
+  document.getElementById('sizePeak').textContent = d.peak;
+  document.getElementById('sizeScene').innerHTML = scenes[size];
+
+  document.getElementById('sizeBars').innerHTML = d.bars.map(b => {
+    const pct = (b.val / b.max) * 100;
+    return '<div class="load-bar-row"><span style="color:var(--ink-soft)">' + b.lbl + '</span><div class="load-bar-track"><div class="load-bar-fill" style="width:' + pct + '%;background:' + b.color + ';"></div></div><span class="load-bar-val">' + b.val.toLocaleString() + 'W</span></div>';
   }).join('');
+
+  document.getElementById('sizeTargets').innerHTML = d.targets.map(t => '<span class="target-pill">' + t + '</span>').join('');
+
+  document.getElementById('sizeGood').innerHTML = d.good.map(a => '<div class="app-card"><div class="app-card-icon"><svg width="20" height="20" viewBox="0 0 24 24">' + sizeIcons[a.i] + '</svg></div><div><div class="app-card-name">' + a.n + '</div><div class="app-card-watt">' + a.w + '</div></div></div>').join('');
+
+  document.getElementById('sizeBad').innerHTML = d.bad.map(a => '<div class="app-card bad"><div class="app-card-icon"><svg width="20" height="20" viewBox="0 0 24 24">' + sizeIcons[a.i] + '</svg></div><div><div class="app-card-name">' + a.n + '</div><div class="app-card-watt">' + a.w + '</div></div></div>').join('');
+
+  document.getElementById('sizeStory').textContent = d.story;
 }
 
-// ============ CHARTS ============
-function drawMonthChart() {
-  const chart = document.getElementById('monthChart');
-  chart.innerHTML = '';
-  const installedW = state.panelWatt * state.panelCount * panelTechs[state.panelType].baseEff;
-  const inverterMaxW = state.inverterSize * 1000;
-  const tiltEff = state.trackerMode !== 'fixed' ? 1.0 : tiltEfficiency(state.tiltAngle);
-  const azEff = state.trackerMode !== 'fixed' ? 1.0 : azimuthEfficiency(state.azimuth);
-  const degradeEff = degradationFactor(state.systemAge);
-  const prov = provinces[state.province];
-  const pm25Eff = state.dustEnabled ? pm25Efficiency(prov.pm25) : 1.0;
-  const shadeEff = shadeEfficiency(state.shadeLevel);
-  const trackGain = trackerGain(state.trackerMode);
+document.querySelectorAll('.size-btn').forEach(b => b.addEventListener('click', () => setSize(+b.dataset.size)));
+setSize(5);
 
-  const monthlyData = [];
-  for (let m = 1; m <= 12; m++) {
-    const psh = monthlyPSH[m];
-    const dustE = dustEfficiency(m, state.dustEnabled);
-    const ambTemp = prov.temp + (rainyMonths.includes(m) ? -2 : 2);
-    const panelTemp = calculatePanelTemp(ambTemp, 700);
-    const tempEff = temperatureEfficiency(panelTemp, state.panelType);
-    const losses = tiltEff * azEff * degradeEff * dustE * pm25Eff * shadeEff * tempEff * 0.85 * trackGain;
-    const daily = (installedW / 1000) * psh * losses;
-    const dailyCapped = Math.min(daily, (inverterMaxW / 1000) * psh);
-    monthlyData.push({ month: m, kWh: dailyCapped * 30, isRainy: rainyMonths.includes(m) });
+// === COMPARE TABLE ===
+const compareData = {
+  5: {
+    place: 'บ้านเล็ก คอนโด',
+    area: '80-150 ตร.ม.',
+    ac: '1-2 ตัว · 12k BTU',
+    kitchen: 'ตู้เย็น หม้อหุงข้าว',
+    water: { v: 'ใช้แทนแอร์ได้', warn: true },
+    ev: { v: 'ไม่แนะนำ', warn: true },
+    pump: '1/2 HP',
+    peak: '~ 4 kW',
+    panel: '5-7 kWp'
+  },
+  10: {
+    place: 'บ้านกลาง SME เล็ก',
+    area: '150-300 ตร.ม.',
+    ac: '3-4 ตัว · 12-18k',
+    kitchen: '+ เตาแม่เหล็ก',
+    water: { v: '1 จุด' },
+    ev: { v: '7 kW (กลางคืน)' },
+    pump: '1 HP',
+    peak: '~ 8 kW',
+    panel: '10-13 kWp'
+  },
+  15: {
+    place: 'บ้านหรู ภัตตาคาร',
+    area: '300-500 ตร.ม.',
+    ac: '5-6 ตัว · 18-24k',
+    kitchen: 'ครัวเต็มรูปแบบ',
+    water: { v: '2-3 จุด' },
+    ev: { v: '7-11 kW' },
+    pump: '2 HP',
+    peak: '~ 12 kW',
+    panel: '15-20 kWp'
+  },
+  20: {
+    place: 'โรงงาน โรงแรม',
+    area: '500+ ตร.ม.',
+    ac: '8-10 ตัว · ขนาดต่างๆ',
+    kitchen: 'ครัวเชิงพาณิชย์',
+    water: { v: 'หลายจุด' },
+    ev: { v: '11+ kW' },
+    pump: '3-5 HP',
+    peak: '~ 16 kW',
+    panel: '20-26 kWp'
   }
+};
 
-  const maxKWh = Math.max(...monthlyData.map(d => d.kWh), 1);
-  const chartW = 800, chartH = 200;
-  const padL = 50, padR = 20, padT = 20, padB = 40;
-  const innerW = chartW - padL - padR;
-  const innerH = chartH - padT - padB;
-
-  for (let i = 0; i <= 4; i++) {
-    const y = padT + (innerH * i / 4);
-    const val = maxKWh - (maxKWh * i / 4);
-    const line = document.createElementNS(SVG_NS, 'line');
-    line.setAttribute('x1', padL); line.setAttribute('y1', y);
-    line.setAttribute('x2', chartW - padR); line.setAttribute('y2', y);
-    line.setAttribute('stroke', 'rgba(255,255,255,0.1)');
-    chart.appendChild(line);
-    const text = document.createElementNS(SVG_NS, 'text');
-    text.setAttribute('x', padL - 5); text.setAttribute('y', y + 4);
-    text.setAttribute('text-anchor', 'end'); text.setAttribute('font-size', '10');
-    text.setAttribute('fill', '#a0b0c0');
-    text.textContent = Math.round(val);
-    chart.appendChild(text);
-  }
-
-  const barW = innerW / 12 * 0.7;
-  monthlyData.forEach((d, i) => {
-    const x = padL + (innerW * i / 12) + (innerW / 12 - barW) / 2;
-    const h = (d.kWh / maxKWh) * innerH;
-    const y = padT + innerH - h;
-    const isActive = (state.month === d.month) || (state.month === 'year');
-    const bar = document.createElementNS(SVG_NS, 'rect');
-    bar.setAttribute('x', x); bar.setAttribute('y', y);
-    bar.setAttribute('width', barW); bar.setAttribute('height', h);
-    let fillColor = '#5a6a7a';
-    if (isActive) fillColor = d.isRainy ? '#4ecdc4' : '#ffd700';
-    else if (d.isRainy) fillColor = '#3a7a8a';
-    bar.setAttribute('fill', fillColor);
-    bar.setAttribute('rx', '3');
-    chart.appendChild(bar);
-    const valText = document.createElementNS(SVG_NS, 'text');
-    valText.setAttribute('x', x + barW / 2); valText.setAttribute('y', y - 3);
-    valText.setAttribute('text-anchor', 'middle'); valText.setAttribute('font-size', '9');
-    valText.setAttribute('fill', isActive ? '#ffd700' : '#a0b0c0');
-    valText.setAttribute('font-weight', 'bold');
-    valText.textContent = Math.round(d.kWh);
-    chart.appendChild(valText);
-    const monthText = document.createElementNS(SVG_NS, 'text');
-    monthText.setAttribute('x', x + barW / 2); monthText.setAttribute('y', chartH - padB + 15);
-    monthText.setAttribute('text-anchor', 'middle'); monthText.setAttribute('font-size', '10');
-    monthText.setAttribute('fill', isActive ? '#ffd700' : '#a0b0c0');
-    monthText.textContent = monthNames[i];
-    chart.appendChild(monthText);
-  });
+function setCompare(size) {
+  document.querySelectorAll('.compare-mobile-tab').forEach(t => t.classList.toggle('active', +t.dataset.cmp === size));
+  const d = compareData[size];
+  const rows = [
+    { lbl: 'สถานที่', val: d.place },
+    { lbl: 'พื้นที่', val: d.area },
+    { lbl: 'แอร์', val: d.ac },
+    { lbl: 'ครัว', val: d.kitchen },
+    { lbl: 'น้ำอุ่น', val: d.water.v, warn: d.water.warn },
+    { lbl: 'EV Charger', val: d.ev.v, warn: d.ev.warn },
+    { lbl: 'ปั๊มน้ำ', val: d.pump },
+    { lbl: 'โหลด peak', val: d.peak },
+    { lbl: 'แผงโซล่า', val: d.panel }
+  ];
+  document.getElementById('compareContent').innerHTML = rows.map(r =>
+    '<div class="compare-row"><div class="compare-row-label">' + r.lbl + '</div><div class="compare-row-value' + (r.warn ? ' warn' : '') + '">' + r.val + '</div></div>'
+  ).join('');
 }
 
-function drawPaybackChart() {
-  const chart = document.getElementById('paybackChart');
-  chart.innerHTML = '';
-  const defs = document.createElementNS(SVG_NS, 'defs');
-  defs.innerHTML = `<linearGradient id="profitGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-    <stop offset="0%" stop-color="#2ecc71" stop-opacity="0.6"/>
-    <stop offset="100%" stop-color="#2ecc71" stop-opacity="0"/>
-  </linearGradient>`;
-  chart.appendChild(defs);
+document.querySelectorAll('.compare-mobile-tab').forEach(t => t.addEventListener('click', () => setCompare(+t.dataset.cmp)));
+setCompare(5);
 
-  const roi = computePayback();
-  const data = roi.yearlyData;
-  const chartW = 800, chartH = 220;
-  const padL = 70, padR = 30, padT = 20, padB = 40;
-  const innerW = chartW - padL - padR;
-  const innerH = chartH - padT - padB;
-  const minVal = Math.min(...data.map(d => d.cumulative), -state.systemCost);
-  const maxVal = Math.max(...data.map(d => d.cumulative), 1000);
-  const range = maxVal - minVal || 1;
-  const zeroY = padT + innerH - ((-minVal) / range) * innerH;
-
-  for (let i = 0; i <= 4; i++) {
-    const y = padT + (innerH * i / 4);
-    const val = maxVal - (range * i / 4);
-    const line = document.createElementNS(SVG_NS, 'line');
-    line.setAttribute('x1', padL); line.setAttribute('y1', y);
-    line.setAttribute('x2', chartW - padR); line.setAttribute('y2', y);
-    line.setAttribute('stroke', 'rgba(255,255,255,0.08)');
-    chart.appendChild(line);
-    const text = document.createElementNS(SVG_NS, 'text');
-    text.setAttribute('x', padL - 5); text.setAttribute('y', y + 4);
-    text.setAttribute('text-anchor', 'end'); text.setAttribute('font-size', '9');
-    text.setAttribute('fill', '#a0b0c0');
-    text.textContent = '฿' + (Math.abs(val) >= 1000 ? (val/1000).toFixed(0) + 'k' : val.toFixed(0));
-    chart.appendChild(text);
-  }
-
-  const zeroLine = document.createElementNS(SVG_NS, 'line');
-  zeroLine.setAttribute('x1', padL); zeroLine.setAttribute('y1', zeroY);
-  zeroLine.setAttribute('x2', chartW - padR); zeroLine.setAttribute('y2', zeroY);
-  zeroLine.setAttribute('stroke', '#ffd700'); zeroLine.setAttribute('stroke-width', '1.5');
-  zeroLine.setAttribute('stroke-dasharray', '5,3');
-  chart.appendChild(zeroLine);
-
-  let pathD = '';
-  data.forEach((d, i) => {
-    const x = padL + (innerW * i / 30);
-    const y = padT + innerH - ((d.cumulative - minVal) / range) * innerH;
-    pathD += (i === 0 ? 'M' : 'L') + ` ${x} ${y}`;
+// Auto-fade sections on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
   });
-
-  const lastX = padL + innerW;
-  const areaD = pathD + ` L ${lastX} ${zeroY} L ${padL} ${zeroY} Z`;
-  const area = document.createElementNS(SVG_NS, 'path');
-  area.setAttribute('d', areaD);
-  area.setAttribute('fill', 'url(#profitGrad)');
-  area.setAttribute('opacity', '0.5');
-  chart.appendChild(area);
-
-  const line = document.createElementNS(SVG_NS, 'path');
-  line.setAttribute('d', pathD);
-  line.setAttribute('stroke', '#2ecc71');
-  line.setAttribute('stroke-width', '3');
-  line.setAttribute('fill', 'none');
-  chart.appendChild(line);
-
-  if (roi.paybackYears !== null) {
-    const markerX = padL + (innerW * roi.paybackYears / 30);
-    const dot = document.createElementNS(SVG_NS, 'circle');
-    dot.setAttribute('cx', markerX); dot.setAttribute('cy', zeroY); dot.setAttribute('r', '7');
-    dot.setAttribute('fill', '#ffd700'); dot.setAttribute('stroke', '#fff'); dot.setAttribute('stroke-width', '2');
-    chart.appendChild(dot);
-    const lblX = Math.max(padL, Math.min(markerX - 50, chartW - padR - 100));
-    const labelBg = document.createElementNS(SVG_NS, 'rect');
-    labelBg.setAttribute('x', lblX); labelBg.setAttribute('y', zeroY - 38);
-    labelBg.setAttribute('width', '100'); labelBg.setAttribute('height', '22');
-    labelBg.setAttribute('fill', '#ffd700'); labelBg.setAttribute('rx', '4');
-    chart.appendChild(labelBg);
-    const lt = document.createElementNS(SVG_NS, 'text');
-    lt.setAttribute('x', lblX + 50); lt.setAttribute('y', zeroY - 22);
-    lt.setAttribute('text-anchor', 'middle'); lt.setAttribute('font-size', '11');
-    lt.setAttribute('font-weight', 'bold'); lt.setAttribute('fill', '#1a2332');
-    lt.textContent = `💸 คืนทุน ${roi.paybackYears.toFixed(1)} ปี`;
-    chart.appendChild(lt);
-  }
-
-  const lastData = data[30];
-  const year30Y = padT + innerH - ((lastData.cumulative - minVal) / range) * innerH;
-  const dot30 = document.createElementNS(SVG_NS, 'circle');
-  dot30.setAttribute('cx', lastX); dot30.setAttribute('cy', year30Y); dot30.setAttribute('r', '8');
-  dot30.setAttribute('fill', '#f39c12'); dot30.setAttribute('stroke', '#fff'); dot30.setAttribute('stroke-width', '2');
-  chart.appendChild(dot30);
-
-  const profitLabel = document.createElementNS(SVG_NS, 'text');
-  profitLabel.setAttribute('x', chartW - padR - 5); profitLabel.setAttribute('y', padT + 12);
-  profitLabel.setAttribute('text-anchor', 'end'); profitLabel.setAttribute('font-size', '11');
-  profitLabel.setAttribute('fill', '#f39c12'); profitLabel.setAttribute('font-weight', 'bold');
-  profitLabel.textContent = `🎯 กำไร 30 ปี: ฿${Math.round(roi.profit30).toLocaleString()}`;
-  chart.appendChild(profitLabel);
-
-  const invLabel = document.createElementNS(SVG_NS, 'text');
-  invLabel.setAttribute('x', padL + 5); invLabel.setAttribute('y', padT + innerH - 5);
-  invLabel.setAttribute('font-size', '10'); invLabel.setAttribute('fill', '#e74c3c');
-  invLabel.setAttribute('font-weight', 'bold');
-  invLabel.textContent = `ลงทุน: ฿${state.systemCost.toLocaleString()}`;
-  chart.appendChild(invLabel);
-
-  [0, 5, 10, 15, 20, 25, 30].forEach(yr => {
-    const x = padL + (innerW * yr / 30);
-    const t = document.createElementNS(SVG_NS, 'text');
-    t.setAttribute('x', x); t.setAttribute('y', chartH - padB + 15);
-    t.setAttribute('text-anchor', 'middle'); t.setAttribute('font-size', '10');
-    t.setAttribute('fill', '#a0b0c0');
-    t.textContent = yr + ' ปี';
-    chart.appendChild(t);
-  });
-}
-
-function drawDegradeChart() {
-  const chart = document.getElementById('degradeChart');
-  chart.innerHTML = '';
-  const defs = document.createElementNS(SVG_NS, 'defs');
-  defs.innerHTML = `<linearGradient id="degGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-    <stop offset="0%" stop-color="#ff8c00" stop-opacity="0.8"/>
-    <stop offset="100%" stop-color="#ff8c00" stop-opacity="0"/>
-  </linearGradient>`;
-  chart.appendChild(defs);
-
-  const data = [];
-  for (let y = 0; y <= 30; y++) {
-    data.push({ year: y, eff: degradationFactor(y) * 100 });
-  }
-  const chartW = 800, chartH = 180;
-  const padL = 50, padR = 50, padT = 20, padB = 35;
-  const innerW = chartW - padL - padR;
-  const innerH = chartH - padT - padB;
-
-  for (let i = 0; i <= 4; i++) {
-    const y = padT + (innerH * i / 4);
-    const line = document.createElementNS(SVG_NS, 'line');
-    line.setAttribute('x1', padL); line.setAttribute('y1', y);
-    line.setAttribute('x2', chartW - padR); line.setAttribute('y2', y);
-    line.setAttribute('stroke', 'rgba(255,255,255,0.1)');
-    chart.appendChild(line);
-    const pct = 100 - (i * 25);
-    const text = document.createElementNS(SVG_NS, 'text');
-    text.setAttribute('x', padL - 5); text.setAttribute('y', y + 4);
-    text.setAttribute('text-anchor', 'end'); text.setAttribute('font-size', '10');
-    text.setAttribute('fill', '#a0b0c0');
-    text.textContent = pct + '%';
-    chart.appendChild(text);
-  }
-
-  let pathD = `M ${padL} ${padT + innerH}`;
-  data.forEach((d, i) => {
-    const x = padL + (innerW * i / 30);
-    const y = padT + innerH - (d.eff / 100) * innerH;
-    pathD += ` L ${x} ${y}`;
-  });
-  pathD += ` L ${chartW - padR} ${padT + innerH} Z`;
-  const area = document.createElementNS(SVG_NS, 'path');
-  area.setAttribute('d', pathD); area.setAttribute('fill', 'url(#degGrad)'); area.setAttribute('opacity', '0.4');
-  chart.appendChild(area);
-
-  let lineD = '';
-  data.forEach((d, i) => {
-    const x = padL + (innerW * i / 30);
-    const y = padT + innerH - (d.eff / 100) * innerH;
-    lineD += (i === 0 ? 'M' : 'L') + ` ${x} ${y}`;
-  });
-  const line = document.createElementNS(SVG_NS, 'path');
-  line.setAttribute('d', lineD); line.setAttribute('stroke', '#ff8c00');
-  line.setAttribute('stroke-width', '2.5'); line.setAttribute('fill', 'none');
-  chart.appendChild(line);
-
-  const markerX = padL + (innerW * state.systemAge / 30);
-  const currentEff = data[state.systemAge].eff;
-  const markerY = padT + innerH - (currentEff / 100) * innerH;
-  const dot = document.createElementNS(SVG_NS, 'circle');
-  dot.setAttribute('cx', markerX); dot.setAttribute('cy', markerY); dot.setAttribute('r', '6');
-  dot.setAttribute('fill', '#ffd700'); dot.setAttribute('stroke', '#fff'); dot.setAttribute('stroke-width', '2');
-  chart.appendChild(dot);
-
-  const lblX = Math.max(padL, Math.min(markerX - 50, chartW - padR - 100));
-  const labelBg = document.createElementNS(SVG_NS, 'rect');
-  labelBg.setAttribute('x', lblX); labelBg.setAttribute('y', markerY - 28);
-  labelBg.setAttribute('width', '100'); labelBg.setAttribute('height', '20');
-  labelBg.setAttribute('fill', '#ffd700'); labelBg.setAttribute('rx', '4');
-  chart.appendChild(labelBg);
-  const lt = document.createElementNS(SVG_NS, 'text');
-  lt.setAttribute('x', lblX + 50); lt.setAttribute('y', markerY - 14);
-  lt.setAttribute('text-anchor', 'middle'); lt.setAttribute('font-size', '11');
-  lt.setAttribute('font-weight', 'bold'); lt.setAttribute('fill', '#1a2332');
-  lt.textContent = `ปีที่ ${state.systemAge}: ${currentEff.toFixed(1)}%`;
-  chart.appendChild(lt);
-
-  [0, 5, 10, 15, 20, 25, 30].forEach(yr => {
-    const x = padL + (innerW * yr / 30);
-    const t = document.createElementNS(SVG_NS, 'text');
-    t.setAttribute('x', x); t.setAttribute('y', chartH - padB + 15);
-    t.setAttribute('text-anchor', 'middle'); t.setAttribute('font-size', '10');
-    t.setAttribute('fill', '#a0b0c0');
-    t.textContent = yr + ' ปี';
-    chart.appendChild(t);
-  });
-}
-
-// ============ BUILD UI ============
-function buildProvinceSelector() {
-  const sel = document.getElementById('provinceSelect');
-  sel.innerHTML = '';
-  // Group by region
-  const regions = ['กลาง', 'เหนือ', 'อีสาน', 'ตอ', 'ใต้'];
-  const regionNames = { 'กลาง': 'ภาคกลาง', 'เหนือ': 'ภาคเหนือ', 'อีสาน': 'ภาคอีสาน', 'ตอ': 'ภาคตะวันออก', 'ใต้': 'ภาคใต้' };
-  regions.forEach(reg => {
-    const opt = document.createElement('optgroup');
-    opt.label = regionNames[reg];
-    Object.entries(provinces).forEach(([key, p]) => {
-      if (p.region === reg) {
-        const o = document.createElement('option');
-        o.value = key;
-        o.textContent = `${p.name} (PM2.5: ${p.pm25}, ${p.temp}°C)`;
-        if (key === state.province) o.selected = true;
-        opt.appendChild(o);
-      }
-    });
-    sel.appendChild(opt);
-  });
-}
-
-function buildMonthSelector() {
-  const sel = document.getElementById('monthSelector');
-  sel.innerHTML = '';
-  for (let m = 1; m <= 12; m++) {
-    const btn = document.createElement('button');
-    btn.className = 'month-btn' + (rainyMonths.includes(m) ? ' rainy' : '');
-    btn.textContent = monthNames[m-1];
-    btn.dataset.month = m;
-    btn.onclick = () => {
-      state.month = m;
-      document.querySelectorAll('.month-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const yb = document.getElementById('yearAvgBtn');
-      yb.style.background = 'linear-gradient(90deg, #4CAF50, #45a049)';
-      yb.style.color = 'white';
-      refresh();
-    };
-    sel.appendChild(btn);
-  }
-}
-
-function refresh() {
-  drawPanels();
-  drawDcCables();
-  animateLightRays();
-  animateCurrent();
-  updateStats();
-  drawMonthChart();
-  drawPaybackChart();
-  drawDegradeChart();
-}
-
-// ============ EVENTS ============
-document.getElementById('provinceSelect').addEventListener('change', e => {
-  state.province = e.target.value;
-  refresh();
+}, { threshold: 0.05 });
+document.querySelectorAll('section').forEach(s => {
+  s.style.opacity = '0';
+  s.style.transform = 'translateY(16px)';
+  s.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(s);
 });
-
-document.getElementById('panelType').addEventListener('change', e => {
-  state.panelType = e.target.value;
-  refresh();
-});
-
-document.getElementById('trackerToggle').addEventListener('click', e => {
-  if (state.trackerMode === 'fixed') {
-    state.trackerMode = 'single';
-    e.target.textContent = '🔄 Single-axis (+25%)';
-  } else if (state.trackerMode === 'single') {
-    state.trackerMode = 'dual';
-    e.target.textContent = '🔄🔄 Dual-axis (+35%)';
-  } else {
-    state.trackerMode = 'fixed';
-    e.target.textContent = '📍 แบบติดตั้งคงที่ (Fixed)';
-  }
-  refresh();
-});
-
-document.getElementById('shadeLevel').addEventListener('change', e => {
-  state.shadeLevel = +e.target.value;
-  refresh();
-});
-
-document.getElementById('tiltAngle').addEventListener('input', e => {
-  state.tiltAngle = +e.target.value;
-  document.getElementById('tiltValue').textContent = e.target.value;
-  refresh();
-});
-
-document.getElementById('systemAge').addEventListener('input', e => {
-  state.systemAge = +e.target.value;
-  document.getElementById('ageValue').textContent = e.target.value;
-  refresh();
-});
-
-document.getElementById('panelWatt').addEventListener('input', e => {
-  state.panelWatt = +e.target.value;
-  document.getElementById('panelWattValue').textContent = e.target.value;
-  refresh();
-});
-
-document.getElementById('panelCount').addEventListener('input', e => {
-  state.panelCount = +e.target.value;
-  document.getElementById('panelCountValue').textContent = e.target.value;
-  refresh();
-});
-
-document.getElementById('inverterSize').addEventListener('change', e => {
-  state.inverterSize = +e.target.value;
-  refresh();
-});
-
-document.getElementById('batteryToggle').addEventListener('click', e => {
-  state.batteryEnabled = !state.batteryEnabled;
-  e.target.textContent = state.batteryEnabled ? 'เปิดใช้งาน' : 'ปิดใช้งาน';
-  e.target.classList.toggle('off', !state.batteryEnabled);
-  refresh();
-});
-
-document.getElementById('dustToggle').addEventListener('click', e => {
-  state.dustEnabled = !state.dustEnabled;
-  if (state.dustEnabled) {
-    e.target.textContent = '🌫️ มีฝุ่น';
-    e.target.classList.add('dust-on');
-  } else {
-    e.target.textContent = '✨ แผงสะอาด';
-    e.target.classList.remove('dust-on');
-  }
-  refresh();
-});
-
-document.getElementById('electricityRate').addEventListener('input', e => {
-  state.electricityRate = parseFloat(e.target.value) || 0;
-  document.querySelectorAll('.preset-btn[data-rate]').forEach(b => {
-    b.classList.toggle('active', parseFloat(b.dataset.rate) === state.electricityRate);
-  });
-  refresh();
-});
-
-document.querySelectorAll('.preset-btn[data-rate]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    state.electricityRate = parseFloat(btn.dataset.rate);
-    document.getElementById('electricityRate').value = state.electricityRate;
-    document.querySelectorAll('.preset-btn[data-rate]').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    refresh();
-  });
-});
-
-document.getElementById('systemCost').addEventListener('input', e => {
-  state.systemCost = parseInt(e.target.value) || 0;
-  document.querySelectorAll('.preset-btn[data-cost]').forEach(b => {
-    b.classList.toggle('active', parseInt(b.dataset.cost) === state.systemCost);
-  });
-  refresh();
-});
-
-document.querySelectorAll('.preset-btn[data-cost]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    state.systemCost = parseInt(btn.dataset.cost);
-    document.getElementById('systemCost').value = state.systemCost;
-    document.querySelectorAll('.preset-btn[data-cost]').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    refresh();
-  });
-});
-
-document.querySelectorAll('.compass-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    state.azimuth = parseInt(btn.dataset.azimuth);
-    document.querySelectorAll('.compass-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('azimuthSlider').value = state.azimuth;
-    document.getElementById('azimuthSliderValue').textContent = state.azimuth;
-    refresh();
-  });
-});
-
-// Azimuth slider
-document.getElementById('azimuthSlider').addEventListener('input', e => {
-  state.azimuth = +e.target.value;
-  document.getElementById('azimuthSliderValue').textContent = e.target.value;
-  // Highlight closest button
-  document.querySelectorAll('.compass-btn').forEach(b => {
-    const btnAz = parseInt(b.dataset.azimuth);
-    let diff = Math.abs(btnAz - state.azimuth);
-    if (diff > 180) diff = 360 - diff;
-    b.classList.toggle('active', diff <= 11);
-  });
-  refresh();
-});
-
-document.getElementById('yearAvgBtn').addEventListener('click', e => {
-  state.month = 'year';
-  document.querySelectorAll('.month-btn').forEach(b => b.classList.remove('active'));
-  e.target.style.background = 'linear-gradient(90deg,#ffd700,#ff8c00)';
-  e.target.style.color = '#1a2332';
-  refresh();
-});
-
-// ============ INIT ============
-buildProvinceSelector();
-buildMonthSelector();
-state.month = 'year';
-const yb = document.getElementById('yearAvgBtn');
-yb.style.background = 'linear-gradient(90deg,#ffd700,#ff8c00)';
-yb.style.color = '#1a2332';
-refresh();
-
 </script>
 </body>
 </html>
